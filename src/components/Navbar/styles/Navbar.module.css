@@ -1,0 +1,156 @@
+.navbarContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100vw;
+  height: 8rem;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 2rem;
+  flex: 1;
+  width: 50%;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: xx-large;
+  color: #ff0000;
+  font-family: 'Fredoka One', cursive;
+}
+
+.searchContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-width: 100%;
+  margin-bottom: 1rem;
+}
+
+.searchContainer:nth-child(2) {
+  order: +1;
+}
+
+.searchInput {
+  width: 17rem;
+  height: 1.2rem;
+  padding: 1.2rem;
+  border-radius: 3rem;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  outline-color: #173a65;
+  color: #fff;
+}
+
+.searchInput::placeholder {
+  color: #aaa;
+  font-weight: 700;
+}
+
+.searchButton {
+  display: none;
+  width: 0.7rem;
+  height: 1.2rem;
+  padding: 1.2rem;
+  background-color: #222222;
+  border: 0.1px solid #aaa;
+  border-radius: 0 3rem 3rem 0;
+  color: #ccc;
+}
+
+.searchIcon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.searchButton:hover {
+  cursor: pointer;
+}
+
+.profileContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  width: 50%;
+}
+
+.profileButton {
+  background-color: transparent;
+  border: 0;
+}
+
+.profileImage {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  margin-right: 2rem;
+}
+
+/* tablet */
+@media screen and (min-width: 541px) and (max-width: 768px) {
+  .logo {
+    font-size: 3rem;
+  }
+
+  .searchContainer:nth-child(2) {
+    order: 0;
+    margin-bottom: 0;
+    min-width: 50%;
+  }
+
+  .searchInput {
+    width: 17rem;
+    border-radius: 3rem 0 0 3rem;
+  }
+
+  .searchButton {
+    display: flex;
+  }
+
+  .profileImage {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    margin-right: 2rem;
+  }
+}
+
+/* laptop */
+@media screen and (min-width: 769px) {
+  .logo {
+    font-size: 3rem;
+  }
+
+  .searchContainer:nth-child(2) {
+    order: 0;
+    margin-bottom: 0;
+    min-width: 50%;
+  }
+
+  .searchInput {
+    width: 22rem;
+    border-radius: 3rem 0 0 3rem;
+  }
+
+  .searchButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profileImage {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    margin-right: 2rem;
+  }
+}

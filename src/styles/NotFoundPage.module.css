@@ -1,0 +1,58 @@
+.AppWrapper {
+  width: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 0 0.5em;
+}
+
+.pageErrorStyles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+  color: #ccc;
+}
+
+.codeErrorStyles {
+  font-size: 5rem;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.msgErrorStyles {
+  font-size: 1.5rem;
+  margin: 1rem auto;
+}
+
+.gifErrorStyles {
+  margin: '1rem auto';
+  width: 350px;
+  height: 350px;
+  object-fit: 'cover';
+}
+
+.btnErrorPage {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 14rem;
+  height: 1.2rem;
+  padding: 1.2rem;
+  margin-top: 2rem;
+  background-color: #222222;
+  border: 0.1px solid #aaa;
+  color: #ccc;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 1.2rem;
+  transition: all 0.3ms ease-in-out;
+}
+
+.btnErrorPage:hover {
+  cursor: pointer;
+  background-color: #3f3f3f;
+}

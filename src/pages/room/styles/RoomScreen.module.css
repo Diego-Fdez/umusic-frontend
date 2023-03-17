@@ -1,0 +1,21 @@
+.roomContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 100%;
+}
+
+/* laptop */
+@media screen and (min-width: 913px) {
+  .roomContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-width: 100%;
+  }
+
+  .playerVideoContainer {
+    width: 75%;
+  }
+}
