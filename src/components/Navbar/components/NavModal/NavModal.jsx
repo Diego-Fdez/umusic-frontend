@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuth0 } from '@auth0/auth0-react';
 import userStore from '@/store/userStore';
 import styles from './styles/NavModal.module.css';
 
 const NavModal = ({ isOpen, setIsOpen }) => {
   const { userInfo } = userStore((state) => state.user);
-
+  const { logout, user, isAuthenticated } = useAuth0();
+  console.log(user);
   return (
     <div
       className={styles.navbarModalContainer}
@@ -15,17 +17,35 @@ const NavModal = ({ isOpen, setIsOpen }) => {
     >
       <ul className={styles.navbarModalList}>
         <li className={styles.navbarModalListItem}>
-          <Link href={'/login'} onClick={() => setIsOpen(!isOpen)}>
-            <Image
-              src='/login-icon.svg'
-              alt='login-icon'
-              className={styles.navbarModalItemImg}
-              width={24}
-              height={24}
-              loading='lazy'
-            />
-            <p>Login</p>
-          </Link>
+          {isAuthenticated ? (
+            <button
+              onClick={() =>
+                logout({ logoutParams: { returnTo: window.location.origin } })
+              }
+            >
+              <Image
+                src='/logout-icon.svg'
+                alt='logout-icon'
+                className={styles.navbarModalItemImg}
+                width={24}
+                height={24}
+                loading='lazy'
+              />
+              <p>Logout</p>
+            </button>
+          ) : (
+            <Link href={'/login'} onClick={() => setIsOpen(!isOpen)}>
+              <Image
+                src='/login-icon.svg'
+                alt='login-icon'
+                className={styles.navbarModalItemImg}
+                width={24}
+                height={24}
+                loading='lazy'
+              />
+              <p>Login</p>
+            </Link>
+          )}
         </li>
         <li className={styles.navbarModalListItem}>
           <Link href={'/qr'} onClick={() => setIsOpen(!isOpen)}>
