@@ -49,6 +49,8 @@ const PlayerScreen = () => {
                 src={selectedVideo?.video?.author?.avatar[0]?.url}
                 alt={selectedVideo?.video?.author?.title}
                 className={styles.infoAuthorAvatar}
+                width={32}
+                height={32}
               />
               <h6 className={styles.videoInfoSubtitle}>
                 {selectedVideo?.video?.author?.title}
