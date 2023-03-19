@@ -64,6 +64,17 @@
   font-size: 1rem;
 }
 
+.navbarModalListItem > button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #f0ffff;
+  font-weight: 800;
+  font-size: 1rem;
+  border: 0;
+  background-color: transparent;
+}
+
 .navbarModalItemImg {
   width: 1.5rem;
   height: 1.5rem;
