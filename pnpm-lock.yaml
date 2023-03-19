@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@auth0/auth0-react': 2.0.1
   eslint: 8.36.0
   eslint-config-next: 13.2.4
   js-cookie: 3.0.1
@@ -8,10 +9,12 @@ specifiers:
   react: 18.2.0
   react-dom: 18.2.0
   react-player: 2.12.0
+  swr: 2.1.0
   typescript: 4.9.5
   zustand: 4.3.6
 
 dependencies:
+  '@auth0/auth0-react': 2.0.1_biqbaboplfbrettd7655fr4n2y
   eslint: 8.36.0
   eslint-config-next: 13.2.4_vgl77cfdswitgr47lm5swmv43m
   js-cookie: 3.0.1
@@ -19,12 +22,28 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-player: 2.12.0_react@18.2.0
+  swr: 2.1.0_react@18.2.0
   zustand: 4.3.6_react@18.2.0
 
 devDependencies:
   typescript: 4.9.5
 
 packages:
+
+  /@auth0/auth0-react/2.0.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-7Rla3del7inUloaWMsECs0JvBpDEj9lgfy+BQE/Z75zs9tveNvxab+xFdfrBC0GPN0eoiq1PeHcc++YjLnti+g==}
+    peerDependencies:
+      react: ^16.11.0 || ^17 || ^18
+      react-dom: ^16.11.0 || ^17 || ^18
+    dependencies:
+      '@auth0/auth0-spa-js': 2.0.4
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@auth0/auth0-spa-js/2.0.4:
+    resolution: {integrity: sha512-NgD6Fkm5Xnbned1VjhEW8irm1/Y8AWtdSLexgLXNwwBVgfnYicCVBu8w75m2t+4QljXkTcI7IXVEFhVmxMuxaA==}
+    dev: false
 
   /@babel/runtime/7.21.0:
     resolution: {integrity: sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==}
@@ -2025,6 +2044,16 @@ packages:
   /supports-preserve-symlinks-flag/1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+    dev: false
+
+  /swr/2.1.0_react@18.2.0:
+    resolution: {integrity: sha512-4hYl5p3/KalQ1MORealM79g/DtLohmud6yyfXw5l4wjtFksYUnocRFudvyaoUtgj3FrVNK9lS25Av9dsZYvz0g==}
+    engines: {pnpm: '7'}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
   /synckit/0.8.5:
