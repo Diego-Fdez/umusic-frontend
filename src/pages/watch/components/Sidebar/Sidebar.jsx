@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import styles from './styles/Sidebar.module.css';
 import { Loader } from '@/components';
 import { useFetch } from '@/hooks/useFetchFromYoutube';
@@ -19,7 +18,7 @@ const Sidebar = ({ videoId }) => {
         <div key={video?.video?.videoId} className={styles.playlistDetailVideo}>
           <div className={styles.playlistDetailVideoThumbnail}>
             <Link href={`/watch/${video?.video?.videoId}`}>
-              <Image
+              <img
                 src={video?.video?.thumbnails[0]?.url}
                 alt={video?.video?.title}
                 className={styles.videoThumbnailImg}
