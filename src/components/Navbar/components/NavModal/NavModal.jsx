@@ -4,10 +4,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 import userStore from '@/store/userStore';
 import styles from './styles/NavModal.module.css';
 
-const NavModal = ({ isOpen, setIsOpen }) => {
+const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
   const { userInfo } = userStore((state) => state.user);
   const { logout, user, isAuthenticated } = useAuth0();
-  console.log(user);
+
   return (
     <div
       className={styles.navbarModalContainer}
@@ -48,7 +48,12 @@ const NavModal = ({ isOpen, setIsOpen }) => {
           )}
         </li>
         <li className={styles.navbarModalListItem}>
-          <Link href={'/qr'} onClick={() => setIsOpen(!isOpen)}>
+          <button
+            onClick={() => {
+              setIsOpen(!isOpen);
+              setModalOpen(!modalOpen);
+            }}
+          >
             <Image
               src='/qrcode-icon.svg'
               alt='qrcode-icon'
@@ -58,7 +63,7 @@ const NavModal = ({ isOpen, setIsOpen }) => {
               loading='lazy'
             />
             <p>Generate QR</p>
-          </Link>
+          </button>
         </li>
         <li className={styles.navbarModalListItem}>
           <Link
