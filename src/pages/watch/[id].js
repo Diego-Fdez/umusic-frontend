@@ -1,5 +1,6 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import Image from 'next/image';
 import ReactPlayer from 'react-player';
 import styles from './styles/PlayerScreen.module.css';
@@ -28,6 +29,18 @@ const PlayerScreen = () => {
 
   return (
     <Suspense fallback={<Loader />}>
+      <Head>
+        <title>{selectedVideo?.video?.title} - UMUSIC</title>
+        <meta
+          name='description'
+          content='Nuestro reproductor integrado te permite escuchar tus canciones favoritas de forma fácil y conveniente. Con una interfaz intuitiva y fácil de usar, de reproducción, buscar tus canciones favoritas y ajustar la configuración de audio según tus preferencias, lo que significa que puedes escuchar tu música favorita en cualquier momento y en cualquier lugar. Ya sea que estés en casa, en el trabajo o en movimiento, nuestro reproductor integrado te permite disfrutar de la mejor música en cualquier momento. ¡Prueba nuestro reproductor hoy y descubre una nueva forma de disfrutar de la música!'
+        />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <meta name='robots' content='index, follow' />
+        <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
+        <meta charset='utf-8' />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
       <Navbar />
       <main className={styles.mainContainer}>
         <div className={styles.playListVideoWrapper}>
