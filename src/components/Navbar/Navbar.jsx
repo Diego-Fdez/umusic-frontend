@@ -2,17 +2,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useAuth0 } from '@auth0/auth0-react';
 import styles from './styles/Navbar.module.css';
-import userStore from '@/store/userStore';
 import videoStore from '@/store/videoStore';
-import { NavModal } from './components';
+import { NavModal, QRScreenModal } from './components';
 
 const Navbar = () => {
+  const { user, isAuthenticated } = useAuth0();
   const router = useRouter();
   const [input, setInput] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const addKeyword = videoStore((state) => state.addKeyword);
-  const { userInfo } = userStore((state) => state.user);
   //const nameUrl = window.location.href;
 
   /**The addKeyword function adds the keyword to the
@@ -66,17 +67,23 @@ const Navbar = () => {
           onClick={() => setIsOpen(!isOpen)}
         >
           <Image
-            src={userInfo?.picture ? userInfo?.picture : '/default-image.png'}
-            alt={userInfo?.user_name ? userInfo?.user_name : 'user-image'}
-            title={userInfo?.user_name ? userInfo?.user_name : 'Profile'}
+            src={isAuthenticated ? user?.picture : '/default-image.png'}
+            alt={isAuthenticated ? user?.name : 'empty-profile-image'}
+            title={isAuthenticated ? user?.name : 'Profile'}
             className={styles.profileImage}
             width={35.2}
             height={35.2}
             loading='lazy'
           />
         </button>
-        <NavModal setIsOpen={setIsOpen} isOpen={isOpen} />
+        <NavModal
+          setIsOpen={setIsOpen}
+          isOpen={isOpen}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+        />
       </nav>
+      <QRScreenModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </header>
   );
 };
