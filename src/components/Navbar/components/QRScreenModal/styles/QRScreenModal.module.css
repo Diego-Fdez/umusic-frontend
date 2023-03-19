@@ -1,0 +1,54 @@
+.qrContainer {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 4rem;
+  width: 80%;
+  min-height: 20rem;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.qrContainer > button {
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+  border: 0;
+  background-color: transparent;
+  width: 2rem;
+  height: 2rem;
+}
+
+.closeIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.qrBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 17rem;
+}
+
+/* tablet */
+@media screen and (min-width: 541px) and (max-width: 768px) {
+  .qrContainer {
+    width: 50%;
+  }
+}
+
+/* laptop */
+@media screen and (min-width: 769px) {
+  .qrContainer {
+    width: 40%;
+  }
+}

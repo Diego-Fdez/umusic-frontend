@@ -1,0 +1,15 @@
+.temporaryAuth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #f0ffff;
+  margin-top: 5rem;
+  font-weight: 800;
+  gap: 3rem;
+}
+
+.temporaryAuth > h1 {
+  color: #ff0000;
+  font-family: 'Fredoka One', cursive;
+}
