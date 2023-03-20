@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import Head from 'next/head';
 import { useAuth0 } from '@auth0/auth0-react';
+import { ToastContainer } from 'react-toastify';
 import styles from '@/styles/Home.module.css';
 import { CategoryScreen, Loader, Navbar } from '@/components';
 import videoStore from '@/store/videoStore';
@@ -55,6 +56,18 @@ export default function Home() {
         <meta charset='utf-8' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
+      <ToastContainer
+        position='top-right'
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='dark'
+      />
       <Navbar />
       <CategoryScreen />
       {loading && <Loader />}
