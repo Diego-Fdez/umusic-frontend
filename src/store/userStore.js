@@ -3,12 +3,13 @@ import Cookies from 'js-cookie';
 import { emptyUserState } from '@/models/emptyStateModels';
 
 const userStore = create((set) => ({
-  user: emptyUserState,
+  user: Cookies.get('user') ? JSON.parse(Cookies.get('user')) : emptyUserState,
   loadingUser: false,
   addUser: (data) => {
     set((state) => ({
       user: data,
     }));
+    Cookies.set('user', JSON.stringify(data));
   },
   setLoadingUser: (data) => {
     set((state) => ({
