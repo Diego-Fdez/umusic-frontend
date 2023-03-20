@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 import styles from './styles/videoCard.module.css';
 import userStore from '@/store/userStore';
 import { formattedTime } from '@/utils/formattedTime';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
+import { setDataVideo } from '@/models/dataFetchModels';
 
 const VideoCard = ({ video }) => {
   const { fetchFromDB, baseURL } = UseFetchFromDB();
@@ -13,28 +15,15 @@ const VideoCard = ({ video }) => {
    * `fetchFromDB` function from the `UseFetchFromDB` hook */
   const handleClick = async () => {
     /* Creating an object with the data that will be sent to the database. */
-    const setData = {
-      roomId: user?.userInfo?.room_id,
-      userId: user?.userInfo?.id,
-      videoId: video?.videoId,
-      channelId: video?.author?.channelId,
-      videoTitle: video?.title,
-      channelTitle: video?.author?.title,
-      videoPictureURL: video?.thumbnails[0]?.url,
-      channelPictureURL: video?.author?.avatar[0]?.url,
-      videoLength: video?.lengthSeconds,
-    };
+    const setData = setDataVideo(user, video);
 
     try {
       /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */
       const result = await fetchFromDB(`${baseURL}/room`, 'POST', setData);
-      console.log(result);
-      // return (
-      //   <Alert type='success'>
-      //     <p>{result?.data}</p>
-      //   </Alert>
-      // );
-    } catch (error) {}
+      toast.success(result.data);
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   return (
