@@ -32,12 +32,15 @@ export const emptyVideosState = [
 ];
 
 export const emptyUserState = {
-  id: '',
-  email: '',
-  user_name: '',
-  picture: '',
-  room_id: '',
-  user_type: '',
+  music_token: '',
+  userInfo: {
+    id: '',
+    email: '',
+    user_name: '',
+    picture: '',
+    room_id: '',
+    user_type: '',
+  },
 };
 
 export const emptyCategoriesState = [
@@ -47,4 +50,18 @@ export const emptyCategoriesState = [
   },
 ];
 
-export const emptyVideoListState = {};
+export const emptyVideoListState = [
+  {
+    channel_id: '',
+    channel_pic_url: '',
+    channel_title: '',
+    id: 0,
+    room_id: '',
+    user_id: '',
+    user_name: '',
+    video_id: '',
+    video_length: '',
+    video_pic_url: '',
+    video_title: '',
+  },
+];
