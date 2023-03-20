@@ -25,8 +25,8 @@ const VideoScreen = () => {
           <Image
             src='/back-icon.svg'
             alt='back-icon'
-            width='100%'
-            height='100%'
+            width={32}
+            height={32}
             className={styles.playIcons}
           />
         </button>
@@ -34,8 +34,8 @@ const VideoScreen = () => {
           <Image
             src='/next-icon.svg'
             alt='next-icon'
-            width='100%'
-            height='100%'
+            width={32}
+            height={32}
             className={styles.playIcons}
           />
         </button>
