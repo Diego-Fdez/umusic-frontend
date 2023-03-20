@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import styles from './styles/Playlist.module.css';
 import UsePlaying from '@/hooks/usePlaying';
 import videoStore from '@/store/videoStore';
@@ -18,11 +17,9 @@ const PlayList = () => {
               className={styles.roomThumbnailButton}
               onClick={() => playVideo(index)}
             >
-              <Image
+              <img
                 src={video?.video_pic_url}
                 alt={video?.video_title}
-                width={160}
-                height='100%'
                 className={styles.roomThumbnailImg}
               />
             </button>
