@@ -17,7 +17,6 @@ export default function Home() {
   const dbUser = userStore((state) => state.user);
   const videos = videoStore((state) => state.videos);
   const loading = videoStore((state) => state.loading);
-  console.log(dbUser);
 
   //It takes the user's data from Auth0 and sends it to the backend to be stored in the database.
   const loginFromDB = async () => {
