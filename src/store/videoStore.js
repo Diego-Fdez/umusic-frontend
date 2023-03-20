@@ -8,7 +8,9 @@ import {
 
 const videoStore = create((set) => ({
   videos: emptyVideosState,
-  categories: emptyCategoriesState,
+  categories: Cookies.get('categories')
+    ? JSON.parse(Cookies.get('categories'))
+    : emptyCategoriesState,
   loading: false,
   error: null,
   keyword: 'todos',
@@ -26,6 +28,7 @@ const videoStore = create((set) => ({
     set((state) => ({
       categories: data,
     }));
+    Cookies.set('categories', JSON.stringify(data));
   },
   setLoading: (data) => {
     set((state) => ({
