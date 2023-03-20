@@ -1,6 +1,7 @@
 import { useEffect, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import styles from './styles/RoomScreen.module.css';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import videoStore from '@/store/videoStore';
 import { Loader, Navbar } from '@/components';
