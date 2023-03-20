@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import Cookies from 'js-cookie';
+import { emptyUserState } from '@/models/emptyStateModels';
 
 const userStore = create((set) => ({
-  user: Cookies.get('user') ? JSON.parse(Cookies.get('user')) : {},
+  user: emptyUserState,
   loadingUser: false,
   addUser: (data) => {
     set((state) => ({
       user: data,
     }));
-    Cookies.set('user', JSON.stringify(data), { expires: 300 });
   },
   setLoadingUser: (data) => {
     set((state) => ({
