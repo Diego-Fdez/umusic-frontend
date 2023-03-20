@@ -11,9 +11,11 @@ const CategoriesList = () => {
   const loading = videoStore((state) => state.loading);
   const keyword = videoStore((state) => state.addKeyword);
 
+  //It fetches the categories from the database and adds them to the state
   async function getCategories() {
     try {
       const result = await fetchFromDB(`${baseURL}/categories`, 'GET');
+      /* Adding the categories to the state. */
       addCategories(result?.data);
     } catch (error) {
       console.log(error);
@@ -22,7 +24,7 @@ const CategoriesList = () => {
 
   useEffect(() => {
     if (categories[0]?.category_name === '') getCategories();
-  }, []);
+  }, [categories[0]?.category_name]);
 
   return (
     <>
