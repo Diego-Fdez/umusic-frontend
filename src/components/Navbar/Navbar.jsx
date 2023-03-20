@@ -23,7 +23,7 @@ const Navbar = () => {
 
     try {
       addKeyword(input);
-      //if (nameUrl !== '/') router.push('/'); //ToDo
+      if (router.pathname !== '/') router.push('/');
       setInput('');
     } catch (error) {
       console.log(error);
