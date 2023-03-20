@@ -1,3 +1,4 @@
+//empty state models
 export const emptyVideosState = [
   {
     video: {
