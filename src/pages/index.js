@@ -1,12 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import Head from 'next/head';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ToastContainer } from 'react-toastify';
 import styles from '@/styles/Home.module.css';
-import { CategoryScreen, Loader, Navbar } from '@/components';
+import { CategoryScreen, Loader, Navbar, VideoCard } from '@/components';
 import videoStore from '@/store/videoStore';
-import { VideoCard } from './Home/components';
-import { Suspense } from 'react';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import userStore from '@/store/userStore';
 
