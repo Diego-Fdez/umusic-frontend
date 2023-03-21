@@ -5,7 +5,9 @@ import styles from './styles/RoomScreen.module.css';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import videoStore from '@/store/videoStore';
 import { Loader, Navbar } from '@/components';
-import { PlayList, VideoHeaders, VideoScreen } from './components';
+import PlayList from './components/PlayList';
+import VideoHeaders from './components/VideoHeaders';
+import VideoScreen from './components/VideoScreen';
 
 const RoomScreen = () => {
   const { query } = useRouter();
