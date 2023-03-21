@@ -5,7 +5,7 @@ import Image from 'next/image';
 import ReactPlayer from 'react-player';
 import styles from './styles/PlayerScreen.module.css';
 import videoStore from '@/store/videoStore';
-import { Sidebar } from './components/Sidebar';
+import { Sidebar } from './components/Sidebar/Sidebar';
 import { Navbar, Loader } from '@/components';
 
 const PlayerScreen = () => {
