@@ -28,7 +28,7 @@ const videoStore = create((set) => ({
     set((state) => ({
       categories: data,
     }));
-    Cookies.set('categories', JSON.stringify(data));
+    Cookies.set('categories', JSON.stringify(emptyCategoriesState));
   },
   setLoading: (data) => {
     set((state) => ({
