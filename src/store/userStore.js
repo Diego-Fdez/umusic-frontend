@@ -11,7 +11,7 @@ const userStore = create((set) => ({
   loadingUser: false,
   addUser: (user) => {
     set((state) => {
-      setUserToCookie('user', user);
+      setUserToCookie('user', user ? user : emptyUserState);
       return { user };
     });
   },

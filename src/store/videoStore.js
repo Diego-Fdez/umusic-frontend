@@ -29,7 +29,10 @@ const videoStore = create((set) => ({
   },
   addCategories: (categories) => {
     set(() => {
-      setCategoriesToCookie('categories', categories);
+      setCategoriesToCookie(
+        'categories',
+        categories ? categories : emptyCategoriesState
+      );
       return { categories };
     });
   },
