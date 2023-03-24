@@ -40,7 +40,7 @@ const UseFetchFromDB = () => {
    */
   async function getVideoList(id) {
     try {
-      const result = await fetchFromDB(`${baseURL}/room/${id}`, 'GET');
+      const result = await fetchFromDB(`/api/v1/room/${id}`, 'GET');
       addVideoList(result?.data);
     } catch (error) {
       console.log(error);
