@@ -10,7 +10,7 @@ import userStore from '@/store/userStore';
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth0();
-  const { fetchFromDB, baseURL } = UseFetchFromDB();
+  const { fetchFromDB } = UseFetchFromDB();
   const addUser = userStore((state) => state.addUser);
   const dbUser = userStore((state) => state.user);
   const videos = videoStore((state) => state.videos);
@@ -26,7 +26,7 @@ export default function Home() {
     };
 
     try {
-      const result = await fetchFromDB(`${baseURL}/login`, 'POST', setData);
+      const result = await fetchFromDB(`/api/v1/login`, 'POST', setData);
       addUser(result?.data);
     } catch (error) {
       console.log(error);
