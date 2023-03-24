@@ -25,12 +25,12 @@ const videoStore = create((set) => ({
     }));
   },
   addCategories: (data) => {
-    set(
-      (state) => ({
-        categories: data,
-      }),
-      Cookies.set('categories', JSON.stringify(categories))
-    );
+    set(() => ({
+      categories: Cookies.set(
+        'categories',
+        JSON.stringify(data ? data : emptyCategoriesState)
+      ),
+    }));
   },
   setLoading: (data) => {
     set((state) => ({
