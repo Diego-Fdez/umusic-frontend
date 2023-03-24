@@ -6,11 +6,14 @@ import {
   emptyCategoriesState,
 } from '@/models/emptyStateModels';
 
+const getCategoriesFromCookie = (key) =>
+  Cookies.get(key) && JSON.parse(Cookies.get(key));
+const setCategoriesToCookie = (key, value) =>
+  Cookies.set(key, JSON.stringify(value));
+
 const videoStore = create((set) => ({
   videos: emptyVideosState,
-  categories: Cookies.get('categories')
-    ? JSON.parse(Cookies.get('categories'))
-    : emptyCategoriesState,
+  categories: getCategoriesFromCookie('categories') || emptyCategoriesState,
   loading: false,
   error: null,
   keyword: 'todos',
@@ -24,13 +27,11 @@ const videoStore = create((set) => ({
       videos: data,
     }));
   },
-  addCategories: (data) => {
-    set(() => ({
-      categories: Cookies.set(
-        'categories',
-        JSON.stringify(data ? data : emptyCategoriesState)
-      ),
-    }));
+  addCategories: (categories) => {
+    set(() => {
+      setCategoriesToCookie('categories', categories);
+      return { categories };
+    });
   },
   setLoading: (data) => {
     set((state) => ({
