@@ -1,4 +1,6 @@
 import { pool } from '@/database/pool';
+import middleware from '@/middlewares/middleware';
+import whiteList from '@/utils/whiteList';
 
 const insertCategories = async (req, res) => {
   const { categoryName } = req.body;
@@ -48,6 +50,16 @@ const getAllCategories = async (req, res) => {
 };
 
 const handler = async (req, res) => {
+  // Wait for the CORS middleware
+  await middleware(req, res);
+
+  // Set up the white list
+  await whiteList(req, (err) => {
+    if (err) {
+      return res.status(500).send('CORS middleware bug');
+    }
+  });
+
   if (req.method === 'GET') {
     return getAllCategories(req, res);
   } else if (req.method === 'POST') {
