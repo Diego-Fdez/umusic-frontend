@@ -6,10 +6,12 @@ const userStore = create((set) => ({
   user: Cookies.get('user') ? JSON.parse(Cookies.get('user')) : emptyUserState,
   loadingUser: false,
   addUser: (data) => {
-    set((state) => ({
-      user: data,
-    }));
-    Cookies.set('user', JSON.stringify(user));
+    set(
+      (state) => ({
+        user: data,
+      }),
+      Cookies.set('user', JSON.stringify(user))
+    );
   },
   setLoadingUser: (data) => {
     set((state) => ({
