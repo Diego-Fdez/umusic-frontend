@@ -4,7 +4,7 @@ import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import userStore from '@/store/userStore';
 
 const QRScreenModal = ({ modalOpen, setModalOpen }) => {
-  const { fetchFromDB, baseURL } = UseFetchFromDB();
+  const { fetchFromDB } = UseFetchFromDB();
   const userDb = userStore((state) => state.user);
   const [qrCode, setQRCode] = useState();
 
@@ -15,7 +15,7 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
     };
 
     try {
-      const result = await fetchFromDB(`${baseURL}/qr`, 'POST', setData);
+      const result = await fetchFromDB(`/api/v1/qr`, 'POST', setData);
       setQRCode(result?.data);
     } catch (error) {
       console.log(error);

@@ -5,7 +5,7 @@ import videoStore from '@/store/videoStore';
 import { Loader } from '@/components';
 
 const CategoriesList = () => {
-  const { fetchFromDB, baseURL } = UseFetchFromDB();
+  const { fetchFromDB } = UseFetchFromDB();
   const addCategories = videoStore((state) => state.addCategories);
   const categories = videoStore((state) => state.categories);
   const loading = videoStore((state) => state.loading);
@@ -14,7 +14,7 @@ const CategoriesList = () => {
   //It fetches the categories from the database and adds them to the state
   async function getCategories() {
     try {
-      const result = await fetchFromDB(`${baseURL}/categories`, 'GET');
+      const result = await fetchFromDB(`/api/v1/categories`, 'GET');
       /* Adding the categories to the state. */
       addCategories(result?.data);
     } catch (error) {

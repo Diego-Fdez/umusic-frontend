@@ -8,7 +8,7 @@ import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import { setDataVideo } from '@/models/dataFetchModels';
 
 const VideoCard = ({ video }) => {
-  const { fetchFromDB, baseURL } = UseFetchFromDB();
+  const { fetchFromDB } = UseFetchFromDB();
   const user = userStore((state) => state.user);
 
   /** It creates an object with the data that will be sent to the database, and then calls the
@@ -19,7 +19,7 @@ const VideoCard = ({ video }) => {
 
     try {
       /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */
-      const result = await fetchFromDB(`${baseURL}/room`, 'POST', setData);
+      const result = await fetchFromDB(`/api/v1/room`, 'POST', setData);
       toast.success(result.data);
     } catch (error) {
       toast.error(error);
