@@ -9,7 +9,7 @@ const userStore = create((set) => ({
     set((state) => ({
       user: data,
     }));
-    Cookies.set('user', JSON.stringify(data));
+    Cookies.set('user', JSON.stringify(user));
   },
   setLoadingUser: (data) => {
     set((state) => ({
