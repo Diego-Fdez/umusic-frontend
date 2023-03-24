@@ -18,7 +18,7 @@ const TempAuth = () => {
    * It takes the id and token from the URL, sends a POST request to the server, and then redirects the
    * user to the home page
    */
-  async function getAuth() {
+  async function handleTempLogin() {
     try {
       const result = await fetchFromDB(
         `${baseURL}/temporary-login?id=
@@ -33,7 +33,7 @@ const TempAuth = () => {
   }
 
   useEffect(() => {
-    if (id && token) getAuth();
+    if (id && token) handleTempLogin();
   }, [id, token]);
 
   return (
