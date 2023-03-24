@@ -9,7 +9,7 @@ import userStore from '@/store/userStore';
 const TempAuth = () => {
   const { query } = useRouter();
   const { id, token } = query;
-  const { fetchFromDB, baseURL } = UseFetchFromDB();
+  const { fetchFromDB } = UseFetchFromDB();
   const router = useRouter();
   const loading = videoStore((state) => state.loading);
   const addUser = userStore((state) => state.addUser);
@@ -21,8 +21,7 @@ const TempAuth = () => {
   async function handleTempLogin() {
     try {
       const result = await fetchFromDB(
-        `${baseURL}/temporary-login?id=
-			${id}&token=${token}`,
+        `/api/v1/tempauth/${id}/${token}`,
         'POST'
       );
       addUser(result?.data);

@@ -4,8 +4,6 @@ const UseFetchFromDB = () => {
   const loading = videoStore((state) => state.setLoading);
   const addVideoList = videoStore((state) => state.addVideoList);
 
-  const baseURL = process.env.NEXT_PUBLIC_SERVER_URL;
-
   /**
    * It fetches data from a database and returns the data.
    * @returns The result of the fetch call.
@@ -47,7 +45,7 @@ const UseFetchFromDB = () => {
     }
   }
 
-  return { baseURL, fetchFromDB, getVideoList };
+  return { fetchFromDB, getVideoList };
 };
 
 export default UseFetchFromDB;
