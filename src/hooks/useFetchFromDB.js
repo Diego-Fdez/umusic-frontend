@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import videoStore from '@/store/videoStore';
 
 const UseFetchFromDB = () => {
-  const loading = videoStore((state) => state.setLoading);
   const addVideoList = videoStore((state) => state.addVideoList);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   /**
    * It fetches data from a database and returns the data.
@@ -20,14 +22,14 @@ const UseFetchFromDB = () => {
 
     /* Creating a new instance of the AbortController class. */
     const abortController = new AbortController();
-    loading(true);
+    setLoading(true);
     const result = fetch(url, options, {
       signal: abortController.signal,
     })
       .then((response) => response.json())
       .then((data) => data)
-      .catch((error) => error)
-      .finally(() => loading(false));
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
 
     return result;
   }
@@ -45,7 +47,7 @@ const UseFetchFromDB = () => {
     }
   }
 
-  return { fetchFromDB, getVideoList };
+  return { fetchFromDB, getVideoList, loading, error };
 };
 
 export default UseFetchFromDB;

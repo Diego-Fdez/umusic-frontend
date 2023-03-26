@@ -4,9 +4,9 @@ import videoStore from '@/store/videoStore';
 export function useFetch(url) {
   const baseURL = 'https://youtube138.p.rapidapi.com';
   const addVideos = videoStore((state) => state.addVideos);
-  const loading = videoStore((state) => state.setLoading);
-  const setError = videoStore((state) => state.setError);
   const [getData, setGetData] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     /* This is the options object that is passed to the fetch method. */
@@ -21,14 +21,14 @@ export function useFetch(url) {
     /* Creating a new instance of the AbortController class. */
     const abortController = new AbortController();
 
-    loading(true);
+    setLoading(true);
     /* Fetching the data from the API and setting the data to the state. */
     fetch(`${baseURL}/${url}`, options, {
       signal: abortController.signal,
     })
       .then((response) => response.json())
       .then((data) => {
-        setGetData(data), addVideos(data?.contents), setError(data);
+        setGetData(data), addVideos(data?.contents);
       })
       .catch((error) => {
         if (error.name === 'AbortError') {
@@ -36,11 +36,11 @@ export function useFetch(url) {
         }
         setError(error);
       })
-      .finally(() => loading(false));
+      .finally(() => setLoading(false));
 
     /* Returning a function that is called when the component is unmounted. */
     return () => abortController.abort();
   }, [url]);
 
-  return { getData };
+  return { getData, loading, error };
 }
