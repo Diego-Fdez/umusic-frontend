@@ -1,0 +1,112 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 100%;
+  margin-top: 2rem;
+  margin: auto;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+.container > h2 {
+  margin-top: 1rem;
+  color: #fff;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff0000,
+    0 0 30px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 75px #ff0000;
+}
+
+.neonBg {
+  border: 5px solid;
+  border-image: linear-gradient(
+      to bottom,
+      #ff0000,
+      #ff1a1a,
+      #ff3333,
+      #ff4d4d,
+      #ff6666,
+      #ff7f7f,
+      #ff9999
+    )
+    1;
+  animation: border-animation 2s linear infinite;
+}
+
+@keyframes border-animation {
+  0% {
+    border-image-slice: 1;
+  }
+  50% {
+    border-image-slice: 20;
+  }
+  100% {
+    border-image-slice: 1;
+  }
+}
+
+.addPlaylistForm {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 18rem;
+  height: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.2rem;
+}
+
+.addPlaylistForm > input {
+  position: relative;
+  height: 2.1rem;
+  padding: 0.3rem;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 1rem 0 0 1rem;
+  color: #ccc;
+  font-weight: 700;
+}
+
+.addPlaylistButton {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2.1rem;
+  padding: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 0 1rem 1rem 0;
+  background-color: transparent;
+  color: #f0ffff;
+  transition: all 0.3ms ease-in-out;
+}
+
+.addPlaylistButton:hover {
+  cursor: pointer;
+  background-color: #cccccc3c;
+}
+
+.addPlaylistIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* tablet */
+@media screen and (min-width: 541px) and (max-width: 768px) {
+  .container {
+    width: 70%;
+  }
+}
+
+/* laptop */
+@media screen and (min-width: 769px) {
+  .container {
+    width: 50%;
+  }
+}

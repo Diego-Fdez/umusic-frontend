@@ -10,6 +10,7 @@
 
 .logoContainer {
   display: flex;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   margin-left: 2rem;
@@ -17,10 +18,24 @@
   width: 50%;
 }
 
+.logoContainer > a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoImg {
+  width: 2.7rem;
+  height: 2.7rem;
+}
+
 .logo {
+  visibility: hidden;
   font-weight: 800;
   font-size: xx-large;
-  color: #ff0000;
+  color: #710a1c;
   font-family: 'Fredoka One', cursive;
 }
 
@@ -62,7 +77,13 @@
 /* laptop */
 @media screen and (min-width: 769px) {
   .logo {
+    visibility: visible;
     font-size: 3rem;
+  }
+
+  .logoImg {
+    width: 4rem;
+    height: 4rem;
   }
 
   .profileImage {
