@@ -41,6 +41,11 @@ const Navbar = () => {
     >
       <div className={styles.logoContainer}>
         <Link href={'/'}>
+          <img
+            src='/umusic-logo.png'
+            alt='umusic-logo'
+            className={styles.logoImg}
+          />
           <h1 className={styles.logo}>UMUSIC</h1>
         </Link>
       </div>
