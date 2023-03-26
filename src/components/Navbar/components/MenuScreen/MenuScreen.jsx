@@ -5,7 +5,6 @@ import userStore from '@/store/userStore';
 import styles from './styles/NavModal.module.css';
 
 const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
-  const { userInfo } = userStore((state) => state.user);
   const { logout, isAuthenticated } = useAuth0();
 
   return (
@@ -66,10 +65,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
           </button>
         </li>
         <li className={styles.navbarModalListItem}>
-          <Link
-            href={`/room/${userInfo?.room_id}`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
+          <Link href={'/room'} onClick={() => setIsOpen(!isOpen)}>
             <Image
               src='/music-list-icon.svg'
               alt='music-list-icon'
@@ -78,7 +74,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
               height={24}
               loading='lazy'
             />
-            <p>My Room</p>
+            <p>My Rooms</p>
           </Link>
         </li>
       </ul>
