@@ -5,39 +5,30 @@ import { ToastContainer } from 'react-toastify';
 import styles from '@/styles/Home.module.css';
 import { CategoryScreen, Loader, Navbar, VideoCard } from '@/components';
 import videoStore from '@/store/videoStore';
-import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import userStore from '@/store/userStore';
+import { useFetch } from '@/hooks/useFetchFromYoutube';
 
 export default function Home() {
-  const { user, isAuthenticated } = useAuth0();
-  const { fetchFromDB } = UseFetchFromDB();
-  const addUser = userStore((state) => state.addUser);
-  const dbUser = userStore((state) => state.user);
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { loading } = useFetch();
+  const addUserToken = userStore((state) => state.addUserToken);
+  const userToken = userStore((state) => state.userToken);
+  const userState = userStore((state) => state.user);
   const videos = videoStore((state) => state.videos);
-  const loading = videoStore((state) => state.loading);
 
-  //It takes the user's data from Auth0 and sends it to the backend to be stored in the database.
-  const loginFromDB = async () => {
-    const setData = {
-      id: user?.sub,
-      email: user?.email,
-      name: user?.name,
-      picture: user?.picture,
-    };
-
-    try {
-      const result = await fetchFromDB(`/api/v1/login`, 'POST', setData);
-      addUser(result?.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  //This function will get the Auth0 token
+  async function getAuth0Token() {
+    const token = await getAccessTokenSilently();
+    addUserToken(token);
+  }
+  console.log(userState);
   useEffect(() => {
-    if (isAuthenticated && dbUser?.userInfo?.id === '') {
-      loginFromDB();
+    /* Checking if the user is authenticated and if the userToken is not null. If it is not null, it
+    will add the userToken and the user to the userStore. */
+    if (!userToken && isAuthenticated) {
+      getAuth0Token();
     }
-  }, [isAuthenticated, dbUser?.userInfo?.id]);
+  }, [userToken, isAuthenticated]);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -67,12 +58,15 @@ export default function Home() {
       />
       <Navbar />
       <CategoryScreen />
-      {loading && <Loader />}
-      <main className={styles.homeContainer}>
-        {videos?.map((video) => (
-          <VideoCard key={video?.video?.videoId} video={video.video} />
-        ))}
-      </main>
+      {loading ? (
+        <Loader />
+      ) : (
+        <main className={styles.homeContainer}>
+          {videos?.map((video) => (
+            <VideoCard key={video?.video?.videoId} video={video.video} />
+          ))}
+        </main>
+      )}
     </Suspense>
   );
 }
