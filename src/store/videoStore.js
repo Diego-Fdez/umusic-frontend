@@ -9,14 +9,13 @@ import {
 const videoStore = create((set) => ({
   videos: emptyVideosState,
   categories: emptyCategoriesState,
-  loading: false,
-  error: null,
   keyword: 'todos',
   videoList: emptyVideoListState,
   currentVideoIndex: 0,
   shouldAutoPlay: true,
   currentVideoPlaying: {},
   relatedVideos: emptyVideosState,
+  rooms: [],
   addVideos: (data) => {
     set((state) => ({
       videos: data,
@@ -25,16 +24,6 @@ const videoStore = create((set) => ({
   addCategories: (data) => {
     set(() => ({
       categories: data,
-    }));
-  },
-  setLoading: (data) => {
-    set((state) => ({
-      loading: data,
-    }));
-  },
-  setError: (data) => {
-    set((state) => ({
-      error: data,
     }));
   },
   addKeyword: (data) => {
@@ -65,6 +54,11 @@ const videoStore = create((set) => ({
   setCurrentVideoPlaying: (data) => {
     set((state) => ({
       currentVideoPlaying: data,
+    }));
+  },
+  setRooms: (data) => {
+    set((state) => ({
+      rooms: data,
     }));
   },
 }));
