@@ -1,17 +1,18 @@
 import jwt from 'jsonwebtoken';
-import { pool } from '@/database/pool.js';
+import db from '@/database/db';
+import User from '@/models/userModel';
 import generateId from '@/utils/generateId';
 
-//register a new admin
+//register a new user
 const registerUser = async (id, email, userName, picture) => {
   const userType = 'P';
   const roomId = `${generateId()}${id}`;
+
   try {
-    /* Inserting a new user into the database. */
-    await pool.query(
-      'INSERT INTO users (id, email, user_name, picture, room_id, user_type) VALUES (?,?,?,?,?,?)',
-      [id, email, userName, picture, roomId, userType]
-    );
+    /* Creating a new category object. */
+    const newCategory = new Order({
+      category_name: categoryName,
+    });
 
     //check the user
     const [rows] = await pool.query(
@@ -38,20 +39,22 @@ const loginUser = async (req, res) => {
   let data = {};
 
   try {
-    //check the user
-    const [rows] = await pool.query(
-      `SELECT * FROM users WHERE email = '${email}'`
-    );
+    await db.connect();
 
-    /* Checking if the user exists in the database, if not, it registers the user and returns the
+    /* Selecting all the fields except the ones specified. */
+    const userExist = await User.findOne({ email })
+      .select('-createdAt -updatedAt -__v')
+      .populate('room', 'room_id');
+
+    /* It checks if the user exists in the database, if not, it registers the user and returns the
     user's
      * data, if the user exists, it returns the user's data. */
-    if (rows.length <= 0) {
+    if (!userExist) {
       const result = await registerUser(id, email, userName, picture);
       data = result;
-    } else {
-      data = rows[0];
-    }
+    } else data = userExist;
+
+    await db.disconnect();
 
     //generate a token for the user
     const token = jwt.sign(
@@ -62,11 +65,9 @@ const loginUser = async (req, res) => {
       }
     );
 
-    const { createdAt, ...rest } = data;
-
     res.send({
       status: 'OK',
-      data: { music_token: token, userInfo: rest },
+      data: { music_token: token, userInfo: data },
     });
   } catch (error) {
     res

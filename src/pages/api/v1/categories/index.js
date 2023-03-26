@@ -1,27 +1,29 @@
-import { pool } from '@/database/pool';
-import cors from 'cors';
-import corsOptions from '@/utils/whiteList';
+import db from '@/database/db';
+import Categories from '@/models/categoriesModel';
 
 const insertCategories = async (req, res) => {
   const { categoryName } = req.body;
-
   try {
     //A query to get the data from the database. */
-    const [rows] = await pool.query(`SELECT *
-    FROM categories WHERE category_name = '${categoryName.toLowerCase()}'`);
+    await db.connect();
 
-    //Checking if the rows are empty and if they are it is returning a 404 error.
-    if (rows.length <= 0) {
-      /* Inserting a new category into the database. */
-      await pool.query('INSERT INTO categories (category_name) VALUES (?)', [
-        categoryName.toLowerCase(),
-      ]);
-    } else {
-      return res.status(400).send({
-        status: 'FAILED',
-        data: 'Category already exists in the database.',
-      });
+    /* Checking if the category already exist in the database. */
+    const categoryExist = await Categories.findOne({ categoryName });
+
+    /* Checking if the category already exist in the database. */
+    if (categoryExist) {
+      return res
+        .status(400)
+        .send({ status: 'FAILED', data: { error: 'Category already exist' } });
     }
+
+    /* Creating a new category object. */
+    const newCategory = new Order({
+      category_name: categoryName,
+    });
+
+    await newCategory.save();
+    await db.disconnect();
 
     res.send({ status: 'OK', data: 'category inserted' });
   } catch (error) {
@@ -32,16 +34,25 @@ const insertCategories = async (req, res) => {
 };
 const getAllCategories = async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT id, category_name FROM categories');
+    await db.connect();
 
-    //Checking if the rows are empty and if they are it is returning a 404 error.
-    if (rows.length <= 0)
+    /* Selecting all the fields except the ones specified. */
+    const categories = await Categories.find().select(
+      '-createdAt -updatedAt -__v'
+    );
+
+    /* Checking if the categories is empty or not. If it is empty, it will return a 404 status code
+    with a message. */
+    if (!categories) {
       return res.status(404).send({
         status: 'FAILED',
-        data: 'Categories not found',
+        data: { error: 'No categories found in the database' },
       });
+    }
 
-    res.send({ status: 'OK', data: rows });
+    await db.disconnect();
+
+    res.send({ status: 'OK', data: categories });
   } catch (error) {
     res
       .status(error?.status || 500)
@@ -50,7 +61,6 @@ const getAllCategories = async (req, res) => {
 };
 
 const handler = async (req, res) => {
-  cors(corsOptions);
   if (req.method === 'GET') {
     return getAllCategories(req, res);
   } else if (req.method === 'POST') {
