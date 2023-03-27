@@ -26,8 +26,23 @@ const addVideosToRoomList = async (req, res) => {
     videoLength,
   } = req.body;
 
+  const id = roomId;
   try {
     await db.connect();
+
+    /* Inserting a new video to room. */
+    const roomExists = await Room.findById(id).exec();
+
+    /* Checking if the room exists. */
+    if (!roomExists) {
+      return res
+        .status(404)
+        .send({ status: 'FAILED', data: { error: 'Room does not exist' } });
+    }
+
+    /* Adding the videoId to the video_id array in the room document. */
+    roomExists.video_id.push(videoId);
+    await roomExists.save();
 
     //insert the channel info in DB
     await registerChannel(channelId, channelTitle, channelPictureURL, videoId);
@@ -35,17 +50,6 @@ const addVideosToRoomList = async (req, res) => {
     //insert the video info in DB
     await registerVideo(videoId, videoTitle, videoPictureURL, videoLength);
 
-    /* Inserting a new video to room. */
-    const roomExists = await Room.findById({ _id: roomId });
-
-    if (roomExists) {
-      return res
-        .status(404)
-        .send({ status: 'FAILED', data: { error: 'Room does not exist' } });
-    }
-
-    roomExists.push({ video_id: videoId });
-    await roomExists.save();
     await db.disconnect();
 
     res
