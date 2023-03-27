@@ -21,7 +21,7 @@ export default function Home() {
     const token = await getAccessTokenSilently();
     addUserToken(token);
   }
-  console.log(userState);
+
   useEffect(() => {
     /* Checking if the user is authenticated and if the userToken is not null. If it is not null, it
     will add the userToken and the user to the userStore. */
