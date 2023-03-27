@@ -11,6 +11,7 @@ const ListScreen = () => {
   const { user } = useAuth0();
   const setRooms = videoStore((state) => state.setRooms);
   const rooms = videoStore((state) => state.rooms);
+  const setCurrentPlaylist = videoStore((state) => state.setCurrentPlaylist);
 
   //It fetches the playlists from the database.
   const fetchPlaylists = async () => {
@@ -25,6 +26,7 @@ const ListScreen = () => {
       toast.error(result?.data?.error);
     }
     setRooms(result?.data);
+    setCurrentPlaylist(result?.data[0]);
   };
 
   useEffect(() => {
