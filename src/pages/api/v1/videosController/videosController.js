@@ -6,7 +6,7 @@ import Videos from '@/models/videoModel';
  * the database */
 export const registerChannel = async (
   channelId,
-  title,
+  channelTitle,
   channelPictureURL,
   videoId
 ) => {
@@ -14,19 +14,29 @@ export const registerChannel = async (
     //check the channel in the DB
     await db.connect();
 
-    const channelExist = await Channels.findOne({ channelId });
+    const channelExist = await Channels.findOne({ channel_id: channelId });
 
     /* Checking if the channel exists in the database, if it does not exist, it inserts the channel
     into the database. */
     if (!channelExist) {
       const newChannel = new Channels({
         channel_id: channelId,
-        channel_title: title,
+        channel_title: channelTitle,
         channel_pic_url: channelPictureURL,
         video_id: videoId,
       });
 
       await newChannel.save();
+      await db.disconnect();
+    }
+
+    const videoExist = await Channels.findOne({ video_id: videoId });
+
+    /* Checking if the video exists in the database, if it does not exist, it inserts the video into
+    the database. */
+    if (!videoExist) {
+      channelExist.video_id.push(videoId);
+      await channelExist.save();
       await db.disconnect();
     }
 
@@ -48,7 +58,7 @@ export const registerVideo = async (
     //check the video in the DB
     await db.connect();
 
-    const videoExist = await Videos.findOne({ videoId });
+    const videoExist = await Videos.findOne({ video_id: videoId });
 
     /* Checking if the video exists in the database, if it does not exist, it inserts the video into
      * the database. */
