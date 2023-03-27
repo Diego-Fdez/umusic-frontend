@@ -1,9 +1,9 @@
 /** It takes a user object and a video object and returns an object with some of the properties of the
  * user and video objects.*/
-export function setDataVideo(user, video) {
+export function setDataVideo(user, video, playlistId) {
   return {
-    roomId: user?.userInfo?.room_id,
-    userId: user?.userInfo?.id,
+    roomId: playlistId,
+    userId: user?.sub,
     videoId: video?.videoId,
     channelId: video?.author?.channelId,
     videoTitle: video?.title,
