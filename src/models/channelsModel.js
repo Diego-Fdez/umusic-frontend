@@ -6,7 +6,7 @@ const channelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    channel_tittle: {
+    channel_title: {
       type: String,
       required: true,
     },
@@ -15,8 +15,8 @@ const channelSchema = new mongoose.Schema(
     },
     video_id: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Videos',
+        type: String,
+        required: true,
       },
     ],
   },
