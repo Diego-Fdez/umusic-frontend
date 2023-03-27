@@ -2,27 +2,33 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 import styles from './styles/videoCard.module.css';
-import userStore from '@/store/userStore';
 import { formattedTime } from '@/utils/formattedTime';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import { setDataVideo } from '@/models/dataFetchModels';
+import { useAuth0 } from '@auth0/auth0-react';
+import videoStore from '@/store/videoStore';
 
 const VideoCard = ({ video }) => {
   const { fetchFromDB } = UseFetchFromDB();
-  const user = userStore((state) => state.user);
+  const { user } = useAuth0();
+  const currentPlaylist = videoStore((state) => state.currentPlaylist);
 
   /** It creates an object with the data that will be sent to the database, and then calls the
    * `fetchFromDB` function from the `UseFetchFromDB` hook */
   const handleClick = async () => {
     /* Creating an object with the data that will be sent to the database. */
-    const setData = setDataVideo(user, video);
+    const setData = setDataVideo(user, video, currentPlaylist?._id);
 
     try {
       /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */
-      const result = await fetchFromDB(`/api/v1/room`, 'POST', setData);
+      const result = await fetchFromDB(`/api/v1/room`, 'PUT', setData);
+
+      if (result?.data?.error) toast.error(result?.data?.error);
+
+      console.log(result);
       toast.success(result.data);
     } catch (error) {
-      toast.error(error);
+      console.log(error);
     }
   };
 
