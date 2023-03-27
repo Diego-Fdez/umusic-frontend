@@ -25,7 +25,6 @@ const VideoCard = ({ video }) => {
 
       if (result?.data?.error) toast.error(result?.data?.error);
 
-      console.log(result);
       toast.success(result.data);
     } catch (error) {
       console.log(error);
