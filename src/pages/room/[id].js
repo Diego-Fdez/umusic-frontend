@@ -1,23 +1,21 @@
-import { useEffect, Suspense } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect, Suspense, useState } from 'react';
+import mongoose from 'mongoose';
 import Head from 'next/head';
 import styles from './styles/RoomScreen.module.css';
-import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import videoStore from '@/store/videoStore';
 import { Loader, Navbar } from '@/components';
 import PlayList from './components/PlayList/PlayList';
 import VideoHeaders from './components/VideoHeaders/VideoHeaders';
 import VideoScreen from './components/VideoScreen/VideoScreen';
+import Room from '@/models/roomModel';
+import db from '@/database/db';
 
-const RoomScreen = () => {
-  const { query } = useRouter();
-  const { id } = query;
-  const { getVideoList } = UseFetchFromDB();
-  const loading = videoStore((state) => state.loading);
-
+const RoomScreen = ({ data }) => {
+  const addVideoList = videoStore((state) => state.addVideoList);
+  /* Adding the data to the videoStore. */
   useEffect(() => {
-    getVideoList(id);
-  }, [id]);
+    addVideoList(data);
+  }, [data]);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -33,7 +31,6 @@ const RoomScreen = () => {
         <meta charset='utf-8' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      {loading && <Loader />}
       <Navbar />
       <main className={styles.roomContainer}>
         <article className={styles.playerVideoContainer}>
@@ -49,3 +46,70 @@ const RoomScreen = () => {
 };
 
 export default RoomScreen;
+
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const { id } = params;
+
+  /* A query to get the data from the database. */
+  await db.connect();
+
+  /* A query to get the data from the database. */
+  const data = await Room.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(id),
+      },
+    },
+    {
+      $unwind: '$video_id',
+    },
+    {
+      $lookup: {
+        from: 'videos',
+        localField: 'video_id',
+        foreignField: 'video_id',
+        as: 'videos',
+      },
+    },
+    {
+      $unwind: '$videos',
+    },
+    {
+      $lookup: {
+        from: 'channels',
+        localField: 'videos.video_id',
+        foreignField: 'video_id',
+        as: 'videos.channels',
+      },
+    },
+    {
+      $unwind: '$videos.channels',
+    },
+    {
+      $project: {
+        createdAt: 0,
+        updatedAt: 0,
+        video_id: 0,
+        __v: 0,
+        'videos._id': 0,
+        'videos.createdAt': 0,
+        'videos.updatedAt': 0,
+        'videos.__v': 0,
+        'videos.channels.createdAt': 0,
+        'videos.channels.updatedAt': 0,
+        'videos.channels.video_id': 0,
+        'videos.channels._id': 0,
+        'videos.channels.__v': 0,
+      },
+    },
+  ]);
+
+  await db.disconnect();
+
+  return {
+    props: {
+      data: JSON.parse(JSON.stringify(data)),
+    },
+  };
+}
