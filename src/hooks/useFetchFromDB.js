@@ -34,20 +34,7 @@ const UseFetchFromDB = () => {
     return result;
   }
 
-  /**
-   * GetVideoList is an async function that fetches data from the database and adds it to the video
-   * list.
-   */
-  async function getVideoList(id) {
-    try {
-      const result = await fetchFromDB(`/api/v1/room/${id}`, 'GET');
-      addVideoList(result?.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  return { fetchFromDB, getVideoList, loading, error };
+  return { fetchFromDB, loading, error };
 };
 
 export default UseFetchFromDB;
