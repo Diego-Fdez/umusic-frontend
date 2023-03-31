@@ -1,30 +1,18 @@
 import { create } from 'zustand';
-import Cookies from 'js-cookie';
-import {
-  emptyVideosState,
-  emptyVideoListState,
-  emptyCategoriesState,
-} from '@/models/emptyStateModels';
 
 const videoStore = create((set) => ({
-  videos: emptyVideosState,
-  categories: emptyCategoriesState,
+  videos: [],
   keyword: 'todos',
-  videoList: emptyVideoListState,
+  videoList: [],
   currentVideoIndex: 0,
   shouldAutoPlay: true,
   currentVideoPlaying: {},
-  relatedVideos: emptyVideosState,
+  relatedVideos: [],
   rooms: [],
   currentPlaylist: {},
   addVideos: (data) => {
     set((state) => ({
       videos: data,
-    }));
-  },
-  addCategories: (data) => {
-    set(() => ({
-      categories: data,
     }));
   },
   addKeyword: (data) => {
