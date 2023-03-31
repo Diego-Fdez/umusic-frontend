@@ -16,7 +16,6 @@ const addVideosToRoomList = async (req, res) => {
 
   const {
     roomId,
-    userId,
     videoId,
     channelId,
     videoTitle,
