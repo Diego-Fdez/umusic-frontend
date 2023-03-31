@@ -5,7 +5,8 @@ import userStore from '@/store/userStore';
 import styles from './styles/NavModal.module.css';
 
 const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
-  const { logout, isAuthenticated } = useAuth0();
+  const { logout } = useAuth0();
+  const isAuthenticated = userStore((state) => state.isAuthenticated);
 
   return (
     <div
