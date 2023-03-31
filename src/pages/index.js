@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, useState } from 'react';
 import Head from 'next/head';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ToastContainer } from 'react-toastify';
@@ -12,8 +12,9 @@ export default function Home() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const { loading } = useFetch();
   const addUserToken = userStore((state) => state.addUserToken);
+  const addUserInfo = userStore((state) => state.addUserInfo);
+  const setIsAuthenticated = userStore((state) => state.setIsAuthenticated);
   const userToken = userStore((state) => state.userToken);
-  const userState = userStore((state) => state.user);
   const videos = videoStore((state) => state.videos);
 
   //This function will get the Auth0 token
@@ -25,8 +26,14 @@ export default function Home() {
   useEffect(() => {
     /* Checking if the user is authenticated and if the userToken is not null. If it is not null, it
     will add the userToken and the user to the userStore. */
-    if (!userToken && isAuthenticated) {
+    if (userToken === '' && isAuthenticated) {
       getAuth0Token();
+
+      /* Checking if the user is authenticated and if it is, it will add the user to the userStore. */
+      isAuthenticated && addUserInfo(user);
+
+      /* Setting the isAuthenticated state to true. */
+      isAuthenticated && setIsAuthenticated(true);
     }
   }, [userToken, isAuthenticated]);
 
