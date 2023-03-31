@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import db from '@/database/db';
 import Room from '@/models/roomModel';
 
@@ -10,10 +11,55 @@ const getRoomById = async (req, res) => {
     /* A query to get the data from the database. */
     await db.connect();
 
-    const roomExist = await Room.findById(id)
-      .select('-createdAt -updatedAt -__v')
-      .populate('videos', 'video_id video_title video_pic_url video_length')
-      .populate('channels', 'channel_id channel_title channel_pic_url');
+    const roomExist = await Room.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(id),
+        },
+      },
+      {
+        $unwind: '$video_id',
+      },
+      {
+        $lookup: {
+          from: 'videos',
+          localField: 'video_id',
+          foreignField: 'video_id',
+          as: 'videos',
+        },
+      },
+      {
+        $unwind: '$videos',
+      },
+      {
+        $lookup: {
+          from: 'channels',
+          localField: 'videos.video_id',
+          foreignField: 'video_id',
+          as: 'videos.channels',
+        },
+      },
+      {
+        $unwind: '$videos.channels',
+      },
+      {
+        $project: {
+          createdAt: 0,
+          updatedAt: 0,
+          video_id: 0,
+          __v: 0,
+          'videos._id': 0,
+          'videos.createdAt': 0,
+          'videos.updatedAt': 0,
+          'videos.__v': 0,
+          'videos.channels.createdAt': 0,
+          'videos.channels.updatedAt': 0,
+          'videos.channels.video_id': 0,
+          'videos.channels._id': 0,
+          'videos.channels.__v': 0,
+        },
+      },
+    ]);
 
     /* It checks if the room exists. If it doesn't, it sends a message to the frontend. */
     if (!roomExist) {
