@@ -24,18 +24,18 @@ const VideoHeaders = () => {
   return (
     <div className={styles.videoInfoContainer}>
       <h4 className={styles.videoRoomInfoTitle}>
-        {currentVideoPlaying?.video_title}
+        {currentVideoPlaying?.videos?.video_title}
       </h4>
       <div className={styles.authorContainer}>
         <Image
-          src={currentVideoPlaying?.channel_pic_url}
-          alt={currentVideoPlaying?.video_title}
+          src={currentVideoPlaying?.videos?.channels?.channel_pic_url}
+          alt={currentVideoPlaying?.videos?.channels?.channel_title}
           className={styles.authorPicture}
           width={32}
           height={32}
         />
         <h6 className={styles.authorInfoSubtitle}>
-          {currentVideoPlaying?.channel_title}
+          {currentVideoPlaying?.videos?.channels?.channel_title}
         </h6>
       </div>
     </div>

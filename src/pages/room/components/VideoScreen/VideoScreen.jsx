@@ -13,7 +13,7 @@ const VideoScreen = () => {
   return (
     <div className={styles.playerWrapper}>
       <ReactPlayer
-        url={`https://www.youtube.com/watch?v=${videos[currentVideoIndex]?.video_id}`}
+        url={`https://www.youtube.com/watch?v=${videos[currentVideoIndex]?.videos?.video_id}`}
         width='100%'
         height='100%'
         controls={true}
