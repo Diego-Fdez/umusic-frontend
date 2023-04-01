@@ -1,9 +1,8 @@
-import { useEffect, Suspense, useState } from 'react';
+import { useEffect, Suspense } from 'react';
 import mongoose from 'mongoose';
-import Head from 'next/head';
 import styles from './styles/RoomScreen.module.css';
 import videoStore from '@/store/videoStore';
-import { Loader, Navbar } from '@/components';
+import { Loader, Navbar, GoogleAnalytics, HeadScreen } from '@/components';
 import PlayList from './components/PlayList/PlayList';
 import VideoHeaders from './components/VideoHeaders/VideoHeaders';
 import VideoScreen from './components/VideoScreen/VideoScreen';
@@ -19,18 +18,14 @@ const RoomScreen = ({ data }) => {
 
   return (
     <Suspense fallback={<Loader />}>
-      <Head>
-        <title>Playlist - UMUSIC</title>
-        <meta
-          name='description'
-          content='¿Quieres crear tu propia lista de reproducción personalizada? ¡No hay problema! Nuestra app te permite crear y compartir tus propias listas de reproducción, o colaborar con amigos para crear listas de reproducción compartidas. ¡Explora nuestras listas de reproducción hoy y descubre la mejor música para cada momento!'
-        />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta name='robots' content='index, follow' />
-        <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-        <meta charset='utf-8' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <HeadScreen
+        title={'Playlist'}
+        content={`¿Quieres crear tu propia lista de reproducción personalizada? ¡No hay problema! Nuestra app te 
+        permite crear y compartir tus propias listas de reproducción, o colaborar con amigos para crear listas de 
+        reproducción compartidas. ¡Explora nuestras listas de reproducción hoy y descubre la mejor música para 
+        cada momento!`}
+      />
+      <GoogleAnalytics />
       <Navbar />
       <main className={styles.roomContainer}>
         <article className={styles.playerVideoContainer}>

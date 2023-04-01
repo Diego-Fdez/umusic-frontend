@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import styles from '../../styles/TempAuth.module.css';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
-import { Loader } from '@/components';
+import { Loader, GoogleAnalytics, HeadScreen } from '@/components';
 import tempUserStore from '@/store/tempUserStore';
 import persistedVideoStore from '@/store/persistedVideoStore';
 
@@ -30,6 +30,7 @@ const TempAuth = () => {
       name: 'Diego',
       room: room,
     };
+
     const result = await fetchFromDB(
       `/api/v1/tempauth`,
       'POST',
@@ -37,8 +38,10 @@ const TempAuth = () => {
       token
     );
 
+    /* Checking if there is an error, and if there is, it will display a toast error. */
     if (error) return toast.error(error);
-    console.log(result);
+
+    /* Setting the state of the tempUserStore and persistedVideoStore. */
     addTempUserInfo(result?.data?.userInfo);
     addTempUserToken(result?.data?.userToken);
     setTempUserIsAuth(true);
@@ -47,6 +50,7 @@ const TempAuth = () => {
     setIsTempLoginComplete(true);
   }
 
+  //If the user has completed the temporary login process, then navigate to the home page
   async function navigateToHome() {
     if (isTempLoginComplete) {
       await router.replace('/');
@@ -63,22 +67,17 @@ const TempAuth = () => {
 
   return (
     <>
+      <HeadScreen
+        title={'Temporary Authentication'}
+        content={`Bienvenido a nuestra página temporal de inicio de sesión para nuestra aplicación de videos 
+        musicales. Tenga en cuenta que esta página temporal de inicio de sesión es solo para propósitos de compartir
+        con amigos. Si desea realizar una cuenta, por favor, vaya al apartado de login.`}
+      />
+      <GoogleAnalytics />
       <div className={styles.temporaryAuth}>
         <h1>UMUSIC</h1>
         <h2>Making Science...</h2>
         {loading && <Loader />}
-        <ToastContainer
-          position='top-right'
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme='dark'
-        />
       </div>
     </>
   );

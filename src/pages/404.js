@@ -1,9 +1,8 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 import Image from 'next/image';
 import styles from '@/styles/NotFoundPage.module.css';
-import { Loader } from '@/components';
+import { GoogleAnalytics, Loader, HeadScreen } from '@/components';
 
 const NotFoundPage = () => {
   const [gif, setGif] = useState('');
@@ -28,24 +27,23 @@ const NotFoundPage = () => {
     setGif(randomImage());
   }, []);
 
+  //It's a function that takes a click event and pushes the user to the home page.
   const handleClick = () => {
     router.push('/');
   };
 
   return (
     <Suspense fallback={<Loader />}>
-      <Head>
-        <title>Page Not Found - UMUSIC</title>
-        <meta
-          name='description'
-          content='Lo sentimos, la página que estás buscando no se puede encontrar en nuestro sitio web. Es posible que la página haya sido eliminada, que el enlace esté roto o que hayas escrito mal la dirección web. Por favor, revisa la URL y asegúrate de que esté escrita correctamente. Si el problema persiste, por favor ponte en contacto con nuestro equipo de soporte técnico para obtener ayuda. Mientras tanto, por favor sigue explorando nuestro sitio web para descubrir más sobre nuestras características y servicios. ¡Gracias por visitarnos!'
-        />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta name='robots' content='index, follow' />
-        <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-        <meta charset='utf-8' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <HeadScreen
+        title={'PageNot Found'}
+        content={`Lo sentimos, la página que estás buscando no se puede encontrar en nuestro sitio web. Es posible 
+        que la página haya sido eliminada, que el enlace esté roto o que hayas escrito mal la dirección web. 
+        Por favor, revisa la URL y asegúrate de que esté escrita correctamente. Si el problema persiste, por favor 
+        ponte en contacto con nuestro equipo de soporte técnico para obtener ayuda. Mientras tanto, por favor sigue 
+        explorando nuestro sitio web para descubrir más sobre nuestras características y servicios. ¡Gracias por 
+        visitarnos!`}
+      />
+      <GoogleAnalytics />
       <div className={styles.AppWrapper}>
         <div className={styles.pageErrorStyles}>
           <span className={styles.codeErrorStyles}>Error - 404</span>

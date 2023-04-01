@@ -1,9 +1,8 @@
 import { Suspense, useState } from 'react';
-import Head from 'next/head';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import styles from './styles/RoomList.module.css';
-import { Navbar, Loader } from '@/components';
+import { Navbar, Loader, GoogleAnalytics, HeadScreen } from '@/components';
 import ListScreen from './components/ListScreen/ListScreen';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 
@@ -33,32 +32,16 @@ const RoomList = () => {
 
   return (
     <Suspense fallback={<Loader />}>
-      <Head>
-        <title>Playlists - UMUSIC</title>
-        <meta
-          name='description'
-          content='¿Quieres crear tu propia lista de reproducción personalizada? ¡No hay problema! Nuestra app te permite crear y compartir tus propias listas de reproducción, o colaborar con amigos para crear listas de reproducción compartidas. ¡Explora nuestras listas de reproducción hoy y descubre la mejor música para cada momento!'
-        />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta name='robots' content='index, follow' />
-        <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-        <meta charset='utf-8' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <HeadScreen
+        title={'Playlists'}
+        content={`¿Quieres crear tu propia lista de reproducción personalizada? ¡No hay problema! Nuestra app te 
+        permite crear y compartir tus propias listas de reproducción, o colaborar con amigos para crear listas de 
+        reproducción compartidas. ¡Explora nuestras listas de reproducción hoy y descubre la mejor música para 
+        cada momento!`}
+      />
+      <GoogleAnalytics />
       {error && toast.error(error)}
       <Navbar />
-      <ToastContainer
-        position='top-right'
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='dark'
-      />
       {loading ? (
         <Loader />
       ) : (
