@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
@@ -6,19 +5,25 @@ import styles from './styles/videoCard.module.css';
 import { formattedTime } from '@/utils/formattedTime';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import { setDataVideo } from '@/models/dataFetchModels';
-import { useAuth0 } from '@auth0/auth0-react';
-import videoStore from '@/store/videoStore';
+import persistedVideoStore from '@/store/persistedVideoStore';
+import tempUserStore from '@/store/tempUserStore';
+import userStore from '@/store/userStore';
 
 const VideoCard = ({ video }) => {
   const { fetchFromDB } = UseFetchFromDB();
-  const { user } = useAuth0();
-  const currentPlaylist = videoStore((state) => state.currentPlaylist);
+  const user = userStore((state) => state.user);
+  const tempUserInfo = tempUserStore((state) => state.tempUserInfo);
+  const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
 
   /** It creates an object with the data that will be sent to the database, and then calls the
    * `fetchFromDB` function from the `UseFetchFromDB` hook */
   const handleClick = async () => {
     /* Creating an object with the data that will be sent to the database. */
-    const setData = setDataVideo(user, video, currentPlaylist?._id);
+    const setData = setDataVideo(
+      user ? user : tempUserInfo,
+      video,
+      currentPlaylist?._id
+    );
 
     try {
       /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */

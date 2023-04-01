@@ -4,14 +4,17 @@ import { toast } from 'react-toastify';
 import styles from './styles/ListScreen.module.css';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import videoStore from '@/store/videoStore';
-import { useAuth0 } from '@auth0/auth0-react';
+import userStore from '@/store/userStore';
+import persistedVideoStore from '@/store/persistedVideoStore';
 
 const ListScreen = () => {
   const { fetchFromDB, loading, error } = UseFetchFromDB();
-  const { user } = useAuth0();
+  const user = userStore((state) => state.userInfo);
   const setRooms = videoStore((state) => state.setRooms);
   const rooms = videoStore((state) => state.rooms);
-  const setCurrentPlaylist = videoStore((state) => state.setCurrentPlaylist);
+  const setCurrentPlaylist = persistedVideoStore(
+    (state) => state.setCurrentPlaylist
+  );
 
   //It fetches the playlists from the database.
   const fetchPlaylists = async () => {
