@@ -1,9 +1,14 @@
 import { useEffect, Suspense, useState } from 'react';
 import Head from 'next/head';
 import { useAuth0 } from '@auth0/auth0-react';
-import { ToastContainer } from 'react-toastify';
 import styles from '@/styles/Home.module.css';
-import { CategoryScreen, Loader, Navbar, VideoCard } from '@/components';
+import {
+  CategoryScreen,
+  Loader,
+  Navbar,
+  VideoCard,
+  GoogleAnalytics,
+} from '@/components';
 import videoStore from '@/store/videoStore';
 import userStore from '@/store/userStore';
 import { useFetch } from '@/hooks/useFetchFromYoutube';
@@ -55,18 +60,7 @@ export default function Home() {
           content='d8QBV8WsM4wcvC0-yzY7XENEKpjF4NpaAmUQpv_3KF8'
         />
       </Head>
-      <ToastContainer
-        position='top-right'
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='dark'
-      />
+      <GoogleAnalytics />
       <Navbar />
       <CategoryScreen />
       {loading ? (
