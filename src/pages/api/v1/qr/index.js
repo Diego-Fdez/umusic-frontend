@@ -8,9 +8,9 @@ const generateQR = async (req, res) => {
       .send({ status: 'FAILED', data: { error: 'Method not allowed' } });
   }
 
-  const { token, id } = req.body;
+  const { token, id, room } = req.body;
 
-  const url = `${process.env.FRONTEND_URL}/tempauth/${id}/${token}`;
+  const url = `${process.env.FRONTEND_URL}/tempauth/${id}/${room}/${token}`;
 
   try {
     const result = await QRCode.toDataURL(url);
