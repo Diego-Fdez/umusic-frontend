@@ -10,9 +10,10 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
   const userInfo = userStore((state) => state.userInfo);
   const token = userStore((state) => state.userToken);
   const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
-  const [qrCode, setQRCode] = useState();
+  const [qrImage, setQRImage] = useState('');
+  const [qrDataURL, setQRDataURL] = useState('');
 
-  async function fetchQR() {
+  async function handleGetQRCode() {
     const setData = {
       id: userInfo?.sub,
       room: currentPlaylist?._id,
@@ -20,11 +21,15 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
     };
 
     const result = await fetchFromDB(`/api/v1/qr`, 'POST', setData);
-    setQRCode(result?.data);
+
+    if (error) return toast.error(error);
+
+    setQRDataURL(result?.data?.linkURL);
+    setQRImage(result?.data?.qrImage);
   }
 
   useEffect(() => {
-    fetchQR();
+    handleGetQRCode();
   }, []);
 
   return (
@@ -34,7 +39,6 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
         display: modalOpen ? 'flex' : 'none',
       }}
     >
-      {error && toast.error(error)}
       <button onClick={() => setModalOpen(!modalOpen)}>
         <img
           src='/close-icon.svg'
@@ -43,7 +47,18 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
         />
       </button>
       <div className={styles.qrBox}>
-        <img src={qrCode} alt='qr-image' />
+        <img src={qrImage} alt='qr-image' />
+        <div className={styles.qrTextContainer}>
+          <p>{qrDataURL}</p>
+          <button onClick={() => navigator.clipboard.writeText(qrDataURL)}>
+            <p>Copy Link</p>
+            <img
+              src='/copy-link-icon.svg'
+              alt='copy-link-icon'
+              className={styles.copyIcon}
+            />
+          </button>
+        </div>
       </div>
     </div>
   );
