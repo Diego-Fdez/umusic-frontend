@@ -9,7 +9,6 @@ const videoStore = create((set) => ({
   currentVideoPlaying: {},
   relatedVideos: [],
   rooms: [],
-  currentPlaylist: {},
   addVideos: (data) => {
     set((state) => ({
       videos: data,
@@ -48,11 +47,6 @@ const videoStore = create((set) => ({
   setRooms: (data) => {
     set((state) => ({
       rooms: data,
-    }));
-  },
-  setCurrentPlaylist: (data) => {
-    set((state) => ({
-      currentPlaylist: data,
     }));
   },
 }));
