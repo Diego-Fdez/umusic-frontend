@@ -49,7 +49,7 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
       <div className={styles.qrBox}>
         <img src={qrImage} alt='qr-image' />
         <div className={styles.qrTextContainer}>
-          <p>{qrDataURL}</p>
+          <p>{qrDataURL.slice(0, 26)}</p>
           <button onClick={() => navigator.clipboard.writeText(qrDataURL)}>
             <p>Copy Link</p>
             <img
