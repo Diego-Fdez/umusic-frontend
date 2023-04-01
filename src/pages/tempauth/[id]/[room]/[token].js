@@ -6,6 +6,7 @@ import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import { Loader, GoogleAnalytics, HeadScreen } from '@/components';
 import tempUserStore from '@/store/tempUserStore';
 import persistedVideoStore from '@/store/persistedVideoStore';
+import Link from 'next/link';
 
 const TempAuth = () => {
   const { query } = useRouter();
