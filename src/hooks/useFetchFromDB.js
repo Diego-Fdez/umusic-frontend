@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import videoStore from '@/store/videoStore';
+import userStore from '@/store/userStore';
 
 const UseFetchFromDB = () => {
-  const addVideoList = videoStore((state) => state.addVideoList);
+  const tokenFromState = userStore((state) => state.userToken);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -10,12 +10,13 @@ const UseFetchFromDB = () => {
    * It fetches data from a database and returns the data.
    * @returns The result of the fetch call.
    */
-  async function fetchFromDB(url, method, setData) {
+  async function fetchFromDB(url, method, setData, token) {
     const options = {
       method: method,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
+        Authorization: `Bearer ${tokenFromState ? tokenFromState : token}`,
       },
       body: JSON.stringify(setData),
     };
