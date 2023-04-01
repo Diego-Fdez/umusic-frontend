@@ -3,13 +3,13 @@ import { toast } from 'react-toastify';
 import styles from './styles/QRScreenModal.module.css';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import userStore from '@/store/userStore';
-import videoStore from '@/store/videoStore';
+import persistedVideoStore from '@/store/persistedVideoStore';
 
 const QRScreenModal = ({ modalOpen, setModalOpen }) => {
   const { fetchFromDB, error } = UseFetchFromDB();
   const userInfo = userStore((state) => state.userInfo);
   const token = userStore((state) => state.userToken);
-  const currentPlaylist = videoStore((state) => state.currentPlaylist);
+  const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
   const [qrCode, setQRCode] = useState();
 
   async function fetchQR() {
