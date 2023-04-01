@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ToastContainer } from 'react-toastify';
 import styles from './styles/Navbar.module.css';
 import { MenuScreen, QRScreenModal, SearchBar } from './components';
 import userStore from '@/store/userStore';
@@ -49,7 +50,7 @@ const Navbar = () => {
       <div className={styles.logoContainer}>
         <Link href={'/'}>
           <img
-            src='/umusic-logo.png'
+            src='/umusic-logo.webp'
             alt='umusic-logo'
             className={styles.logoImg}
           />
@@ -80,6 +81,18 @@ const Navbar = () => {
         />
       </nav>
       <QRScreenModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <ToastContainer
+        position='top-right'
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='dark'
+      />
     </header>
   );
 };
