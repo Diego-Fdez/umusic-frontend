@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import styles from './styles/QRScreenModal.module.css';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import userStore from '@/store/userStore';
+import videoStore from '@/store/videoStore';
 
 const QRScreenModal = ({ modalOpen, setModalOpen }) => {
-  const { fetchFromDB } = UseFetchFromDB();
-  const userDb = userStore((state) => state.user);
+  const { fetchFromDB, error } = UseFetchFromDB();
+  const userInfo = userStore((state) => state.userInfo);
+  const token = userStore((state) => state.userToken);
+  const currentPlaylist = videoStore((state) => state.currentPlaylist);
   const [qrCode, setQRCode] = useState();
 
   async function fetchQR() {
     const setData = {
-      id: userDb?.userInfo?.id,
-      token: userDb?.music_token,
+      id: userInfo?.sub,
+      room: currentPlaylist?._id,
+      token: token,
     };
 
-    try {
-      const result = await fetchFromDB(`/api/v1/qr`, 'POST', setData);
-      setQRCode(result?.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await fetchFromDB(`/api/v1/qr`, 'POST', setData);
+    setQRCode(result?.data);
   }
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
         display: modalOpen ? 'flex' : 'none',
       }}
     >
+      {error && toast.error(error)}
       <button onClick={() => setModalOpen(!modalOpen)}>
         <img
           src='/close-icon.svg'
