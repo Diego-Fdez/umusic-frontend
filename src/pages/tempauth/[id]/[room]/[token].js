@@ -61,9 +61,9 @@ const TempAuth = () => {
     if (id && token) handleTempLogin();
   }, [id, token]);
 
-  useEffect(() => {
-    navigateToHome();
-  }, [isTempLoginComplete]);
+  // useEffect(() => {
+  //   navigateToHome();
+  // }, [isTempLoginComplete]);
 
   return (
     <>
@@ -75,7 +75,9 @@ const TempAuth = () => {
       />
       <GoogleAnalytics />
       <div className={styles.temporaryAuth}>
-        <h1>UMUSIC</h1>
+        <Link href='/'>
+          <h1>UMUSIC</h1>
+        </Link>
         <h2>Making Science...</h2>
         {loading && <Loader />}
       </div>
