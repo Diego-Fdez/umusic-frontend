@@ -50,6 +50,10 @@ export default function Home() {
         <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
         <meta charset='utf-8' />
         <link rel='icon' href='/favicon.ico' />
+        <meta
+          name='google-site-verification'
+          content='d8QBV8WsM4wcvC0-yzY7XENEKpjF4NpaAmUQpv_3KF8'
+        />
       </Head>
       <ToastContainer
         position='top-right'

@@ -15,10 +15,6 @@ export default function Document() {
           href='https://fonts.googleapis.com/css2?family=Fredoka+One&family=Ubuntu:wght@400;700&display=swap'
           rel='stylesheet'
         />
-        <meta
-          name='google-site-verification'
-          content='d8QBV8WsM4wcvC0-yzY7XENEKpjF4NpaAmUQpv_3KF8'
-        />
       </Head>
       <body>
         <Main />
