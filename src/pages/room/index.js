@@ -11,6 +11,7 @@ const RoomList = () => {
   const { fetchFromDB, loading, error } = UseFetchFromDB();
   const [roomName, setRoomName] = useState('');
 
+  //create a new playlist
   const handlerAddPlaylist = async (e) => {
     e.preventDefault();
 
@@ -21,6 +22,8 @@ const RoomList = () => {
 
     const result = await fetchFromDB('/api/v1/room', 'POST', setData);
 
+    /* Checking if there is an error in the response from the server. If there is an error, it will
+    display the error message and clear the input field. */
     if (result?.data?.error) {
       toast.error(result?.data?.error);
       setRoomName('');
