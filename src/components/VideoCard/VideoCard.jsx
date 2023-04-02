@@ -4,14 +4,16 @@ import { toast } from 'react-toastify';
 import styles from './styles/videoCard.module.css';
 import { formattedTime } from '@/utils/formattedTime';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
+import useWebSocket from '@/hooks/useWebSocket';
 import { setDataVideo } from '@/models/dataFetchModels';
 import persistedVideoStore from '@/store/persistedVideoStore';
 import tempUserStore from '@/store/tempUserStore';
 import userStore from '@/store/userStore';
 
 const VideoCard = ({ video }) => {
-  const { fetchFromDB } = UseFetchFromDB();
-  const user = userStore((state) => state.user);
+  const { fetchFromDB, loading, error } = UseFetchFromDB();
+  const { socket } = useWebSocket();
+  const user = userStore((state) => state.userInfo);
   const tempUserInfo = tempUserStore((state) => state.tempUserInfo);
   const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
 
@@ -25,16 +27,34 @@ const VideoCard = ({ video }) => {
       currentPlaylist?._id
     );
 
-    try {
-      /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */
-      const result = await fetchFromDB(`/api/v1/room`, 'PUT', setData);
+    /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */
+    const result = await fetchFromDB(`/api/v1/room`, 'PUT', setData);
 
-      if (result?.data?.error) toast.error(result?.data?.error);
+    /* Checking if there is an error in the result of the fetch, and if there is, it shows a toast
+      with the error. */
+    if (result?.data?.error) return toast.error(result?.data?.error);
+    if (error) return toast.error(error);
 
-      toast.success(result.data);
-    } catch (error) {
-      console.log(error);
-    }
+    /* Creating an object with the data that will be sent to the socket. */
+    const videoAdded = {
+      room_name: currentPlaylist?.room_name ? currentPlaylist?.room_name : '',
+      user_id: user ? user?.sub : tempUserInfo?.sub,
+      videos: {
+        channels: {
+          channel_id: video?.author?.channelId,
+          channel_pic_url: video?.author?.avatar[0]?.url,
+          channel_title: video?.author?.title,
+        },
+        video_id: video?.videoId,
+        video_length: video?.lengthSeconds,
+        video_pic_url: video?.thumbnails[0]?.url,
+        video_title: video?.title,
+      },
+      _id: currentPlaylist?._id,
+    };
+
+    toast.success(result?.data);
+    socket.emit('addVideo', videoAdded);
   };
 
   return (
