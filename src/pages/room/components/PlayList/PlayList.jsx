@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styles from './styles/Playlist.module.css';
 import UsePlaying from '@/hooks/usePlaying';
 import videoStore from '@/store/videoStore';
@@ -5,8 +6,13 @@ import { formattedTime } from '@/utils/formattedTime';
 import generateId from '@/utils/generateId';
 
 const PlayList = () => {
-  const videos = videoStore((state) => state.videoList);
+  const videosState = videoStore((state) => state.videoList);
   const { playVideo } = UsePlaying();
+  const [videos, setVideos] = useState(videosState);
+
+  useEffect(() => {
+    setVideos(videosState);
+  }, [videosState]);
 
   return (
     <div className={styles.roomListContainer}>
