@@ -47,14 +47,14 @@ const generateQR = async (req, res) => {
 
   const url = `${process.env.FRONTEND_URL}/tempauth/${id}/${room}/${token}`;
 
-  // const shortenedURL = await getShortenedURL(url);
+  const shortenedURL = await getShortenedURL(url);
 
   try {
-    const qrImage = await QRCode.toDataURL(url);
+    const qrImage = await QRCode.toDataURL(shortenedURL?.short_url);
 
-    res.send({
+    res.status(201).send({
       status: 'OK',
-      data: { qrImage, linkURL: url },
+      data: { qrImage, linkURL: shortenedURL?.short_url },
     });
   } catch (error) {
     res

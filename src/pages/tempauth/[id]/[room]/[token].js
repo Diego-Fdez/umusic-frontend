@@ -4,9 +4,9 @@ import { toast } from 'react-toastify';
 import styles from '../../styles/TempAuth.module.css';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
 import { Loader, GoogleAnalytics, HeadScreen } from '@/components';
-import tempUserStore from '@/store/tempUserStore';
 import persistedVideoStore from '@/store/persistedVideoStore';
 import Link from 'next/link';
+import tempUserStore from '@/store/tempUserStore';
 
 const TempAuth = () => {
   const { query } = useRouter();
@@ -25,7 +25,11 @@ const TempAuth = () => {
    * It takes the id and token from the URL, sends a POST request to the server, and then redirects the
    * user to the home page
    */
-  async function handleTempLogin() {
+  async function handlerTempLogin() {
+    if (id === '' || token === '' || id === undefined || token === undefined) {
+      toast.error('Something went wrong. Please try again.');
+      return;
+    }
     const setData = {
       id,
       name: 'Diego',
@@ -40,7 +44,14 @@ const TempAuth = () => {
     );
 
     /* Checking if there is an error, and if there is, it will display a toast error. */
+    if (result?.status === 'FAILED') return toast.error(result?.data?.error);
     if (error) return toast.error(error);
+
+    /* Checking if the user has completed the temporary login process. */
+    if (!result?.data?.userInfo) {
+      setIsTempLoginComplete(false);
+      return toast.error('Something went wrong. Please try again.');
+    }
 
     /* Setting the state of the tempUserStore and persistedVideoStore. */
     addTempUserInfo(result?.data?.userInfo);
@@ -59,12 +70,12 @@ const TempAuth = () => {
   }
 
   useEffect(() => {
-    if (id && token) handleTempLogin();
+    if (id && token) handlerTempLogin();
   }, [id, token]);
 
-  // useEffect(() => {
-  //   navigateToHome();
-  // }, [isTempLoginComplete]);
+  useEffect(() => {
+    navigateToHome();
+  }, [isTempLoginComplete]);
 
   return (
     <>

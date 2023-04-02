@@ -14,6 +14,14 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
   const [qrDataURL, setQRDataURL] = useState('');
 
   async function handleGetQRCode() {
+    /* This is checking if the user is logged in and if a playlist is selected. If not, it will return
+    an error message. */
+    if (!userInfo?.sub || token === '') {
+      return toast.error('Please login first');
+    } else if (!currentPlaylist?._id)
+      return toast.error('No playlist selected');
+
+    /* This is setting the data that will be sent to the server. */
     const setData = {
       id: userInfo?.sub,
       room: currentPlaylist?._id,
@@ -22,6 +30,8 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
 
     const result = await fetchFromDB(`/api/v1/qr`, 'POST', setData);
 
+    /* This is checking if there is an error. If there is, it will return an error message. */
+    if (result?.status === 'FAILED') return toast.error(result?.data?.error);
     if (error) return toast.error(error);
 
     setQRDataURL(result?.data?.linkURL);
@@ -29,8 +39,8 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
   }
 
   useEffect(() => {
-    handleGetQRCode();
-  }, []);
+    if (userInfo?.sub && token && currentPlaylist?._id) handleGetQRCode();
+  }, [userInfo?.sub, token, currentPlaylist?._id]);
 
   return (
     <div
@@ -49,7 +59,7 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
       <div className={styles.qrBox}>
         <img src={qrImage} alt='qr-image' />
         <div className={styles.qrTextContainer}>
-          <p>{qrDataURL.slice(0, 26)}</p>
+          <p>{qrDataURL}</p>
           <button onClick={() => navigator.clipboard.writeText(qrDataURL)}>
             <p>Copy Link</p>
             <img
