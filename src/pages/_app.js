@@ -1,9 +1,17 @@
+import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/globals.css';
 import UseAuth0Provider from '@/hooks/useAuth0Provider';
+import useWebSocket from '@/hooks/useWebSocket';
 
 export default function App({ Component, pageProps }) {
+  const { socketInitializer } = useWebSocket();
+
+  useEffect(() => {
+    socketInitializer();
+  }, []);
+
   return (
     <UseAuth0Provider>
       <Component {...pageProps} />
