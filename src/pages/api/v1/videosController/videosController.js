@@ -12,8 +12,6 @@ export const registerChannel = async (
 ) => {
   try {
     //check the channel in the DB
-    await db.connect();
-
     const channelExist = await Channels.findOne({ channel_id: channelId });
 
     /* Checking if the channel exists in the database, if it does not exist, it inserts the channel
@@ -27,7 +25,6 @@ export const registerChannel = async (
       });
 
       await newChannel.save();
-      await db.disconnect();
     }
 
     const videoExist = await Channels.findOne({ video_id: videoId });
@@ -37,10 +34,7 @@ export const registerChannel = async (
     if (!videoExist) {
       channelExist.video_id.push(videoId);
       await channelExist.save();
-      await db.disconnect();
     }
-
-    await db.disconnect();
   } catch (error) {
     throw error;
   }
@@ -56,8 +50,6 @@ export const registerVideo = async (
 ) => {
   try {
     //check the video in the DB
-    await db.connect();
-
     const videoExist = await Videos.findOne({ video_id: videoId });
 
     /* Checking if the video exists in the database, if it does not exist, it inserts the video into
@@ -71,10 +63,7 @@ export const registerVideo = async (
       });
 
       await newVideo.save();
-      await db.disconnect();
     }
-
-    await db.disconnect();
   } catch (error) {
     throw error;
   }
