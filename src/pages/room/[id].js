@@ -8,13 +8,24 @@ import VideoHeaders from './components/VideoHeaders/VideoHeaders';
 import VideoScreen from './components/VideoScreen/VideoScreen';
 import Room from '@/models/roomModel';
 import db from '@/database/db';
+import useWebSocket from '@/hooks/useWebSocket';
 
 const RoomScreen = ({ data }) => {
+  const { socket } = useWebSocket();
   const addVideoList = videoStore((state) => state.addVideoList);
+
   /* Adding the data to the videoStore. */
   useEffect(() => {
     addVideoList(data);
   }, [data]);
+
+  useEffect(() => {
+    socket.on('newVideo', (video) => {
+      const newData = data;
+      newData.push(video);
+      addVideoList(newData);
+    });
+  }, []);
 
   return (
     <Suspense fallback={<Loader />}>
