@@ -7,14 +7,14 @@ const tempUserStore = create(
       tempUserToken: '',
       tempUserInfo: {},
       tempUserIsAuth: false,
-      addTempUserToken: (token) => {
-        set({ tempUserToken: token });
+      addTempUserToken: (userToken) => {
+        set({ tempUserToken: userToken });
       },
-      addTempUserInfo: (user) => {
-        set({ tempUserInfo: user });
+      addTempUserInfo: (tempUser) => {
+        set({ tempUserInfo: tempUser });
       },
-      setTempUserIsAuth: (data) => {
-        set({ tempUserIsAuth: data });
+      setTempUserIsAuth: (isAuth) => {
+        set({ tempUserIsAuth: isAuth });
       },
       getTempUserToken: () => {
         return get().tempUserToken;
@@ -27,7 +27,7 @@ const tempUserStore = create(
       },
     }),
     {
-      name: 'umusic-storage',
+      name: 'temp-user-storage',
       storage: createJSONStorage(() => sessionStorage),
     }
   )
