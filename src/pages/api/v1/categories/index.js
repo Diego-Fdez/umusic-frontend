@@ -25,7 +25,7 @@ const insertCategories = async (req, res) => {
     await newCategory.save();
     await db.disconnect();
 
-    res.send({ status: 'OK', data: 'category inserted' });
+    res.status(201).send({ status: 'OK', data: 'category inserted' });
   } catch (error) {
     res
       .status(error?.status || 500)
@@ -52,7 +52,7 @@ const getAllCategories = async (req, res) => {
 
     await db.disconnect();
 
-    res.send({ status: 'OK', data: categories });
+    res.status(200).send({ status: 'OK', data: categories });
   } catch (error) {
     res
       .status(error?.status || 500)
