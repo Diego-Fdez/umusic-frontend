@@ -39,7 +39,8 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
   }
 
   useEffect(() => {
-    if (userInfo?.sub && token && currentPlaylist?._id) handleGetQRCode();
+    if (userInfo?.sub && token !== '' && currentPlaylist?._id && qrImage === '')
+      handleGetQRCode();
   }, [userInfo?.sub, token, currentPlaylist?._id]);
 
   return (
