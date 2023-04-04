@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, useState } from 'react';
 import mongoose from 'mongoose';
 import styles from './styles/RoomScreen.module.css';
 import videoStore from '@/store/videoStore';
@@ -13,19 +13,38 @@ import useWebSocket from '@/hooks/useWebSocket';
 const RoomScreen = ({ data }) => {
   const { socket } = useWebSocket();
   const addVideoList = videoStore((state) => state.addVideoList);
+  const [videos, setVideos] = useState([]);
 
-  /* Adding the data to the videoStore. */
+  /* Adding the data to the state. */
   useEffect(() => {
-    addVideoList(data);
+    setVideos(data);
   }, [data]);
 
   useEffect(() => {
-    socket.on('newVideo', (video) => {
-      const newData = data;
-      newData.push(video);
-      addVideoList(newData);
-    });
+    if (socket) {
+      socket.emit('joinRoom', {
+        roomId: data[0]._id,
+      });
+    }
   }, []);
+
+  //listen to the socket
+  useEffect(() => {
+    socket.on('newVideo', (video) => {
+      if (video._id === data[0]._id) {
+        setVideos((prevVideos) => [...prevVideos, video]);
+      }
+    });
+
+    return () => {
+      socket.off('newVideo');
+    };
+  });
+
+  //add videos to the store
+  useEffect(() => {
+    addVideoList(videos);
+  }, [videos]);
 
   return (
     <Suspense fallback={<Loader />}>
