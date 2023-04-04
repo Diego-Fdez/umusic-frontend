@@ -15,7 +15,7 @@ const SocketHandler = (req, res) => {
       });
 
       socket.on('addVideo', (video) => {
-        socket.to(video._id).broadcast.emit('newVideo', video);
+        socket.to(video._id).emit('newVideo', video);
       });
     });
   }
