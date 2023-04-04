@@ -20,16 +20,15 @@ const RoomScreen = ({ data }) => {
     setVideos(data);
   }, [data]);
 
-  useEffect(() => {
-    socket.emit('joinRoom', data[0]?._id);
-  }, []);
+  // useEffect(() => {
+  //   socket.emit('joinRoom', data[0]?._id);
+  // }, []);
 
   //listen to the socket
   useEffect(() => {
     socket.on('newVideo', (video) => {
-      if (video._id === data[0]._id) {
-        setVideos((prevVideos) => [...prevVideos, video]);
-      }
+      // if (video._id === data[0]._id)
+      setVideos((prevVideos) => [...prevVideos, video]);
     });
 
     return () => {
