@@ -10,10 +10,12 @@ const SocketHandler = (req, res) => {
     res.socket.server.io = io;
 
     io.on('connection', (socket) => {
-      socket.on('addVideo', (video) => {
-        console.log(video);
+      socket.on('joinRoom', (roomId) => {
+        socket.join(roomId);
+      });
 
-        socket.broadcast.emit('newVideo', video);
+      socket.on('addVideo', (video) => {
+        socket.to(video._id).socket.broadcast.emit('newVideo', video);
       });
     });
   }
