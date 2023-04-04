@@ -21,11 +21,7 @@ const RoomScreen = ({ data }) => {
   }, [data]);
 
   useEffect(() => {
-    if (socket) {
-      socket.emit('joinRoom', {
-        roomId: data[0]._id,
-      });
-    }
+    socket.emit('joinRoom', data[0]?._id);
   }, []);
 
   //listen to the socket
