@@ -1,6 +1,7 @@
 import { useEffect, Suspense } from 'react';
 import Head from 'next/head';
 import { useAuth0 } from '@auth0/auth0-react';
+import io from 'socket.io-client';
 import styles from '@/styles/Home.module.css';
 import {
   CategoryScreen,
@@ -13,6 +14,8 @@ import videoStore from '@/store/videoStore';
 import userStore from '@/store/userStore';
 import { useFetch } from '@/hooks/useFetchFromYoutube';
 
+let socket;
+
 export default function Home() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const { loading } = useFetch();
@@ -21,6 +24,12 @@ export default function Home() {
   const setIsAuthenticated = userStore((state) => state.setIsAuthenticated);
   const userToken = userStore((state) => state.userToken);
   const videos = videoStore((state) => state.videos);
+  const currentPlaylist = videoStore((state) => state.currentPlaylist);
+
+  useEffect(() => {
+    socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER);
+    socket.emit('joinRoom', currentPlaylist?._id);
+  }, []);
 
   //This function will get the Auth0 token
   async function getAuth0Token() {
@@ -68,7 +77,11 @@ export default function Home() {
       ) : (
         <main className={styles.homeContainer}>
           {videos?.map((video) => (
-            <VideoCard key={video?.video?.videoId} video={video.video} />
+            <VideoCard
+              key={video?.video?.videoId}
+              video={video.video}
+              socket={socket}
+            />
           ))}
         </main>
       )}

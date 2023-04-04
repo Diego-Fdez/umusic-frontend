@@ -1,5 +1,6 @@
 import { useEffect, Suspense, useState } from 'react';
 import mongoose from 'mongoose';
+import io from 'socket.io-client';
 import styles from './styles/RoomScreen.module.css';
 import videoStore from '@/store/videoStore';
 import { Loader, Navbar, GoogleAnalytics, HeadScreen } from '@/components';
@@ -8,10 +9,10 @@ import VideoHeaders from './components/VideoHeaders/VideoHeaders';
 import VideoScreen from './components/VideoScreen/VideoScreen';
 import Room from '@/models/roomModel';
 import db from '@/database/db';
-import useWebSocket from '@/hooks/useWebSocket';
+
+let socket;
 
 const RoomScreen = ({ data }) => {
-  const { socket } = useWebSocket();
   const addVideoList = videoStore((state) => state.addVideoList);
   const [videos, setVideos] = useState([]);
 
@@ -20,15 +21,17 @@ const RoomScreen = ({ data }) => {
     setVideos(data);
   }, [data]);
 
-  // useEffect(() => {
-  //   socket.emit('joinRoom', data[0]?._id);
-  // }, []);
+  //init socket
+  useEffect(() => {
+    socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER);
+    socket.emit('joinRoom', data[0]?._id);
+  }, []);
 
   //listen to the socket
   useEffect(() => {
     socket.on('newVideo', (video) => {
-      // if (video._id === data[0]._id)
-      setVideos((prevVideos) => [...prevVideos, video]);
+      if (video._id === data[0]._id)
+        setVideos((prevVideos) => [...prevVideos, video]);
     });
 
     return () => {
