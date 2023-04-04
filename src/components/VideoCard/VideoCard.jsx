@@ -4,15 +4,13 @@ import { toast } from 'react-toastify';
 import styles from './styles/videoCard.module.css';
 import { formattedTime } from '@/utils/formattedTime';
 import UseFetchFromDB from '@/hooks/useFetchFromDB';
-import useWebSocket from '@/hooks/useWebSocket';
 import { setDataVideo } from '@/models/dataFetchModels';
 import persistedVideoStore from '@/store/persistedVideoStore';
 import tempUserStore from '@/store/tempUserStore';
 import userStore from '@/store/userStore';
 
-const VideoCard = ({ video }) => {
+const VideoCard = ({ video, socket }) => {
   const { fetchFromDB, loading, error } = UseFetchFromDB();
-  const { socket } = useWebSocket();
   const user = userStore((state) => state.userInfo);
   const tempUserInfo = tempUserStore((state) => state.tempUserInfo);
   const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
