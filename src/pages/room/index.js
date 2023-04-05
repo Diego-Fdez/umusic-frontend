@@ -25,11 +25,10 @@ const RoomList = () => {
     /* Checking if there is an error in the response from the server. If there is an error, it will
     display the error message and clear the input field. */
     if (result?.data?.error) {
-      toast.error(result?.data?.error);
       setRoomName('');
+      return toast.error(result?.data?.error);
     }
-
-    toast.success(result?.data);
+    toast.success('Your room has been created successfully!');
     setRoomName('');
   };
 
@@ -71,7 +70,7 @@ const RoomList = () => {
               />
             </button>
           </form>
-          <ListScreen />
+          {loading ? <Loader /> : <ListScreen />}
         </main>
       )}
     </Suspense>
