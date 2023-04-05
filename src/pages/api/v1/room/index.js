@@ -89,9 +89,44 @@ const createRoom = async (req, res) => {
     await newRoom.save();
     await db.disconnect();
 
+    res.status(201).send({ status: 'OK', data: newRoom });
+  } catch (error) {
     res
-      .status(201)
-      .send({ status: 'OK', data: 'Your room has been created successfully!' });
+      .status(error?.status || 500)
+      .send({ status: 'FAILED', data: { error: error?.message || error } });
+  }
+};
+
+//It deletes a video from the room list
+const deleteVideoFromRoomList = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    await db.connect();
+
+    /* Getting the room by the id. */
+    const videoExist = await Room.findOne({ video_id: id });
+
+    /* It checks if the video exists. If it doesn't, it sends a message to the frontend. */
+    if (!videoExist) {
+      res.status(404).send({
+        status: 'FAILED',
+        data: { error: 'Video not found' },
+      });
+      return;
+    }
+
+    //if it passes the validations, the video is removed
+    videoExist.video_id.pull(id);
+    await videoExist.save();
+
+    await db.disconnect();
+
+    //sending the response to the frontend
+    res.status(200).send({
+      status: 'OK',
+      data: 'Video removed from the playlist.',
+    });
   } catch (error) {
     res
       .status(error?.status || 500)
@@ -104,6 +139,8 @@ const handler = (req, res) => {
     return addVideosToRoomList(req, res);
   } else if (req.method === 'POST') {
     return createRoom(req, res);
+  } else if (req.method === 'DELETE') {
+    return deleteVideoFromRoomList(req, res);
   } else {
     return res
       .status(405)
