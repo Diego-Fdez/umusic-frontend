@@ -1,19 +1,46 @@
+import { useEffect } from 'react';
 import Link from 'next/link';
+import useSWR from 'swr';
 import styles from './styles/Sidebar.module.css';
 import { Loader } from '@/components';
-import { useFetch } from '@/hooks/useFetchFromYoutube';
 import videoStore from '@/store/videoStore';
 import { formattedTime } from '@/utils/formattedTime';
 
+const options = {
+  method: 'GET',
+  headers: {
+    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY,
+    'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST,
+  },
+};
+
+const baseURL = 'https://youtube138.p.rapidapi.com';
+
+const fetcher = (url) => fetch(url, options).then((res) => res.json());
+
 const Sidebar = ({ videoId }) => {
   const videos = videoStore((state) => state.videos);
-  const loading = videoStore((state) => state.loading);
-  useFetch(`v1/video/related-contents/?id=${videoId}&hl=en&gl=US`);
+  const addVideos = videoStore((state) => state.addVideos);
+
+  //fetching the videos from the API with swr
+  const { data, error, isLoading } = useSWR(
+    `${baseURL}/v1/video/related-contents/?id=${videoId}&hl=en&gl=US`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  //setting the videos to the videoStore
+  useEffect(() => {
+    if (!isLoading) addVideos(data?.contents);
+  }, [data]);
 
   return (
     <div className={styles.playlistDetailContainer}>
       <h2 className={styles.playlistDetailTitle}>Related Videos</h2>
-      {loading && <Loader />}
+      {isLoading && <Loader />}
       {videos?.map((video) => (
         <div key={video?.video?.videoId} className={styles.playlistDetailVideo}>
           <div className={styles.playlistDetailVideoThumbnail}>

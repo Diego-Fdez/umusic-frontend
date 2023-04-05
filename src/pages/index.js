@@ -2,6 +2,7 @@ import { useEffect, Suspense } from 'react';
 import Head from 'next/head';
 import { useAuth0 } from '@auth0/auth0-react';
 import io from 'socket.io-client';
+import useSWR from 'swr';
 import styles from '@/styles/Home.module.css';
 import {
   CategoryScreen,
@@ -12,20 +13,48 @@ import {
 } from '@/components';
 import videoStore from '@/store/videoStore';
 import userStore from '@/store/userStore';
-import { useFetch } from '@/hooks/useFetchFromYoutube';
 
 let socket;
 
+const options = {
+  method: 'GET',
+  headers: {
+    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY,
+    'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST,
+  },
+};
+
+const baseURL = 'https://youtube138.p.rapidapi.com';
+
+const fetcher = (url) => fetch(url, options).then((res) => res.json());
+
 export default function Home() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const { loading } = useFetch();
   const addUserToken = userStore((state) => state.addUserToken);
   const addUserInfo = userStore((state) => state.addUserInfo);
   const setIsAuthenticated = userStore((state) => state.setIsAuthenticated);
   const userToken = userStore((state) => state.userToken);
   const videos = videoStore((state) => state.videos);
   const currentPlaylist = videoStore((state) => state.currentPlaylist);
+  const addVideos = videoStore((state) => state.addVideos);
+  const keyword = videoStore((state) => state.keyword);
 
+  //fetching the videos from the API with swr
+  const { data, error, isLoading } = useSWR(
+    `${baseURL}/v1/search/?q=${keyword}&hl=en&gl=US`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  //setting the videos to the videoStore
+  useEffect(() => {
+    if (!isLoading) addVideos(data?.contents);
+  }, [data]);
+
+  //enable connection to the socket server
   useEffect(() => {
     socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER);
     socket.emit('joinRoom', currentPlaylist?._id);
@@ -72,7 +101,7 @@ export default function Home() {
       <GoogleAnalytics />
       <Navbar />
       <CategoryScreen />
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <main className={styles.homeContainer}>
