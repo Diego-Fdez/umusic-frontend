@@ -26,13 +26,13 @@ const UsePlaying = () => {
     setCurrentVideoIndex(
       (currentVideoIndex - 1 + videos?.length) % videos?.length
     );
-    setShouldAutoPlay(false);
+    setShouldAutoPlay(true);
   };
 
   //forward cycle
   const handleNext = () => {
     setCurrentVideoIndex((currentVideoIndex + 1) % videos?.length);
-    setShouldAutoPlay(false);
+    setShouldAutoPlay(true);
   };
 
   return { handleEnded, playVideo, handlePrev, handleNext };
