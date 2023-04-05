@@ -48,6 +48,7 @@ const PlayerScreen = () => {
               height='100%'
               controls={true}
               loop
+              playing={true}
             />
           </article>
           <div className={styles.videoInfo}>
