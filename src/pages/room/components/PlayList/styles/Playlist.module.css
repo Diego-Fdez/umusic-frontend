@@ -1,4 +1,5 @@
 .roomListContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 95%;
@@ -8,7 +9,41 @@
 }
 
 .roomListTitle {
-  color: #fff;
+  color: #f0ffff;
+}
+
+.clearAllVideosButton {
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 9rem;
+  height: 2rem;
+  padding: 0.5rem;
+  border: 1px solid #ff0000;
+  border-radius: 1rem;
+  background-color: transparent;
+  gap: 0.5rem;
+  transition: all 0.3ms ease-in-out;
+}
+
+.clearAllVideosButton:hover {
+  cursor: pointer;
+  background-color: #f0ffff58;
+}
+
+.clearAllVideosButton > small {
+  color: #f0ffff;
+  font-weight: 700;
+}
+
+.clearAllVideosButton > img {
+  width: 1.4rem;
+  height: 1.4rem;
+  object-fit: cover;
 }
 
 .roomListVideo {
@@ -18,7 +53,8 @@
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  height: 95px;
+  height: 120px;
+  margin-top: 1.3rem;
   transition: all 0.3ms ease-in-out;
 }
 
@@ -65,6 +101,7 @@
 }
 
 .roomVideoInfoContainer {
+  position: relative;
   margin-left: 0.2rem;
 }
 
@@ -78,6 +115,33 @@
   font-size: 0.7rem;
 }
 
+.roomListVideo > button {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  border: 2px solid #ff0000;
+  border-radius: 1rem;
+  background-color: transparent;
+  transition: all 0.3ms ease-in-out;
+}
+
+.roomListVideo > button:hover {
+  cursor: pointer;
+  background-color: #f0ffff58;
+}
+
+.roomListVideo > button > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* tablet mini */
 @media screen and (min-width: 541px) and (max-width: 768px) {
   .roomListTitle {
@@ -86,8 +150,18 @@
     margin-bottom: 2rem;
   }
 
+  .clearAllVideosButton {
+    top: 2.9rem;
+    right: 5rem;
+  }
+
   .roomListVideo {
     margin-left: 2rem;
+  }
+
+  .roomListVideo > button {
+    bottom: 1.5rem;
+    right: 17rem;
   }
 }
 
@@ -99,14 +173,29 @@
     margin-bottom: 2rem;
   }
 
+  .clearAllVideosButton {
+    top: 3.1rem;
+    right: 5rem;
+  }
+
   .roomListVideo {
     margin-left: 2rem;
+  }
+
+  .roomListVideo > button {
+    bottom: 1.5rem;
+    right: 17rem;
   }
 }
 
 /* laptop */
 @media screen and (min-width: 913px) {
   .roomListContainer {
-    width: 60%;
+    width: 70%;
+  }
+
+  .roomListVideo > button {
+    bottom: 0.8rem;
+    right: 0.2rem;
   }
 }
