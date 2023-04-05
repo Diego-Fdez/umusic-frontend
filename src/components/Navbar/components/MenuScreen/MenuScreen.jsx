@@ -75,7 +75,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
               height={24}
               loading='lazy'
             />
-            <p>My Rooms</p>
+            <p>My Playlists</p>
           </Link>
         </li>
       </ul>
