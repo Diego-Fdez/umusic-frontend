@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { useAuth0 } from '@auth0/auth0-react';
-import userStore from '@/store/userStore';
-import styles from './styles/NavModal.module.css';
+import Link from "next/link";
+import Image from "next/image";
+import { useAuth0 } from "@auth0/auth0-react";
+import userStore from "@/store/userStore";
+import styles from "./styles/NavModal.module.css";
 
 const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
   const { logout } = useAuth0();
@@ -12,7 +12,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
     <div
       className={styles.navbarModalContainer}
       style={{
-        display: isOpen ? 'flex' : 'none',
+        display: isOpen ? "flex" : "none",
       }}
     >
       <ul className={styles.navbarModalList}>
@@ -34,7 +34,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
               <p>Logout</p>
             </button>
           ) : (
-            <Link href={'/login'} onClick={() => setIsOpen(!isOpen)}>
+            <Link href={"/login"} onClick={() => setIsOpen(!isOpen)}>
               <Image
                 src='/login-icon.svg'
                 alt='login-icon'
@@ -47,37 +47,43 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
             </Link>
           )}
         </li>
-        <li className={styles.navbarModalListItem}>
-          <button
-            onClick={() => {
-              setIsOpen(!isOpen);
-              setModalOpen(!modalOpen);
-            }}
-          >
-            <Image
-              src='/qrcode-icon.svg'
-              alt='qrcode-icon'
-              className={styles.navbarModalItemImg}
-              width={24}
-              height={24}
-              loading='lazy'
-            />
-            <p>Generate QR</p>
-          </button>
-        </li>
-        <li className={styles.navbarModalListItem}>
-          <Link href={'/room'} onClick={() => setIsOpen(!isOpen)}>
-            <Image
-              src='/music-list-icon.svg'
-              alt='music-list-icon'
-              className={styles.navbarModalItemImg}
-              width={24}
-              height={24}
-              loading='lazy'
-            />
-            <p>My Playlists</p>
-          </Link>
-        </li>
+        {isAuthenticated ? (
+          <>
+            <li className={styles.navbarModalListItem}>
+              <button
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                  setModalOpen(!modalOpen);
+                }}
+              >
+                <Image
+                  src='/qrcode-icon.svg'
+                  alt='qrcode-icon'
+                  className={styles.navbarModalItemImg}
+                  width={24}
+                  height={24}
+                  loading='lazy'
+                />
+                <p>Generate QR</p>
+              </button>
+            </li>
+            <li className={styles.navbarModalListItem}>
+              <Link href={"/room"} onClick={() => setIsOpen(!isOpen)}>
+                <Image
+                  src='/music-list-icon.svg'
+                  alt='music-list-icon'
+                  className={styles.navbarModalItemImg}
+                  width={24}
+                  height={24}
+                  loading='lazy'
+                />
+                <p>My Playlists</p>
+              </Link>
+            </li>
+          </>
+        ) : (
+          <></>
+        )}
       </ul>
     </div>
   );
