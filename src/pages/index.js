@@ -1,30 +1,31 @@
-import { useEffect, Suspense } from 'react';
-import Head from 'next/head';
-import { useAuth0 } from '@auth0/auth0-react';
-import io from 'socket.io-client';
-import useSWR from 'swr';
-import styles from '@/styles/Home.module.css';
+import { useEffect, Suspense } from "react";
+import Head from "next/head";
+import { useAuth0 } from "@auth0/auth0-react";
+import io from "socket.io-client";
+import useSWR from "swr";
+import styles from "@/styles/Home.module.css";
 import {
   CategoryScreen,
   Loader,
   Navbar,
   VideoCard,
   GoogleAnalytics,
-} from '@/components';
-import videoStore from '@/store/videoStore';
-import userStore from '@/store/userStore';
+} from "@/components";
+import videoStore from "@/store/videoStore";
+import userStore from "@/store/userStore";
+import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
 
 let socket;
 
 const options = {
-  method: 'GET',
+  method: "GET",
   headers: {
-    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY,
-    'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST,
+    "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
+    "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
   },
 };
 
-const baseURL = 'https://youtube138.p.rapidapi.com';
+const baseURL = "https://youtube138.p.rapidapi.com";
 
 const fetcher = (url) => fetch(url, options).then((res) => res.json());
 
@@ -48,16 +49,19 @@ export default function Home() {
       revalidateOnReconnect: false,
     }
   );
-
+  console.log(videos);
   //setting the videos to the videoStore
   useEffect(() => {
-    if (!isLoading) addVideos(data?.contents);
+    if (!isLoading) {
+      const filteredVideos = filterEmptyVideos(data?.contents);
+      addVideos(filteredVideos);
+    }
   }, [data]);
 
   //enable connection to the socket server
   useEffect(() => {
     socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER);
-    socket.emit('joinRoom', currentPlaylist?._id);
+    socket.emit("joinRoom", currentPlaylist?._id);
   }, []);
 
   //This function will get the Auth0 token
@@ -69,7 +73,7 @@ export default function Home() {
   useEffect(() => {
     /* Checking if the user is authenticated and if the userToken is not null. If it is not null, it
     will add the userToken and the user to the userStore. */
-    if (userToken === '' && isAuthenticated) {
+    if (userToken === "" && isAuthenticated) {
       getAuth0Token();
 
       /* Checking if the user is authenticated and if it is, it will add the user to the userStore. */
