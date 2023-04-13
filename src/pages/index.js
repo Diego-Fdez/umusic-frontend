@@ -1,5 +1,6 @@
 import { useEffect, Suspense } from "react";
 import Head from "next/head";
+import Image from "next/image";
 import { useAuth0 } from "@auth0/auth0-react";
 import io from "socket.io-client";
 import useSWR from "swr";
@@ -14,18 +15,9 @@ import {
 import videoStore from "@/store/videoStore";
 import userStore from "@/store/userStore";
 import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
+import { baseURL, options } from "@/utils/youtubeConfig";
 
 let socket;
-
-const options = {
-  method: "GET",
-  headers: {
-    "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
-    "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
-  },
-};
-
-const baseURL = "https://youtube138.p.rapidapi.com";
 
 const fetcher = (url) => fetch(url, options).then((res) => res.json());
 
@@ -49,7 +41,7 @@ export default function Home() {
       revalidateOnReconnect: false,
     }
   );
-  console.log(videos);
+
   //setting the videos to the videoStore
   useEffect(() => {
     if (!isLoading) {
@@ -109,13 +101,28 @@ export default function Home() {
         <Loader />
       ) : (
         <main className={styles.homeContainer}>
-          {videos?.map((video) => (
-            <VideoCard
-              key={video?.video?.videoId}
-              video={video.video}
-              socket={socket}
-            />
-          ))}
+          {videos?.length <= 0 ? (
+            <div className={styles.noVideos}>
+              <Image
+                src='/men-crying.png'
+                alt='men-crying'
+                width={300}
+                height={300}
+                loading='lazy'
+              />
+              <h3>No videos to show you, please search something</h3>
+            </div>
+          ) : (
+            <>
+              {videos?.map((video) => (
+                <VideoCard
+                  key={video?.video?.videoId}
+                  video={video.video}
+                  socket={socket}
+                />
+              ))}
+            </>
+          )}
         </main>
       )}
     </Suspense>

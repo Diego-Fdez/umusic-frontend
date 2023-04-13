@@ -6,16 +6,7 @@ import { Loader } from "@/components";
 import videoStore from "@/store/videoStore";
 import { formattedTime } from "@/utils/formattedTime";
 import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
-
-const options = {
-  method: "GET",
-  headers: {
-    "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
-    "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
-  },
-};
-
-const baseURL = "https://youtube138.p.rapidapi.com";
+import { baseURL, options } from "@/utils/youtubeConfig";
 
 const fetcher = (url) => fetch(url, options).then((res) => res.json());
 
