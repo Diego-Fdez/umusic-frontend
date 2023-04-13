@@ -10,3 +10,18 @@
   overflow-x: hidden;
   gap: 1rem;
 }
+
+.noVideos {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  color: #f0ffff;
+  gap: 1rem;
+}
+
+.noVideos > h3 {
+  text-align: center;
+  width: 9rem;
+}

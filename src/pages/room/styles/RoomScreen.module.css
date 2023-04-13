@@ -6,6 +6,23 @@
   height: 100%;
 }
 
+.noPlaylistVideos {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  color: #f0ffff;
+  gap: 1rem;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+.noPlaylistVideos > h3 {
+  text-align: center;
+  width: 9rem;
+}
+
 /* laptop */
 @media screen and (min-width: 913px) {
   .roomContainer {
