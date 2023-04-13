@@ -1,0 +1,69 @@
+.videoInfo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 1rem;
+  height: 76px;
+  width: 100%;
+  background-color: transparent;
+  font-weight: 700;
+  gap: 0.5rem;
+}
+
+.videoInfoTitle {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.infoAuthorContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.infoAuthorAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+
+.videoInfoSubtitle {
+  color: #ccc;
+  font-size: 0.8rem;
+}
+
+.infoStatsContainer {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.6rem;
+  color: #ccc;
+}
+
+/* tablet mini*/
+@media screen and (min-width: 541px) and (max-width: 768px) {
+  .videoInfo {
+    width: 80%;
+    margin: -1rem auto;
+  }
+}
+
+/* tablet */
+@media screen and (min-width: 769px) and (max-width: 912px) {
+  .videoInfo {
+    width: 62%;
+    margin-left: 4rem;
+    margin-top: 0.8rem;
+  }
+}
+
+/* laptop */
+@media screen and (min-width: 913px) {
+  .videoInfo {
+    width: 62%;
+    margin-left: 4rem;
+  }
+}
