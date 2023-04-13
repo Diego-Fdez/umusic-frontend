@@ -1,16 +1,16 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { toast } from 'react-toastify';
-import styles from './styles/videoCard.module.css';
-import { formattedTime } from '@/utils/formattedTime';
-import UseFetchFromDB from '@/hooks/useFetchFromDB';
-import { setDataVideo } from '@/models/dataFetchModels';
-import persistedVideoStore from '@/store/persistedVideoStore';
-import tempUserStore from '@/store/tempUserStore';
-import userStore from '@/store/userStore';
+import Link from "next/link";
+import Image from "next/image";
+import { toast } from "react-toastify";
+import styles from "./styles/videoCard.module.css";
+import { formattedTime } from "@/utils/formattedTime";
+import UseFetchFromDB from "@/hooks/useFetchFromDB";
+import { setDataVideo } from "@/models/dataFetchModels";
+import persistedVideoStore from "@/store/persistedVideoStore";
+import tempUserStore from "@/store/tempUserStore";
+import userStore from "@/store/userStore";
 
 const VideoCard = ({ video, socket }) => {
-  const { fetchFromDB, loading, error } = UseFetchFromDB();
+  const { fetchFromDB, error } = UseFetchFromDB();
   const user = userStore((state) => state.userInfo);
   const tempUserInfo = tempUserStore((state) => state.tempUserInfo);
   const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
@@ -26,7 +26,7 @@ const VideoCard = ({ video, socket }) => {
     );
 
     /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */
-    const result = await fetchFromDB(`/api/v1/room`, 'PUT', setData);
+    const result = await fetchFromDB(`/api/v1/room`, "PUT", setData);
 
     /* Checking if there is an error in the result of the fetch, and if there is, it shows a toast
       with the error. */
@@ -35,7 +35,7 @@ const VideoCard = ({ video, socket }) => {
 
     /* Creating an object with the data that will be sent to the socket. */
     const videoAdded = {
-      room_name: currentPlaylist?.room_name ? currentPlaylist?.room_name : '',
+      room_name: currentPlaylist?.room_name ? currentPlaylist?.room_name : "",
       user_id: user ? user?.sub : tempUserInfo?.sub,
       videos: {
         channels: {
@@ -52,7 +52,7 @@ const VideoCard = ({ video, socket }) => {
     };
 
     toast.success(result?.data);
-    socket.emit('addVideo', videoAdded);
+    socket.emit("addVideo", videoAdded);
   };
 
   return (
@@ -96,12 +96,12 @@ const VideoCard = ({ video, socket }) => {
             <span>
               {video?.stats?.views
                 ? `${Number(video?.stats?.views).toLocaleString(
-                    'es-US'
+                    "es-US"
                   )} views `
-                : '0 views'}
+                : "0 views"}
             </span>
             <span>
-              {video?.publishedTimeText ? ` - ${video?.publishedTimeText}` : ''}
+              {video?.publishedTimeText ? ` - ${video?.publishedTimeText}` : ""}
             </span>
             <button className={styles.addButton} onClick={() => handleClick()}>
               <Image
