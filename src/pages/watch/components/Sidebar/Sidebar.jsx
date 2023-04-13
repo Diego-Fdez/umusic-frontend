@@ -1,20 +1,21 @@
-import { useEffect } from 'react';
-import Link from 'next/link';
-import useSWR from 'swr';
-import styles from './styles/Sidebar.module.css';
-import { Loader } from '@/components';
-import videoStore from '@/store/videoStore';
-import { formattedTime } from '@/utils/formattedTime';
+import { useEffect } from "react";
+import Link from "next/link";
+import useSWR from "swr";
+import styles from "./styles/Sidebar.module.css";
+import { Loader } from "@/components";
+import videoStore from "@/store/videoStore";
+import { formattedTime } from "@/utils/formattedTime";
+import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
 
 const options = {
-  method: 'GET',
+  method: "GET",
   headers: {
-    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY,
-    'X-RapidAPI-Host': process.env.NEXT_PUBLIC_RAPID_API_HOST,
+    "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
+    "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
   },
 };
 
-const baseURL = 'https://youtube138.p.rapidapi.com';
+const baseURL = "https://youtube138.p.rapidapi.com";
 
 const fetcher = (url) => fetch(url, options).then((res) => res.json());
 
@@ -24,7 +25,7 @@ const Sidebar = ({ videoId }) => {
 
   //fetching the videos from the API with swr
   const { data, error, isLoading } = useSWR(
-    `${baseURL}/v1/video/related-contents/?id=${videoId}&hl=en&gl=US`,
+    `${baseURL}/v1/video/related-contents/?id=${videoId}&hl=es&gl=CR`,
     fetcher,
     {
       revalidateOnFocus: false,
@@ -34,7 +35,10 @@ const Sidebar = ({ videoId }) => {
 
   //setting the videos to the videoStore
   useEffect(() => {
-    if (!isLoading) addVideos(data?.contents);
+    if (!isLoading) {
+      const filteredVideos = filterEmptyVideos(data?.contents);
+      addVideos(filteredVideos);
+    }
   }, [data]);
 
   return (
@@ -70,14 +74,14 @@ const Sidebar = ({ videoId }) => {
               <span>
                 {video?.video?.stats?.views
                   ? `${Number(video?.video?.stats?.views).toLocaleString(
-                      'es-US'
+                      "es-US"
                     )} views `
-                  : '0 views'}
+                  : "0 views"}
               </span>
               <span>
                 {video?.video?.publishedTimeText
                   ? ` - ${video?.video?.publishedTimeText}`
-                  : ''}
+                  : ""}
               </span>
             </div>
           </div>
