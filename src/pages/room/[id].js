@@ -1,14 +1,15 @@
-import { useEffect, Suspense, useState } from 'react';
-import mongoose from 'mongoose';
-import io from 'socket.io-client';
-import styles from './styles/RoomScreen.module.css';
-import videoStore from '@/store/videoStore';
-import { Loader, Navbar, GoogleAnalytics, HeadScreen } from '@/components';
-import PlayList from './components/PlayList/PlayList';
-import VideoHeaders from './components/VideoHeaders/VideoHeaders';
-import VideoScreen from './components/VideoScreen/VideoScreen';
-import Room from '@/models/roomModel';
-import db from '@/database/db';
+import { useEffect, Suspense, useState } from "react";
+import mongoose from "mongoose";
+import io from "socket.io-client";
+import styles from "./styles/RoomScreen.module.css";
+import videoStore from "@/store/videoStore";
+import { Loader, Navbar, GoogleAnalytics, HeadScreen } from "@/components";
+import PlayList from "./components/PlayList/PlayList";
+import VideoHeaders from "./components/VideoHeaders/VideoHeaders";
+import VideoScreen from "./components/VideoScreen/VideoScreen";
+import Room from "@/models/roomModel";
+import db from "@/database/db";
+import Image from "next/image";
 
 let socket;
 
@@ -24,18 +25,18 @@ const RoomScreen = ({ data }) => {
   //init socket
   useEffect(() => {
     socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER);
-    socket.emit('joinRoom', data[0]?._id);
+    socket.emit("joinRoom", data[0]?._id);
   }, []);
 
   //listen to the socket
   useEffect(() => {
-    socket.on('newVideo', (video) => {
+    socket.on("newVideo", (video) => {
       if (video._id === data[0]._id)
         setVideos((prevVideos) => [...prevVideos, video]);
     });
 
     return () => {
-      socket.off('newVideo');
+      socket.off("newVideo");
     };
   });
 
@@ -43,11 +44,11 @@ const RoomScreen = ({ data }) => {
   useEffect(() => {
     addVideoList(videos);
   }, [videos]);
-
+  console.log(videos);
   return (
     <Suspense fallback={<Loader />}>
       <HeadScreen
-        title={'Playlist'}
+        title={"Playlist"}
         content={`¿Quieres crear tu propia lista de reproducción personalizada? ¡No hay problema! Nuestra app te 
         permite crear y compartir tus propias listas de reproducción, o colaborar con amigos para crear listas de 
         reproducción compartidas. ¡Explora nuestras listas de reproducción hoy y descubre la mejor música para 
@@ -56,13 +57,28 @@ const RoomScreen = ({ data }) => {
       <GoogleAnalytics />
       <Navbar />
       <main className={styles.roomContainer}>
-        <article className={styles.playerVideoContainer}>
-          <VideoScreen />
-          <VideoHeaders />
-        </article>
-        <aside>
-          <PlayList />
-        </aside>
+        {videos.length <= 0 ? (
+          <div className={styles.noPlaylistVideos}>
+            <Image
+              src='/styled-men.jpg'
+              alt='styled-men'
+              width={300}
+              height={300}
+              loading='lazy'
+            />
+            <h3>There are no videos in this playlist</h3>
+          </div>
+        ) : (
+          <>
+            <article className={styles.playerVideoContainer}>
+              <VideoScreen />
+              <VideoHeaders />
+            </article>
+            <aside>
+              <PlayList />
+            </aside>
+          </>
+        )}
       </main>
     </Suspense>
   );
@@ -85,29 +101,29 @@ export async function getServerSideProps(context) {
       },
     },
     {
-      $unwind: '$video_id',
+      $unwind: "$video_id",
     },
     {
       $lookup: {
-        from: 'videos',
-        localField: 'video_id',
-        foreignField: 'video_id',
-        as: 'videos',
+        from: "videos",
+        localField: "video_id",
+        foreignField: "video_id",
+        as: "videos",
       },
     },
     {
-      $unwind: '$videos',
+      $unwind: "$videos",
     },
     {
       $lookup: {
-        from: 'channels',
-        localField: 'videos.video_id',
-        foreignField: 'video_id',
-        as: 'videos.channels',
+        from: "channels",
+        localField: "videos.video_id",
+        foreignField: "video_id",
+        as: "videos.channels",
       },
     },
     {
-      $unwind: '$videos.channels',
+      $unwind: "$videos.channels",
     },
     {
       $project: {
@@ -115,15 +131,15 @@ export async function getServerSideProps(context) {
         updatedAt: 0,
         video_id: 0,
         __v: 0,
-        'videos._id': 0,
-        'videos.createdAt': 0,
-        'videos.updatedAt': 0,
-        'videos.__v': 0,
-        'videos.channels.createdAt': 0,
-        'videos.channels.updatedAt': 0,
-        'videos.channels.video_id': 0,
-        'videos.channels._id': 0,
-        'videos.channels.__v': 0,
+        "videos._id": 0,
+        "videos.createdAt": 0,
+        "videos.updatedAt": 0,
+        "videos.__v": 0,
+        "videos.channels.createdAt": 0,
+        "videos.channels.updatedAt": 0,
+        "videos.channels.video_id": 0,
+        "videos.channels._id": 0,
+        "videos.channels.__v": 0,
       },
     },
   ]);
