@@ -1,65 +1,75 @@
-import QRCode from 'qrcode';
+import QRCode from "qrcode";
 
-//It takes a long URL and returns a shortened URL
-const getShortenedURL = async (longURL) => {
-  /* Creating a new URL object. */
-  const url = new URL('https://t.ly/api/v1/link/shorten');
+//This function creates a short URL using a random string and saves it to a Supabase database.
+const createShortLink = async (longURL) => {
+  const shortUrl = Math.random().toString(36).substr(2, 6);
 
-  /* Setting the api_token to the value of the SHORTER_API_KEY environment variable. */
-  const params = {
-    api_token: process.env.SHORTER_API_KEY,
-  };
+  try {
+    await fetch("https://lwcehdpteppgotsedvhm.supabase.co/rest/v1/cut_url", {
+      method: "POST",
+      headers: {
+        apikey: process.env.SUPABASE_API_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: longURL, short_url: shortUrl }),
+    }).then(({ data }) => data);
+  } catch (error) {
+    throw error;
+  }
+};
 
-  /* Adding the api_token to the URL. */
-  Object.keys(params).forEach((key) =>
-    url.searchParams.append(key, params[key])
-  );
+//The function retrieves a short URL from a Supabase database based on a given long URL.
+const getShortLink = async (longURL) => {
+  try {
+    const shortLink = await fetch(
+      `https://lwcehdpteppgotsedvhm.supabase.co/rest/v1/cut_url?url=eq.${longURL}&select=short_url`,
+      {
+        method: "GET",
+        headers: {
+          apikey: process.env.SUPABASE_API_KEY,
+          Authorization: `Bearer ${process.env.SUPABASE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((result) => result);
 
-  /* Setting the headers of the request. */
-  const headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  };
-
-  /* Converting the data to JSON format. */
-  const setData = JSON.stringify({
-    long_url: longURL,
-    domain: 'https://t.ly/',
-    include_qr_code: false,
-  });
-
-  return fetch(url, {
-    method: 'POST',
-    headers,
-    body: setData,
-  }).then((response) => response.json());
+    return shortLink[0]?.short_url;
+  } catch (error) {
+    throw error;
+  }
 };
 
 //It takes a token and an id, and returns a QR code
 const generateQR = async (req, res) => {
-  if (req.method !== 'POST') {
+  if (req.method !== "POST") {
     return res
       .status(405)
-      .send({ status: 'FAILED', data: { error: 'Method not allowed' } });
+      .send({ status: "FAILED", data: { error: "Method not allowed" } });
   }
 
   const { token, id, room } = req.body;
 
   const url = `${process.env.FRONTEND_URL}/tempauth/${id}/${room}/${token}`;
 
-  //const shortenedURL = await getShortenedURL(url);
-
   try {
-    const qrImage = await QRCode.toDataURL(url);
+    await createShortLink(url);
+    const shortLink = await getShortLink(url);
+
+    const qrImage = await QRCode.toDataURL(
+      `${process.env.FRONTEND_URL}/${shortLink}`
+    );
 
     res.status(201).send({
-      status: 'OK',
-      data: { qrImage, linkURL: url },
+      status: "OK",
+      data: { qrImage, linkURL: `${process.env.FRONTEND_URL}/${shortLink}` },
     });
   } catch (error) {
     res
       .status(error?.status || 500)
-      .send({ status: 'FAILED', data: { error: error?.message || error } });
+      .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
