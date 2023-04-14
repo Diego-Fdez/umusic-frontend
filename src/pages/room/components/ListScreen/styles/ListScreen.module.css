@@ -5,6 +5,12 @@
   color: #f0ffff;
   width: 100%;
 }
+
+.listContainer > h2 {
+  text-align: center;
+  color: #f0ffff;
+}
+
 .listContainer > li {
   display: flex;
   flex-direction: row;
