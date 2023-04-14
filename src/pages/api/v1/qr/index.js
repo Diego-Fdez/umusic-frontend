@@ -59,12 +59,15 @@ const generateQR = async (req, res) => {
     const shortLink = await getShortLink(url);
 
     const qrImage = await QRCode.toDataURL(
-      `${process.env.FRONTEND_URL}/${shortLink}`
+      `${process.env.FRONTEND_URL}/shorturl/${shortLink}`
     );
 
     res.status(201).send({
       status: "OK",
-      data: { qrImage, linkURL: `${process.env.FRONTEND_URL}/${shortLink}` },
+      data: {
+        qrImage,
+        linkURL: `${process.env.FRONTEND_URL}/shorturl/${shortLink}`,
+      },
     });
   } catch (error) {
     res
