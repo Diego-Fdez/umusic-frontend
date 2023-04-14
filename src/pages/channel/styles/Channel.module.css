@@ -1,0 +1,27 @@
+.channelContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 2rem 0;
+  overflow-x: hidden;
+  gap: 1rem;
+}
+
+.noChannelVideos {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  color: #f0ffff;
+  gap: 1rem;
+}
+
+.noChannelVideos > h3 {
+  text-align: center;
+  width: 9rem;
+}
