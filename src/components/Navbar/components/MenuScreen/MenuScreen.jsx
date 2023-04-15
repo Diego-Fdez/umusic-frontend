@@ -47,6 +47,19 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
             </Link>
           )}
         </li>
+        <li className={styles.navbarModalListItem}>
+          <Link href={"/profile"} onClick={() => setIsOpen(!isOpen)}>
+            <Image
+              src='/config-icon.svg'
+              alt='configurations-icon'
+              className={styles.navbarModalItemImg}
+              width={24}
+              height={24}
+              loading='lazy'
+            />
+            <p>Configurations</p>
+          </Link>
+        </li>
         {isAuthenticated ? (
           <>
             <li className={styles.navbarModalListItem}>
