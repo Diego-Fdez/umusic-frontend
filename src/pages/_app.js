@@ -3,10 +3,16 @@ import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.css";
 import UseAuth0Provider from "@/hooks/useAuth0Provider";
 
-export default function App({ Component, pageProps }) {
+const Noop = ({ children }) => <>{children}</>;
+
+function App({ Component, pageProps }) {
+  const Auth = Component.Auth || Noop;
+
   return (
     <UseAuth0Provider>
-      <Component {...pageProps} autoPlay />
+      <Auth>
+        <Component {...pageProps} />
+      </Auth>
       <ToastContainer
         position='top-right'
         autoClose={3000}
@@ -22,3 +28,5 @@ export default function App({ Component, pageProps }) {
     </UseAuth0Provider>
   );
 }
+
+export default App;
