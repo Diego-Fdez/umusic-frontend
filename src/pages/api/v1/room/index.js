@@ -1,17 +1,33 @@
-import db from '@/database/db';
-import Room from '@/models/roomModel';
+import db from "@/database/db";
+import Room from "@/models/roomModel";
 import {
   registerChannel,
   registerVideo,
-} from '../videosController/videosController';
+} from "../videosController/videosController";
+import { verifyToken } from "@/middlewares/checkJwt";
+
+/* Checking if the token is valid. */
+async function checkTheToken(req, res) {
+  /* Checking if the token is valid. */
+  const token = req.headers.authorization?.split(" ")[1];
+  const isValidToken = await verifyToken(token);
+
+  /* Checking if the token is valid. */
+  if (!isValidToken) {
+    return res.status(401).send({
+      status: "FAILED",
+      data: { error: "Token is invalid" },
+    });
+  }
+}
 
 /**inserts the channel info into the database, inserts the video
  * info into the database, and then inserts the room info into the database.*/
 const addVideosToRoomList = async (req, res) => {
-  if (req.method !== 'PUT') {
+  if (req.method !== "PUT") {
     return res
       .status(405)
-      .send({ status: 'FAILED', data: { error: 'Method not supported' } });
+      .send({ status: "FAILED", data: { error: "Method not supported" } });
   }
 
   const {
@@ -27,6 +43,8 @@ const addVideosToRoomList = async (req, res) => {
 
   const id = roomId;
   try {
+    await checkTheToken(req, res);
+
     await db.connect();
 
     /* Inserting a new video to room. */
@@ -36,7 +54,7 @@ const addVideosToRoomList = async (req, res) => {
     if (!roomExists) {
       return res
         .status(404)
-        .send({ status: 'FAILED', data: { error: 'Room does not exist' } });
+        .send({ status: "FAILED", data: { error: "Room does not exist" } });
     }
 
     /* Adding the videoId to the video_id array in the room document. */
@@ -53,11 +71,11 @@ const addVideosToRoomList = async (req, res) => {
 
     res
       .status(201)
-      .send({ status: 'OK', data: 'Your video has been added to the list!' });
+      .send({ status: "OK", data: "Your video has been added to the list!" });
   } catch (error) {
     res
       .status(error?.status || 500)
-      .send({ status: 'FAILED', data: { error: error?.message || error } });
+      .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
@@ -66,6 +84,8 @@ const createRoom = async (req, res) => {
   const { userId, roomName } = req.body;
 
   try {
+    await checkTheToken(req, res);
+
     await db.connect();
 
     /* Checking if the room name already exists in the database. */
@@ -74,8 +94,8 @@ const createRoom = async (req, res) => {
     /* Checking if the room name already exists in the database. */
     if (roomNameExist) {
       return res.status(404).send({
-        status: 'FAILED',
-        data: { error: 'A room with that name already exists' },
+        status: "FAILED",
+        data: { error: "A room with that name already exists" },
       });
     }
 
@@ -89,11 +109,11 @@ const createRoom = async (req, res) => {
     await newRoom.save();
     await db.disconnect();
 
-    res.status(201).send({ status: 'OK', data: newRoom });
+    res.status(201).send({ status: "OK", data: newRoom });
   } catch (error) {
     res
       .status(error?.status || 500)
-      .send({ status: 'FAILED', data: { error: error?.message || error } });
+      .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
@@ -102,6 +122,8 @@ const deleteVideoFromRoomList = async (req, res) => {
   const { id } = req.body;
 
   try {
+    await checkTheToken(req, res);
+
     await db.connect();
 
     /* Getting the room by the id. */
@@ -110,8 +132,8 @@ const deleteVideoFromRoomList = async (req, res) => {
     /* It checks if the video exists. If it doesn't, it sends a message to the frontend. */
     if (!videoExist) {
       res.status(404).send({
-        status: 'FAILED',
-        data: { error: 'Video not found' },
+        status: "FAILED",
+        data: { error: "Video not found" },
       });
       return;
     }
@@ -124,27 +146,27 @@ const deleteVideoFromRoomList = async (req, res) => {
 
     //sending the response to the frontend
     res.status(200).send({
-      status: 'OK',
-      data: 'Video removed from the playlist.',
+      status: "OK",
+      data: "Video removed from the playlist.",
     });
   } catch (error) {
     res
       .status(error?.status || 500)
-      .send({ status: 'FAILED', data: { error: error?.message || error } });
+      .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
 const handler = (req, res) => {
-  if (req.method === 'PUT') {
+  if (req.method === "PUT") {
     return addVideosToRoomList(req, res);
-  } else if (req.method === 'POST') {
+  } else if (req.method === "POST") {
     return createRoom(req, res);
-  } else if (req.method === 'DELETE') {
+  } else if (req.method === "DELETE") {
     return deleteVideoFromRoomList(req, res);
   } else {
     return res
       .status(405)
-      .send({ status: 'FAILED', data: { error: 'Method not allowed' } });
+      .send({ status: "FAILED", data: { error: "Method not allowed" } });
   }
 };
 export default handler;

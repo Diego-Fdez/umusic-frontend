@@ -1,4 +1,5 @@
 import QRCode from "qrcode";
+import { verifyToken } from "@/middlewares/checkJwt";
 
 //This function creates a short URL using a random string and saves it to a Supabase database.
 const createShortLink = async (longURL) => {
@@ -55,7 +56,20 @@ const generateQR = async (req, res) => {
   const url = `${process.env.FRONTEND_URL}/tempauth/${id}/${room}/${token}`;
 
   try {
+    /* Checking if the token is valid. */
+    const token = req.headers.authorization?.split(" ")[1];
+    const isValidToken = await verifyToken(token);
+
+    /* Checking if the token is valid. */
+    if (!isValidToken) {
+      return res.status(401).send({
+        status: "FAILED",
+        data: { error: "Token is invalid" },
+      });
+    }
+
     await createShortLink(url);
+
     const shortLink = await getShortLink(url);
 
     const qrImage = await QRCode.toDataURL(

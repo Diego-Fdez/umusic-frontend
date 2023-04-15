@@ -44,7 +44,7 @@ const RoomScreen = ({ data }) => {
   useEffect(() => {
     addVideoList(videos);
   }, [videos]);
-  console.log(videos);
+
   return (
     <Suspense fallback={<Loader />}>
       <HeadScreen
