@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
-import styles from './styles/SearchBar.module.css';
-import videoStore from '@/store/videoStore';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import styles from "./styles/SearchBar.module.css";
+import videoStore from "@/store/videoStore";
 
 const SearchBar = () => {
   const router = useRouter();
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const addKeyword = videoStore((state) => state.addKeyword);
 
   /**The addKeyword function adds the keyword to the
@@ -16,8 +16,8 @@ const SearchBar = () => {
 
     try {
       addKeyword(input);
-      if (router.pathname !== '/') router.push('/');
-      setInput('');
+      if (router.pathname !== "/") router.push("/");
+      setInput("");
     } catch (error) {
       console.log(error);
     }
@@ -27,7 +27,7 @@ const SearchBar = () => {
     <form
       onSubmit={handleSubmit}
       onKeyUp={(e) => {
-        if (e.key === 'Enter') handleSubmit;
+        if (e.key === "Enter") handleSubmit;
       }}
       className={styles.searchContainer}
     >
@@ -35,6 +35,7 @@ const SearchBar = () => {
         type='search'
         placeholder='Search your music'
         className={styles.searchInput}
+        value={input}
         onChange={(e) => setInput(e.target.value)}
       />
       <button type='submit' className={styles.searchButton}>
