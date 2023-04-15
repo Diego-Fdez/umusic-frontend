@@ -13,6 +13,7 @@ const VideoCard = ({ video, socket }) => {
   const { fetchFromDB, error } = UseFetchFromDB();
   const user = userStore((state) => state.userInfo);
   const tempUserInfo = tempUserStore((state) => state.tempUserInfo);
+  const tempUserToken = tempUserStore((state) => state.tempUserToken);
   const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
 
   /** It creates an object with the data that will be sent to the database, and then calls the
@@ -26,7 +27,12 @@ const VideoCard = ({ video, socket }) => {
     );
 
     /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */
-    const result = await fetchFromDB(`/api/v1/room`, "PUT", setData);
+    const result = await fetchFromDB(
+      `/api/v1/room`,
+      "PUT",
+      setData,
+      tempUserToken
+    );
 
     /* Checking if there is an error in the result of the fetch, and if there is, it shows a toast
       with the error. */
