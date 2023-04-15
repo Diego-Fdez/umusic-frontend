@@ -20,7 +20,7 @@ const ListScreen = () => {
   //It fetches the playlists from the database.
   const handlerGetAllPlaylists = async () => {
     /* Checking if the user is logged in. If not, it will display a toast message. */
-    if (!user) return toast.info("Please login to view your playlists");
+    if (!user?.sub) return toast.info("Please login to view your playlists");
 
     const result = await fetchFromDB("/api/v1/my-rooms", "POST", {
       userId: user?.sub,
@@ -31,7 +31,7 @@ const ListScreen = () => {
     if (error) return toast.error(error);
 
     setRooms(result?.data);
-    setCurrentPlaylist(result?.data[0]);
+    setCurrentPlaylist(result?.data[0]); //ToDo
   };
 
   useEffect(() => {
