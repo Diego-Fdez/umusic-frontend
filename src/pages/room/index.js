@@ -5,8 +5,9 @@ import styles from "./styles/RoomList.module.css";
 import { Navbar, Loader, GoogleAnalytics, HeadScreen } from "@/components";
 import ListScreen from "./components/ListScreen/ListScreen";
 import UseFetchFromDB from "@/hooks/useFetchFromDB";
+import { WithPrivateRoute } from "@/components/WithPrivateRoute";
 
-const RoomList = () => {
+export default function RoomList() {
   const { user } = useAuth0();
   const { fetchFromDB, loading, error } = UseFetchFromDB();
   const [roomName, setRoomName] = useState("");
@@ -76,6 +77,6 @@ const RoomList = () => {
       )}
     </Suspense>
   );
-};
+}
 
-export default RoomList;
+RoomList.Auth = WithPrivateRoute;

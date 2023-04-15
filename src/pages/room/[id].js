@@ -1,4 +1,5 @@
 import { useEffect, Suspense, useState } from "react";
+import Image from "next/image";
 import mongoose from "mongoose";
 import io from "socket.io-client";
 import styles from "./styles/RoomScreen.module.css";
@@ -9,11 +10,11 @@ import VideoHeaders from "./components/VideoHeaders/VideoHeaders";
 import VideoScreen from "./components/VideoScreen/VideoScreen";
 import Room from "@/models/roomModel";
 import db from "@/database/db";
-import Image from "next/image";
+import { WithPrivateRoute } from "@/components/WithPrivateRoute";
 
 let socket;
 
-const RoomScreen = ({ data }) => {
+export default function RoomScreen({ data }) {
   const addVideoList = videoStore((state) => state.addVideoList);
   const [videos, setVideos] = useState([]);
 
@@ -82,9 +83,9 @@ const RoomScreen = ({ data }) => {
       </main>
     </Suspense>
   );
-};
+}
 
-export default RoomScreen;
+RoomScreen.Auth = WithPrivateRoute;
 
 export async function getServerSideProps(context) {
   const { params } = context;
