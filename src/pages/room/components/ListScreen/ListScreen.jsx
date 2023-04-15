@@ -26,9 +26,10 @@ const ListScreen = () => {
       userId: user?.sub,
     });
 
-    if (result?.data?.error) {
-      toast.error(result?.data?.error);
-    }
+    //if the result is an error, display it.
+    if (result?.data?.error) return toast.error(result?.data?.error);
+    if (error) return toast.error(error);
+
     setRooms(result?.data);
     setCurrentPlaylist(result?.data[0]);
   };
