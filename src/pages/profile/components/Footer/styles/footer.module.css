@@ -1,0 +1,14 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 1rem;
+}
+
+.footer > p {
+  text-align: center;
+  font-size: smaller;
+  color: #cccccc92;
+  font-weight: 700;
+}

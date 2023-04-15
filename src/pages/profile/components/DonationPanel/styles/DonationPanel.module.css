@@ -1,0 +1,56 @@
+.donationContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 90px;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 0.5px solid #ccc;
+}
+
+.donationContainer > p {
+  color: #f0ffff;
+  font-size: smaller;
+  font-weight: 500;
+  text-align: center;
+}
+
+.donationButton {
+  height: 45px;
+  width: 197px;
+  margin-bottom: 1rem;
+}
+
+/* tablet */
+@media screen and (min-width: 541px) and (max-width: 768px) {
+  .donationContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .donationButton {
+    margin-right: 2rem;
+    margin-bottom: 0;
+  }
+}
+
+/* laptop */
+@media screen and (min-width: 769px) {
+  .donationContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .donationButton {
+    margin-right: 4rem;
+    margin-bottom: 0;
+  }
+}
