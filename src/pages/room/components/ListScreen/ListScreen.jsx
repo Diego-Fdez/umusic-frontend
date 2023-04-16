@@ -17,6 +17,29 @@ const ListScreen = () => {
     (state) => state.setCurrentPlaylist
   );
 
+  //if the user has no playlists, it will create one.
+  const handlerSaveDefaultPlaylist = async (roomId) => {
+    const result = await fetchFromDB(
+      `/api/v1/user-configs/${user?.sub}`,
+      "GET"
+    );
+
+    if (result?.data?.error === "No configs found") {
+      const newUserConfigs = await fetchFromDB("/api/v1/user-configs", "POST", {
+        userId: user?.sub,
+        roomId: roomId,
+      });
+
+      //if the result is an error, return.
+      if (!result?.data?.error || !error)
+        //set the current playlist to the new user configs.
+        setCurrentPlaylist({
+          _id: newUserConfigs?.data?.room_id,
+          room_name: newUserConfigs?.data?.name[0]?.room_name,
+        });
+    }
+  };
+
   //It fetches the playlists from the database.
   const handlerGetAllPlaylists = async () => {
     /* Checking if the user is logged in. If not, it will display a toast message. */
@@ -31,7 +54,8 @@ const ListScreen = () => {
     if (error) return toast.error(error);
 
     setRooms(result?.data);
-    setCurrentPlaylist(result?.data[0]); //ToDo
+    //if the user has no playlists, it will create one.
+    await handlerSaveDefaultPlaylist(result?.data[0]?._id);
   };
 
   useEffect(() => {
@@ -49,7 +73,6 @@ const ListScreen = () => {
     //filter the rooms array to remove the deleted playlist.
     const filteredRooms = rooms.filter((room) => room._id !== roomId);
     setRooms(filteredRooms);
-    setCurrentPlaylist(filteredRooms[0]);
     toast.success("Playlist deleted successfully");
   };
 
