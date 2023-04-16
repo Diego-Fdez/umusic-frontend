@@ -1,4 +1,5 @@
 .profileWrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -30,7 +31,6 @@
 }
 
 .language {
-  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -54,7 +54,7 @@
   gap: 0.5rem;
 }
 
-.language > div > select {
+.select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -73,14 +73,53 @@
   border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   position: relative;
-  transition: all 0.25s ease;
+  transition: all 0.3ms ease;
 }
 
-.language > div select::-ms-expand {
+.select::-ms-expand {
   display: none;
 }
 
-.language > div select:hover {
+.select:hover {
+  background: #3076b065;
+}
+
+.link {
+  display: inline-block;
+  width: 200px;
+  height: 42px;
+  cursor: pointer;
+  padding: 7px 10px;
+  background: #f0f0f0;
+  color: #7b7b7b;
+  font-size: 1em;
+  color: #999;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3ms ease;
+}
+
+.link:hover {
+  background: #3076b065;
+}
+
+.saveButton {
+  position: absolute;
+  top: -1rem;
+  right: 1rem;
+  width: 80px;
+  height: 42px;
+  border-radius: 12px;
+  background: #f0f0f0;
+  font-size: 1em;
+  color: #999;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3ms ease;
+}
+
+.saveButton:hover {
   background: #3076b065;
 }
 
@@ -102,6 +141,11 @@
 
   .language {
     flex-direction: column;
+  }
+
+  .saveButton {
+    top: 6rem;
+    right: 1.6rem;
   }
 }
 
@@ -126,5 +170,22 @@
   .language {
     margin-left: 2rem;
     gap: 2rem;
+  }
+
+  .link {
+    margin-top: 1.7rem;
+  }
+
+  .saveButton {
+    top: 2.5rem;
+    right: 3rem;
+  }
+}
+
+/* long screen */
+@media screen and (min-width: 1280px) {
+  .saveButton {
+    top: 2.5rem;
+    right: 18rem;
   }
 }
