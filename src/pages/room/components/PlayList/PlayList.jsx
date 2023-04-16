@@ -63,46 +63,43 @@ const PlayList = () => {
         <small>Clear all videos</small>
         <img src='/clean-icon.svg' alt='clear-icon' />
       </button>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          {videos?.map((video, index) => (
-            <div key={generateId()} className={styles.roomListVideo}>
-              <div className={styles.roomVideoThumbnail}>
-                <button
-                  className={styles.roomThumbnailButton}
-                  onClick={() => playVideo(index)}
-                  title='Play'
-                >
-                  <img
-                    src={video?.videos?.video_pic_url}
-                    alt={video?.videos?.video_title}
-                    className={styles.roomThumbnailImg}
-                  />
-                </button>
-                <div className={styles.videoListDurationContainer}>
-                  <p>{formattedTime(video?.videos?.video_length)}</p>
-                </div>
-              </div>
-              <div className={styles.roomVideoInfoContainer}>
-                <h4 className={styles.roomVideoListTitle}>
-                  {video?.videos?.video_title.slice(0, 40)}
-                </h4>
-                <h6 className={styles.roomListAuthorTitle}>
-                  {video?.videos?.channels?.channel_title.slice(0, 30)}
-                </h6>
-              </div>
+      <>
+        {videos?.map((video, index) => (
+          <div key={generateId()} className={styles.roomListVideo}>
+            <div className={styles.roomVideoThumbnail}>
               <button
-                onClick={() => handlerDeleteVideo(video?.videos?.video_id)}
-                title='Delete'
+                className={styles.roomThumbnailButton}
+                onClick={() => playVideo(index)}
+                title='Play'
               >
-                <img src='/delete-song-icon.svg' alt='delete-song-icon' />
+                <img
+                  src={video?.videos?.video_pic_url}
+                  alt={video?.videos?.video_title}
+                  className={styles.roomThumbnailImg}
+                />
               </button>
+              <div className={styles.videoListDurationContainer}>
+                <p>{formattedTime(video?.videos?.video_length)}</p>
+              </div>
             </div>
-          ))}
-        </>
-      )}
+            <div className={styles.roomVideoInfoContainer}>
+              <h4 className={styles.roomVideoListTitle}>
+                {video?.videos?.video_title.slice(0, 40)}
+              </h4>
+              <h6 className={styles.roomListAuthorTitle}>
+                {video?.videos?.channels?.channel_title.slice(0, 30)}
+              </h6>
+            </div>
+            <button
+              onClick={() => handlerDeleteVideo(video?.videos?.video_id)}
+              title='Delete'
+            >
+              <img src='/delete-song-icon.svg' alt='delete-song-icon' />
+            </button>
+          </div>
+        ))}
+      </>
+      {loading && <Loader />}
     </div>
   );
 };
