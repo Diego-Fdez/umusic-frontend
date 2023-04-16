@@ -16,6 +16,8 @@ import videoStore from "@/store/videoStore";
 import userStore from "@/store/userStore";
 import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
 import { baseURL, options } from "@/utils/youtubeConfig";
+import UseFetchFromDB from "@/hooks/useFetchFromDB";
+import persistedVideoStore from "@/store/persistedVideoStore";
 
 let socket;
 
@@ -25,15 +27,20 @@ export default function Home() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const addUserToken = userStore((state) => state.addUserToken);
   const addUserInfo = userStore((state) => state.addUserInfo);
+  const userInfo = userStore((state) => state.userInfo);
   const setIsAuthenticated = userStore((state) => state.setIsAuthenticated);
   const userToken = userStore((state) => state.userToken);
   const videos = videoStore((state) => state.videos);
   const currentPlaylist = videoStore((state) => state.currentPlaylist);
+  const setCurrentPlaylist = persistedVideoStore(
+    (state) => state.setCurrentPlaylist
+  );
   const addVideos = videoStore((state) => state.addVideos);
   const keyword = videoStore((state) => state.keyword);
+  const { fetchFromDB, error } = UseFetchFromDB();
 
   //fetching the videos from the API with swr
-  const { data, error, isLoading } = useSWR(
+  const { data, isLoading } = useSWR(
     `${baseURL}/v1/search/?q=${keyword}&hl=en&gl=US`,
     fetcher,
     {
@@ -48,7 +55,7 @@ export default function Home() {
       const filteredVideos = filterEmptyVideos(data?.contents);
       addVideos(filteredVideos);
     }
-  }, [data]);
+  }, [data, isLoading]);
 
   //enable connection to the socket server
   useEffect(() => {
@@ -75,6 +82,29 @@ export default function Home() {
       isAuthenticated && setIsAuthenticated(true);
     }
   }, [userToken, isAuthenticated]);
+
+  //get the default playlist and set in the current playlist
+  async function handlerGetDefaultPlaylist() {
+    const result = await fetchFromDB(
+      `/api/v1/user-configs/${userInfo?.sub}`,
+      "GET"
+    );
+
+    //if the result is an error, display it.
+    if (result?.data?.error) return;
+    if (error) return;
+
+    setCurrentPlaylist({
+      _id: result?.data?.room_id,
+      room_name: result?.data?.name[0]?.room_name,
+    });
+  }
+
+  useEffect(() => {
+    if ((userInfo?.sub !== "") & !currentPlaylist?._id) {
+      handlerGetDefaultPlaylist();
+    }
+  }, [userInfo, currentPlaylist]);
 
   return (
     <Suspense fallback={<Loader />}>
