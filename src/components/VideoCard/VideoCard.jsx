@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import styles from "./styles/videoCard.module.css";
 import { formattedTime } from "@/utils/formattedTime";
 import UseFetchFromDB from "@/hooks/useFetchFromDB";
-import { setDataVideo } from "@/models/dataFetchModels";
+import { setDataVideo, setDataNewVideo } from "@/models/dataFetchModels";
 import persistedVideoStore from "@/store/persistedVideoStore";
 import tempUserStore from "@/store/tempUserStore";
 import userStore from "@/store/userStore";
@@ -26,7 +26,7 @@ const VideoCard = ({ video, socket }) => {
       currentPlaylist?._id
     );
 
-    /* Calling the `fetchFromDB` function from the `UseFetchFromDB` hook. */
+    /* saving a new video into roomList */
     const result = await fetchFromDB(
       `/api/v1/room`,
       "PUT",
@@ -40,22 +40,11 @@ const VideoCard = ({ video, socket }) => {
     if (error) return toast.error(error);
 
     /* Creating an object with the data that will be sent to the socket. */
-    const videoAdded = {
-      room_name: currentPlaylist?.room_name ? currentPlaylist?.room_name : "",
-      user_id: user ? user?.sub : tempUserInfo?.sub,
-      videos: {
-        channels: {
-          channel_id: video?.author?.channelId,
-          channel_pic_url: video?.author?.avatar[0]?.url,
-          channel_title: video?.author?.title,
-        },
-        video_id: video?.videoId,
-        video_length: video?.lengthSeconds,
-        video_pic_url: video?.thumbnails[0]?.url,
-        video_title: video?.title,
-      },
-      _id: currentPlaylist?._id,
-    };
+    const videoAdded = setDataNewVideo(
+      currentPlaylist,
+      user || tempUserInfo,
+      video
+    );
 
     toast.success(result?.data);
     socket.emit("addVideo", videoAdded);
