@@ -7,11 +7,12 @@ import Footer from "./components/Footer/Footer";
 import ConditionsScreen from "./components/ConditionsScreen/ConditionsScreen";
 import PoliciesScreen from "./components/PoliciesScreen/PoliciesScreen";
 import CookiePolicy from "./components/CookiePolicy/CookiePolicy";
+import { metaProfilePageContent } from "@/utils/metaContents";
 
 const Profile = () => {
   return (
     <Suspense fallback={<Loader />}>
-      <HeadScreen title={"Configurations"} />
+      <HeadScreen title={"Configurations"} content={metaProfilePageContent} />
       <GoogleAnalytics />
       <Navbar />
       <main className={styles.profileContainer}>

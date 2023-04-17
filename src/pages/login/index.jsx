@@ -1,28 +1,19 @@
-import { Suspense } from 'react';
-import Link from 'next/link';
-import { useAuth0 } from '@auth0/auth0-react';
-import styles from './styles/Login.module.css';
-import { Loader, GoogleAnalytics, HeadScreen } from '@/components';
+import { Suspense } from "react";
+import Link from "next/link";
+import { useAuth0 } from "@auth0/auth0-react";
+import styles from "./styles/Login.module.css";
+import { Loader, GoogleAnalytics, HeadScreen } from "@/components";
+import { metaLoginPageContent } from "@/utils/metaContents";
 
 const Login = () => {
   const { loginWithRedirect } = useAuth0();
 
   return (
     <Suspense fallback={<Loader />}>
-      <HeadScreen
-        title={'Login'}
-        content={`Accede a tu cuenta de nuestra app para disfrutar de una experiencia 
-      personalizada y segura. Nuestro sistema de inicio de sesión seguro te protege contra el acceso no 
-      autorizado, mientras que nuestro proceso de registro fácil te permite crear una cuenta en minutos. 
-      Una vez que hayas iniciado sesión, podrás acceder a todas las funciones de nuestra app, desde la creación 
-      y gestión de tus listas de reproducción personalizadas hasta el seguimiento de tus preferencias y 
-      recomendaciones de música. Además, también puedes acceder a tu historial de escucha, cambiar tu configuración 
-      de cuenta y compartir tus listas de reproducción con amigos y familiares. ¡Inicia sesión hoy y comienza a 
-      disfrutar de nuestra app al máximo!`}
-      />
+      <HeadScreen title={"Login"} content={metaLoginPageContent} />
       <GoogleAnalytics />
       <div className={styles.loginContainer}>
-        <Link href={'/'}>
+        <Link href={"/"}>
           <h2 className={styles.loginLogo}>UMUSIC</h2>
         </Link>
         <div className={styles.loginWrapper}>

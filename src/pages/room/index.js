@@ -6,6 +6,7 @@ import { Navbar, Loader, GoogleAnalytics, HeadScreen } from "@/components";
 import ListScreen from "./components/ListScreen/ListScreen";
 import UseFetchFromDB from "@/hooks/useFetchFromDB";
 import { WithPrivateRoute } from "@/components/WithPrivateRoute";
+import { metaPlaylistsPageContent } from "@/utils/metaContents";
 
 export default function RoomList() {
   const { user } = useAuth0();
@@ -35,13 +36,7 @@ export default function RoomList() {
 
   return (
     <Suspense fallback={<Loader />}>
-      <HeadScreen
-        title={"Playlists"}
-        content={`¿Quieres crear tu propia lista de reproducción personalizada? ¡No hay problema! Nuestra app te 
-        permite crear y compartir tus propias listas de reproducción, o colaborar con amigos para crear listas de 
-        reproducción compartidas. ¡Explora nuestras listas de reproducción hoy y descubre la mejor música para 
-        cada momento!`}
-      />
+      <HeadScreen title={"Playlists"} content={metaPlaylistsPageContent} />
       <GoogleAnalytics />
       {error && toast.error(error)}
       <Navbar />

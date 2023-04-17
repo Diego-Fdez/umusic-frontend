@@ -15,6 +15,7 @@ import {
   GoogleAnalytics,
 } from "@/components";
 import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
+import { metaChannelPageContent } from "@/utils/metaContents";
 
 let socket;
 
@@ -28,7 +29,7 @@ const Channel = () => {
   const currentPlaylist = videoStore((state) => state.currentPlaylist);
 
   //fetching the videos from the API with swr
-  const { data, error, isLoading } = useSWR(
+  const { data, isLoading } = useSWR(
     `${baseURL}/v1/channel/videos/?id=${id}&hl=en&gl=US`,
     fetcher,
     {
@@ -65,6 +66,7 @@ const Channel = () => {
     <Suspense fallback={<Loader />}>
       <HeadScreen
         title={channelLoading ? "Loading..." : channelData?.title || "Channel"}
+        content={metaChannelPageContent}
       />
       <GoogleAnalytics />
       <Navbar />

@@ -11,6 +11,7 @@ import VideoScreen from "./components/VideoScreen/VideoScreen";
 import Room from "@/models/roomModel";
 import db from "@/database/db";
 import { WithPrivateRoute } from "@/components/WithPrivateRoute";
+import { metaPlaylistIDPageContent } from "@/utils/metaContents";
 
 let socket;
 
@@ -48,13 +49,7 @@ export default function RoomScreen({ data }) {
 
   return (
     <Suspense fallback={<Loader />}>
-      <HeadScreen
-        title={"Playlist"}
-        content={`¿Quieres crear tu propia lista de reproducción personalizada? ¡No hay problema! Nuestra app te 
-        permite crear y compartir tus propias listas de reproducción, o colaborar con amigos para crear listas de 
-        reproducción compartidas. ¡Explora nuestras listas de reproducción hoy y descubre la mejor música para 
-        cada momento!`}
-      />
+      <HeadScreen title={"Playlist"} content={metaPlaylistIDPageContent} />
       <GoogleAnalytics />
       <Navbar />
       <main className={styles.roomContainer}>

@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,6 +18,7 @@ import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
 import { baseURL, options } from "@/utils/youtubeConfig";
 import UseFetchFromDB from "@/hooks/useFetchFromDB";
 import persistedVideoStore from "@/store/persistedVideoStore";
+import { metaHomeContent } from "@/utils/metaContents";
 
 let socket;
 
@@ -86,7 +87,7 @@ export default function Home() {
       `/api/v1/user-configs/${userInfo?.sub}`,
       "GET"
     );
-    console.log(result);
+
     //if the result is an error, display it.
     if (result?.data?.error) return;
     if (error) return;
@@ -102,13 +103,10 @@ export default function Home() {
   }, [userToken, currentPlaylist]);
 
   return (
-    <Suspense fallback={<Loader />}>
+    <>
       <Head>
         <title>Home - UMUSIC</title>
-        <meta
-          name='description'
-          content='¿Estás buscando una forma de crear y compartir listas de reproducción de música con amigos, familiares o compañeros de trabajo? ¡Nuestra web app es la solución perfecta! Con nuestra aplicación, puedes crear fácilmente listas de reproducción personalizadas con tus canciones favoritas, y luego compartirlas con tus amigos a través de un enlace o mediante la integración con las redes sociales. Además, puedes colaborar con tus amigos para crear listas de reproducción compartidas, lo que significa que todos pueden agregar y eliminar canciones en tiempo real. Ya sea que estés organizando una fiesta, planificando un viaje por carretera o simplemente compartiendo tu música favorita, nuestra web app hace que sea fácil crear y compartir listas de reproducción. ¡Prueba nuestra aplicación hoy y comienza a disfrutar de la música con tus amigos!'
-        />
+        <meta name='description' content={metaHomeContent} />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='robots' content='index, follow' />
         <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
@@ -150,6 +148,6 @@ export default function Home() {
           )}
         </main>
       )}
-    </Suspense>
+    </>
   );
 }

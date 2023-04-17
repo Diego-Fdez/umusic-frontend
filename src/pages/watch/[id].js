@@ -6,6 +6,7 @@ import videoStore from "@/store/videoStore";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { Navbar, Loader, GoogleAnalytics, HeadScreen } from "@/components";
 import VideoPlayerInfo from "./components/VideoPlayerInfo/VideoPlayerInfo";
+import { metaWatchPageContent } from "@/utils/metaContents";
 
 const PlayerScreen = () => {
   const router = useRouter();
@@ -34,12 +35,7 @@ const PlayerScreen = () => {
     <Suspense fallback={<Loader />}>
       <HeadScreen
         title={selectedVideo?.video?.title}
-        content={`Nuestro reproductor integrado te permite escuchar tus canciones favoritas de forma fácil y 
-        conveniente. Con una interfaz intuitiva y fácil de usar, de reproducción, buscar tus canciones favoritas 
-        y ajustar la configuración de audio según tus preferencias, lo que significa que puedes escuchar tu música 
-        favorita en cualquier momento y en cualquier lugar. Ya sea que estés en casa, en el trabajo o en 
-        movimiento, nuestro reproductor integrado te permite disfrutar de la mejor música en cualquier momento. 
-        ¡Prueba nuestro reproductor hoy y descubre una nueva forma de disfrutar de la música!`}
+        content={metaWatchPageContent}
       />
       <GoogleAnalytics />
       <Navbar />
