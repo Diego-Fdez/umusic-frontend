@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 import styles from "./styles/CategoriesList.module.css";
 import { Loader } from "@/components";
 import videoStore from "@/store/videoStore";
@@ -10,10 +10,7 @@ const CategoriesList = () => {
   const addKeyword = videoStore((state) => state.addKeyword);
 
   // Fetching categories from the API
-  const { data, isLoading } = useSWR("/api/v1/categories", fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  const { data, isLoading } = useSWRImmutable("/api/v1/categories", fetcher);
 
   return (
     <>

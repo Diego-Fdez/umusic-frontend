@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Link from "next/link";
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 import styles from "./styles/Sidebar.module.css";
 import { Loader } from "@/components";
 import videoStore from "@/store/videoStore";
@@ -15,13 +15,9 @@ const Sidebar = ({ videoId }) => {
   const addVideos = videoStore((state) => state.addVideos);
 
   //fetching the videos from the API with swr
-  const { data, error, isLoading } = useSWR(
+  const { data, isLoading } = useSWRImmutable(
     `${baseURL}/v1/video/related-contents/?id=${videoId}&hl=es&gl=CR`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    fetcher
   );
 
   //setting the videos to the videoStore

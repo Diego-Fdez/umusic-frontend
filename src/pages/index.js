@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useAuth0 } from "@auth0/auth0-react";
 import io from "socket.io-client";
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 import styles from "@/styles/Home.module.css";
 import {
   CategoryScreen,
@@ -40,13 +40,9 @@ export default function Home() {
   const { fetchFromDB, error } = UseFetchFromDB();
 
   //fetching the videos from the API with swr
-  const { data, isLoading } = useSWR(
+  const { data, isLoading } = useSWRImmutable(
     `${baseURL}/v1/search/?q=${keyword}&hl=en&gl=US`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    fetcher
   );
 
   //setting the videos to the videoStore
@@ -85,11 +81,12 @@ export default function Home() {
 
   //get the default playlist and set in the current playlist
   async function handlerGetDefaultPlaylist() {
+    //if (!userInfo?.sub) return;
     const result = await fetchFromDB(
       `/api/v1/user-configs/${userInfo?.sub}`,
       "GET"
     );
-
+    console.log(result);
     //if the result is an error, display it.
     if (result?.data?.error) return;
     if (error) return;
@@ -101,10 +98,8 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if ((userInfo?.sub !== "") & !currentPlaylist?._id) {
-      handlerGetDefaultPlaylist();
-    }
-  }, [userInfo, currentPlaylist]);
+    if ((userToken !== "") & !currentPlaylist?._id) handlerGetDefaultPlaylist();
+  }, [userToken, currentPlaylist]);
 
   return (
     <Suspense fallback={<Loader />}>
