@@ -32,7 +32,7 @@ export default function Home() {
   const setIsAuthenticated = userStore((state) => state.setIsAuthenticated);
   const userToken = userStore((state) => state.userToken);
   const videos = videoStore((state) => state.videos);
-  const currentPlaylist = videoStore((state) => state.currentPlaylist);
+  const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
   const setCurrentPlaylist = persistedVideoStore(
     (state) => state.setCurrentPlaylist
   );
@@ -69,20 +69,19 @@ export default function Home() {
   useEffect(() => {
     /* Checking if the user is authenticated and if the userToken is not null. If it is not null, it
     will add the userToken and the user to the userStore. */
-    if (userToken === "" && isAuthenticated) {
+    if ((userToken === "") & isAuthenticated) {
       getAuth0Token();
 
       /* Checking if the user is authenticated and if it is, it will add the user to the userStore. */
-      isAuthenticated && addUserInfo(user);
+      if (isAuthenticated & !userInfo) addUserInfo(user);
 
       /* Setting the isAuthenticated state to true. */
-      isAuthenticated && setIsAuthenticated(true);
+      if (isAuthenticated & !userInfo) setIsAuthenticated(true);
     }
   }, [userToken, isAuthenticated]);
 
   //get the default playlist and set in the current playlist
-  async function handlerGetDefaultPlaylist() {
-    //if (!userInfo?.sub) return;
+  const handlerGetDefaultPlaylist = async () => {
     const result = await fetchFromDB(
       `/api/v1/user-configs/${userInfo?.sub}`,
       "GET"
@@ -96,7 +95,7 @@ export default function Home() {
       _id: result?.data?.room_id,
       room_name: result?.data?.name[0]?.room_name,
     });
-  }
+  };
 
   useEffect(() => {
     if ((userToken !== "") & !currentPlaylist?._id) handlerGetDefaultPlaylist();
