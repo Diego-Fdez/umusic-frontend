@@ -13,7 +13,7 @@ const persistedVideoStore = create(
       },
     }),
     {
-      name: "umusic-storage",
+      name: "umusic-playlist",
       storage: createJSONStorage(() => sessionStorage),
     }
   )
