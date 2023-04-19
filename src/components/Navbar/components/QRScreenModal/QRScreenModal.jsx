@@ -1,25 +1,25 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import styles from './styles/QRScreenModal.module.css';
-import UseFetchFromDB from '@/hooks/useFetchFromDB';
-import userStore from '@/store/userStore';
-import persistedVideoStore from '@/store/persistedVideoStore';
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import styles from "./styles/QRScreenModal.module.css";
+import UseFetchFromDB from "@/hooks/useFetchFromDB";
+import userStore from "@/store/userStore";
+import persistedVideoStore from "@/store/persistedVideoStore";
 
 const QRScreenModal = ({ modalOpen, setModalOpen }) => {
   const { fetchFromDB, error } = UseFetchFromDB();
   const userInfo = userStore((state) => state.userInfo);
   const token = userStore((state) => state.userToken);
   const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
-  const [qrImage, setQRImage] = useState('');
-  const [qrDataURL, setQRDataURL] = useState('');
+  const [qrImage, setQRImage] = useState("");
+  const [qrDataURL, setQRDataURL] = useState("");
 
   async function handleGetQRCode() {
     /* This is checking if the user is logged in and if a playlist is selected. If not, it will return
     an error message. */
-    if (!userInfo?.sub || token === '') {
-      return toast.error('Please login first');
+    if (!userInfo?.sub || token === "") {
+      return toast.error("Please login first");
     } else if (!currentPlaylist?._id)
-      return toast.error('No playlist selected');
+      return toast.error("No playlist selected");
 
     /* This is setting the data that will be sent to the server. */
     const setData = {
@@ -28,10 +28,10 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
       token: token,
     };
 
-    const result = await fetchFromDB(`/api/v1/qr`, 'POST', setData);
+    const result = await fetchFromDB(`/api/v1/qr`, "POST", setData);
 
     /* This is checking if there is an error. If there is, it will return an error message. */
-    if (result?.status === 'FAILED') return toast.error(result?.data?.error);
+    if (result?.status === "FAILED") return toast.error(result?.data?.error);
     if (error) return toast.error(error);
 
     setQRDataURL(result?.data?.linkURL);
@@ -39,15 +39,20 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
   }
 
   useEffect(() => {
-    if (userInfo?.sub && token !== '' && currentPlaylist?._id && qrImage === '')
+    if (
+      userInfo?.sub &
+      (token !== "") &
+      currentPlaylist?._id &
+      (qrImage === "")
+    )
       handleGetQRCode();
-  }, [userInfo?.sub, token, currentPlaylist?._id]);
+  }, [userInfo?.sub, token, currentPlaylist?._id, qrImage]);
 
   return (
     <div
       className={styles.qrContainer}
       style={{
-        display: modalOpen ? 'flex' : 'none',
+        display: modalOpen ? "flex" : "none",
       }}
     >
       <button onClick={() => setModalOpen(!modalOpen)}>
