@@ -1,26 +1,27 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "./styles/SearchBar.module.css";
 import videoStore from "@/store/videoStore";
+import { toast } from "react-toastify";
 
 const SearchBar = () => {
   const router = useRouter();
-  const [input, setInput] = useState("");
   const addKeyword = videoStore((state) => state.addKeyword);
+  const inputRef = useRef();
 
   /**The addKeyword function adds the keyword to the
    * keywords array in the state. The function then navigates to the home page*/
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      addKeyword(input);
-      if (router.pathname !== "/") router.push("/");
-      setInput("");
-    } catch (error) {
-      console.log(error);
+    const value = inputRef.current.value;
+    if (!value) {
+      return toast.error("Please enter a word");
     }
+    addKeyword(value);
+    if (router.pathname !== "/") router.push("/");
+    inputRef.current.value = "";
   };
 
   return (
@@ -35,8 +36,7 @@ const SearchBar = () => {
         type='search'
         placeholder='Search your music'
         className={styles.searchInput}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        ref={inputRef}
       />
       <button type='submit' className={styles.searchButton}>
         <Image
