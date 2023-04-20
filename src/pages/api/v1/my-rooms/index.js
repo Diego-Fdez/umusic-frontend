@@ -37,13 +37,13 @@ const getAllMyRooms = async (req, res) => {
       return res.status(404).send({ status: "FAILED", data: "No rooms found" });
     }
 
-    await db.disconnect();
-
     res.status(200).send({ status: "OK", data: rooms });
   } catch (error) {
     res
       .status(error?.status || 500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
+  } finally {
+    await db.disconnect();
   }
 };
 

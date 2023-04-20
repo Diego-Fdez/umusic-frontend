@@ -87,14 +87,14 @@ const getRoomById = async (req, res) => {
       });
     }
 
-    await db.disconnect();
-
     /* Sending the data to the frontend. */
     res.status(200).send({ status: "OK", data: roomExist });
   } catch (error) {
     res
       .status(error?.status || 500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
+  } finally {
+    await db.disconnect();
   }
 };
 
@@ -122,12 +122,13 @@ const deleteAllVideosFromRoom = async (req, res) => {
       });
     }
 
-    await db.disconnect();
     res.status(200).send({ status: "OK", data: "Deleted all videos" });
   } catch (error) {
     res
       .status(error?.status || 500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
+  } finally {
+    await db.disconnect();
   }
 };
 

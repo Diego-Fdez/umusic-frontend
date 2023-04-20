@@ -87,11 +87,12 @@ const saveUserConfigs = async (req, res) => {
 
       res.status(201).send({ status: "OK", data: userExist[0] });
     }
-    await db.disconnect();
   } catch (error) {
     res
       .status(error?.status || 500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
+  } finally {
+    await db.disconnect();
   }
 };
 

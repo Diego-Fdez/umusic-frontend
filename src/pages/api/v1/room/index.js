@@ -67,8 +67,6 @@ const addVideosToRoomList = async (req, res) => {
     //insert the video info in DB
     await registerVideo(videoId, videoTitle, videoPictureURL, videoLength);
 
-    await db.disconnect();
-
     res
       .status(201)
       .send({ status: "OK", data: "Your video has been added to the list!" });
@@ -76,6 +74,8 @@ const addVideosToRoomList = async (req, res) => {
     res
       .status(error?.status || 500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
+  } finally {
+    await db.disconnect();
   }
 };
 
@@ -107,13 +107,14 @@ const createRoom = async (req, res) => {
 
     /* Saving the room object to the database. */
     await newRoom.save();
-    await db.disconnect();
 
     res.status(201).send({ status: "OK", data: newRoom });
   } catch (error) {
     res
       .status(error?.status || 500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
+  } finally {
+    await db.disconnect();
   }
 };
 
@@ -142,8 +143,6 @@ const deleteVideoFromRoomList = async (req, res) => {
     videoExist.video_id.pull(id);
     await videoExist.save();
 
-    await db.disconnect();
-
     //sending the response to the frontend
     res.status(200).send({
       status: "OK",
@@ -153,6 +152,8 @@ const deleteVideoFromRoomList = async (req, res) => {
     res
       .status(error?.status || 500)
       .send({ status: "FAILED", data: { error: error?.message || error } });
+  } finally {
+    await db.disconnect();
   }
 };
 
