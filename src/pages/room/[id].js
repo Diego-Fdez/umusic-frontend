@@ -32,15 +32,17 @@ export default function RoomScreen({ data }) {
 
   //listen to the socket
   useEffect(() => {
-    socket.on("newVideo", (video) => {
+    const receivedVideo = (video) => {
       if (video._id === data[0]._id)
         setVideos((prevVideos) => [...prevVideos, video]);
-    });
+    };
+
+    socket.on("newVideo", receivedVideo);
 
     return () => {
-      socket.off("newVideo");
+      socket.off("newVideo", receivedVideo);
     };
-  });
+  }, [videos]);
 
   //add videos to the store
   useEffect(() => {
