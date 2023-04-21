@@ -3,7 +3,6 @@ import Head from "next/head";
 import Image from "next/image";
 import { useAuth0 } from "@auth0/auth0-react";
 import io from "socket.io-client";
-import useSWRImmutable from "swr/immutable";
 import styles from "@/styles/Home.module.css";
 import {
   CategoryScreen,
@@ -14,15 +13,11 @@ import {
 } from "@/components";
 import videoStore from "@/store/videoStore";
 import userStore from "@/store/userStore";
-import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
-import { baseURL, options } from "@/utils/youtubeConfig";
-import UseFetchFromDB from "@/hooks/useFetchFromDB";
 import persistedVideoStore from "@/store/persistedVideoStore";
 import { metaHomeContent } from "@/utils/metaContents";
+import UseVideos from "@/hooks/useVideos";
 
 let socket;
-
-const fetcher = (url) => fetch(url, options).then((res) => res.json());
 
 export default function Home() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -33,26 +28,14 @@ export default function Home() {
   const userToken = userStore((state) => state.userToken);
   const videos = videoStore((state) => state.videos);
   const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
-  const setCurrentPlaylist = persistedVideoStore(
-    (state) => state.setCurrentPlaylist
-  );
-  const addVideos = videoStore((state) => state.addVideos);
   const keyword = videoStore((state) => state.keyword);
-  const { fetchFromDB, error } = UseFetchFromDB();
 
-  //fetching the videos from the API with swr
-  const { data, isLoading } = useSWRImmutable(
-    `${baseURL}/v1/search/?q=${keyword}&hl=en&gl=US`,
-    fetcher
-  );
+  const { saveVideosState, isLoading, data, handlerGetDefaultPlaylist } =
+    UseVideos(`v1/search/?q=${keyword}&hl=es&gl=CR`);
 
-  //setting the videos to the videoStore
   useEffect(() => {
-    if (!isLoading) {
-      const filteredVideos = filterEmptyVideos(data?.contents);
-      addVideos(filteredVideos);
-    }
-  }, [data, isLoading]);
+    saveVideosState();
+  }, [isLoading, data]);
 
   //enable connection to the socket server
   useEffect(() => {
@@ -80,25 +63,8 @@ export default function Home() {
     }
   }, [userToken, isAuthenticated, userInfo]);
 
-  //get the default playlist and set in the current playlist
-  const handlerGetDefaultPlaylist = async () => {
-    const result = await fetchFromDB(
-      `/api/v1/user-configs/${userInfo?.sub}`,
-      "GET"
-    );
-
-    //if the result is an error, display it.
-    if (result?.data?.error) return;
-    if (error) return;
-
-    setCurrentPlaylist({
-      _id: result?.data?.room_id,
-      room_name: result?.data?.name[0]?.room_name,
-    });
-  };
-
   useEffect(() => {
-    if ((userToken !== "") & !currentPlaylist?._id) handlerGetDefaultPlaylist();
+    handlerGetDefaultPlaylist();
   }, [userToken, currentPlaylist]);
 
   return (

@@ -2,9 +2,7 @@ import { Suspense, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import io from "socket.io-client";
-import useSWR from "swr";
 import styles from "./styles/Channel.module.css";
-import { baseURL, options } from "@/utils/youtubeConfig";
 import videoStore from "@/store/videoStore";
 import {
   CategoryScreen,
@@ -14,47 +12,30 @@ import {
   VideoCard,
   GoogleAnalytics,
 } from "@/components";
-import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
 import { metaChannelPageContent } from "@/utils/metaContents";
+import UseVideos from "@/hooks/useVideos";
 
 let socket;
-
-const fetcher = (url) => fetch(url, options).then((res) => res.json());
 
 const Channel = () => {
   const router = useRouter();
   const { id } = router.query;
   const videos = videoStore((state) => state.videos);
-  const addVideos = videoStore((state) => state.addVideos);
   const currentPlaylist = videoStore((state) => state.currentPlaylist);
-
-  //fetching the videos from the API with swr
-  const { data, isLoading } = useSWR(
-    `${baseURL}/v1/channel/videos/?id=${id}&hl=en&gl=US`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
-
-  //fetching the channel details from the API with swr
-  const { data: channelData, isLoading: channelLoading } = useSWR(
-    `${baseURL}/v1/channel/details/?id=${id}&hl=en&gl=US`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
+  const {
+    saveVideosState,
+    isLoading,
+    data,
+    getChannelInformation,
+    channelLoading,
+    channelData,
+  } = UseVideos(`v1/channel/videos/?id=${id}&hl=en&gl=US`);
 
   //adding the videos to the video store
   useEffect(() => {
-    if (!isLoading) {
-      const filteredVideos = filterEmptyVideos(data?.contents);
-      addVideos(filteredVideos);
-    }
-  }, [data, isLoading]);
+    saveVideosState();
+    getChannelInformation(id);
+  }, [data, isLoading, id]);
 
   //enable connection to the socket server
   useEffect(() => {

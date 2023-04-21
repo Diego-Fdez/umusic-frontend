@@ -2,30 +2,16 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ReactPlayer from "react-player";
 import styles from "./styles/PlayerScreen.module.css";
-import videoStore from "@/store/videoStore";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { Navbar, Loader, GoogleAnalytics, HeadScreen } from "@/components";
 import VideoPlayerInfo from "./components/VideoPlayerInfo/VideoPlayerInfo";
 import { metaWatchPageContent } from "@/utils/metaContents";
+import UsePlaying from "@/hooks/usePlaying";
 
 const PlayerScreen = () => {
   const router = useRouter();
   const { id } = router.query;
-  const videos = videoStore((state) => state.videos);
-  const [selectedVideo, setSelectedVideo] = useState({});
-
-  function handlerNextVideo() {
-    router.push(`/watch/${videos[0]?.video?.videoId}`);
-  }
-
-  /**
-   * Find the video with the id that matches the id passed in as an argument and set that video as the
-   * selected video.
-   */
-  function getSelectedVideo(id) {
-    const video = videos.find((video) => video.video?.videoId === id);
-    setSelectedVideo(video);
-  }
+  const { handlerNextVideo, getSelectedVideo, selectedVideo } = UsePlaying();
 
   useEffect(() => {
     getSelectedVideo(id);

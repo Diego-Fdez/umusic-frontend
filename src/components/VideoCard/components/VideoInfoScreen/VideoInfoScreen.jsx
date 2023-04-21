@@ -4,11 +4,13 @@ import { useRouter } from "next/router";
 import styles from "./styles/VideoInfoScreen.module.css";
 import userStore from "@/store/userStore";
 import tempUserStore from "@/store/tempUserStore";
+import UseVideos from "@/hooks/useVideos";
 
-const VideoInfoScreen = ({ video, handleAddVideoToList }) => {
+const VideoInfoScreen = ({ video }) => {
   const router = useRouter();
   const user = userStore((state) => state.userInfo);
   const tempUserInfo = tempUserStore((state) => state.tempUserInfo);
+  const { handleAddVideoToList } = UseVideos();
 
   return (
     <div className={styles.videoCardTitle}>
@@ -43,7 +45,7 @@ const VideoInfoScreen = ({ video, handleAddVideoToList }) => {
         {user?.sub || tempUserInfo?.sub ? (
           <button
             className={styles.addButton}
-            onClick={() => handleAddVideoToList()}
+            onClick={() => handleAddVideoToList(video)}
           >
             <Image
               src='/add-icon.svg'

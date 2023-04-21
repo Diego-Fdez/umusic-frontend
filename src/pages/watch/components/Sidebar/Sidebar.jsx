@@ -1,32 +1,21 @@
 import { useEffect } from "react";
 import Link from "next/link";
-import useSWRImmutable from "swr/immutable";
 import styles from "./styles/Sidebar.module.css";
 import { Loader } from "@/components";
 import videoStore from "@/store/videoStore";
 import { formattedTime } from "@/utils/formattedTime";
-import { filterEmptyVideos } from "@/utils/handlerFilterVideos";
-import { baseURL, options } from "@/utils/youtubeConfig";
-
-const fetcher = (url) => fetch(url, options).then((res) => res.json());
+import UseVideos from "@/hooks/useVideos";
 
 const Sidebar = ({ videoId }) => {
   const videos = videoStore((state) => state.videos);
-  const addVideos = videoStore((state) => state.addVideos);
-
-  //fetching the videos from the API with swr
-  const { data, isLoading } = useSWRImmutable(
-    `${baseURL}/v1/video/related-contents/?id=${videoId}&hl=es&gl=CR`,
-    fetcher
+  const { saveVideosState, isLoading, data } = UseVideos(
+    `v1/video/related-contents/?id=${videoId}&hl=es&gl=CR`
   );
 
   //setting the videos to the videoStore
   useEffect(() => {
-    if (!isLoading) {
-      const filteredVideos = filterEmptyVideos(data?.contents);
-      addVideos(filteredVideos);
-    }
-  }, [data]);
+    saveVideosState();
+  }, [data, isLoading]);
 
   return (
     <div className={styles.playlistDetailContainer}>
