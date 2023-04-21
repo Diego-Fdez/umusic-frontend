@@ -14,13 +14,6 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
   const [qrDataURL, setQRDataURL] = useState("");
 
   async function handleGetQRCode() {
-    /* This is checking if the user is logged in and if a playlist is selected. If not, it will return
-    an error message. */
-    if (!userInfo?.sub || token === "") {
-      return toast.error("Please login first");
-    } else if (!currentPlaylist?._id)
-      return toast.error("No playlist selected");
-
     /* This is setting the data that will be sent to the server. */
     const setData = {
       id: userInfo?.sub,
@@ -40,13 +33,13 @@ const QRScreenModal = ({ modalOpen, setModalOpen }) => {
 
   useEffect(() => {
     if (
-      userInfo?.sub &
+      (userInfo?.sub !== "") &
       (token !== "") &
-      currentPlaylist?._id &
+      (currentPlaylist?._id !== "") &
       (qrImage === "")
     )
       handleGetQRCode();
-  }, [userInfo?.sub, token, currentPlaylist?._id, qrImage]);
+  }, [userInfo, token, currentPlaylist, qrImage]);
 
   return (
     <div
