@@ -73,12 +73,12 @@ export default function Home() {
       getAuth0Token();
 
       /* Checking if the user is authenticated and if it is, it will add the user to the userStore. */
-      if (isAuthenticated & !userInfo) addUserInfo(user);
+      if (isAuthenticated & !userInfo?.sub) addUserInfo(user);
 
       /* Setting the isAuthenticated state to true. */
-      if (isAuthenticated & !userInfo) setIsAuthenticated(true);
+      if (isAuthenticated & !userInfo?.sub) setIsAuthenticated(true);
     }
-  }, [userToken, isAuthenticated]);
+  }, [userToken, isAuthenticated, userInfo]);
 
   //get the default playlist and set in the current playlist
   const handlerGetDefaultPlaylist = async () => {
