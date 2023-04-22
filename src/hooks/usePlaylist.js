@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import UseFetchFromDB from "./useFetchFromDB";
@@ -152,32 +152,30 @@ const UsePlaylist = () => {
   };
 
   //function to get the QR code.
-  const handleGetQRCode = useMemo(() => {
-    return async () => {
-      /* This is setting the data that will be sent to the server. */
-      const setData = {
-        id: user?.sub,
-        room: currentPlaylist?._id,
-        token: token,
-      };
-
-      if (
-        (user?.sub !== "") &
-        (currentPlaylist?._id !== "") &
-        (qrImage === "")
-      ) {
-        const result = await fetchFromDB(`/api/v1/qr`, "POST", setData);
-
-        /* This is checking if there is an error. If there is, it will return an error message. */
-        if (result?.status === "FAILED")
-          return toast.error(result?.data?.error);
-        if (error) return toast.error(error);
-
-        setQRDataURL(result?.data?.linkURL);
-        setQRImage(result?.data?.qrImage);
-      }
+  const handleGetQRCode = async () => {
+    /* This is setting the data that will be sent to the server. */
+    const setData = {
+      id: user?.sub,
+      room: currentPlaylist?._id,
+      token: token,
     };
-  }, [user]);
+
+    if (
+      (user?.sub !== "") &
+      (token !== "") &
+      (currentPlaylist?._id !== "") &
+      (qrImage === "")
+    ) {
+      const result = await fetchFromDB(`/api/v1/qr`, "POST", setData);
+
+      /* This is checking if there is an error. If there is, it will return an error message. */
+      if (result?.status === "FAILED") return toast.error(result?.data?.error);
+      if (error) return toast.error(error);
+
+      setQRDataURL(result?.data?.linkURL);
+      setQRImage(result?.data?.qrImage);
+    }
+  };
 
   return {
     handlerAddPlaylist,
