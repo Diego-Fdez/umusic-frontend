@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 import styles from "./styles/QRScreenModal.module.css";
 import UsePlaylist from "@/hooks/usePlaylist";
+import userStore from "@/store/userStore";
 
 const QRScreenModal = ({ modalOpen, setModalOpen }) => {
+  const user = userStore((state) => state.userInfo);
+  const token = userStore((state) => state.userToken);
   const { handleGetQRCode, qrDataURL, qrImage } = UsePlaylist();
 
   useEffect(() => {
     handleGetQRCode();
-  }, []);
+  }, [qrImage, user, token]);
 
   return (
     <div
