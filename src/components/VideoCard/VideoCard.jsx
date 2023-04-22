@@ -3,7 +3,7 @@ import styles from "./styles/videoCard.module.css";
 import { formattedTime } from "@/utils/formattedTime";
 import VideoInfoScreen from "./components/VideoInfoScreen/VideoInfoScreen";
 
-const VideoCard = ({ video, socket }) => {
+const VideoCard = ({ video }) => {
   return (
     <div className={styles.videoCardContainer}>
       <Link href={`/watch/${video?.videoId}`}>

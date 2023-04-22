@@ -5,12 +5,14 @@ import styles from "./styles/VideoInfoScreen.module.css";
 import userStore from "@/store/userStore";
 import tempUserStore from "@/store/tempUserStore";
 import UseVideos from "@/hooks/useVideos";
+import UseWebSocket from "@/hooks/useWebSocket";
 
 const VideoInfoScreen = ({ video }) => {
   const router = useRouter();
   const user = userStore((state) => state.userInfo);
   const tempUserInfo = tempUserStore((state) => state.tempUserInfo);
-  const { handleAddVideoToList } = UseVideos();
+  const { socket } = UseWebSocket();
+  const { handleAddVideoToList } = UseVideos("", socket);
 
   return (
     <div className={styles.videoCardTitle}>

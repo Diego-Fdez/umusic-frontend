@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { useAuth0 } from "@auth0/auth0-react";
-import io from "socket.io-client";
 import styles from "@/styles/Home.module.css";
 import {
   CategoryScreen,
@@ -16,8 +15,6 @@ import userStore from "@/store/userStore";
 import persistedVideoStore from "@/store/persistedVideoStore";
 import { metaHomeContent } from "@/utils/metaContents";
 import UseVideos from "@/hooks/useVideos";
-
-let socket;
 
 export default function Home() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -36,12 +33,6 @@ export default function Home() {
   useEffect(() => {
     saveVideosState();
   }, [isLoading, data]);
-
-  //enable connection to the socket server
-  useEffect(() => {
-    socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER);
-    socket.emit("joinRoom", currentPlaylist?._id);
-  }, []);
 
   //This function will get the Auth0 token
   async function getAuth0Token() {
@@ -103,11 +94,7 @@ export default function Home() {
           ) : (
             <>
               {videos?.map((video) => (
-                <VideoCard
-                  key={video?.video?.videoId}
-                  video={video.video}
-                  socket={socket}
-                />
+                <VideoCard key={video?.video?.videoId} video={video.video} />
               ))}
             </>
           )}

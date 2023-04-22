@@ -12,7 +12,7 @@ import { setDataVideo, setDataNewVideo } from "@/models/dataFetchModels";
 
 const fetcher = (url) => fetch(url, options).then((res) => res.json());
 
-const UseVideos = (urlPath) => {
+const UseVideos = (urlPath, socket) => {
   const addVideos = videoStore((state) => state.addVideos);
   const { fetchFromDB, error } = UseFetchFromDB();
   const userToken = userStore((state) => state.userToken);
@@ -61,7 +61,7 @@ const UseVideos = (urlPath) => {
 
   /** It creates an object with the data that will be sent to the database, and then calls the
    * `fetchFromDB` function from the `UseFetchFromDB` hook */
-  const handleAddVideoToList = async (video, socket) => {
+  const handleAddVideoToList = async (video) => {
     /* Creating an object with the data that will be sent to the database. */
     const setData = setDataVideo(
       userInfo ? userInfo : tempUserInfo,
@@ -90,7 +90,7 @@ const UseVideos = (urlPath) => {
     );
 
     toast.success(result?.data);
-    //socket.emit("addVideo", videoAdded);
+    socket.emit("addVideo", videoAdded);
   };
 
   //fetching channel information from Youtube API
