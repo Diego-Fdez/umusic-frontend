@@ -1,10 +1,10 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 const userStore = create(
   persist(
     (set, get) => ({
-      userToken: '',
+      userToken: "",
       userInfo: {},
       isAuthenticated: false,
       addUserToken: (token) => {
@@ -25,9 +25,12 @@ const userStore = create(
       getIsAuthenticated: () => {
         return get().isAuthenticated;
       },
+      removeUserInfo: () => {
+        userStore.persist.clearStorage();
+      },
     }),
     {
-      name: 'umusic-storage',
+      name: "umusic-storage",
       storage: createJSONStorage(() => sessionStorage),
     }
   )

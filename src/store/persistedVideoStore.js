@@ -11,6 +11,9 @@ const persistedVideoStore = create(
       getCurrentPlaylist: () => {
         return get().currentPlaylist;
       },
+      removeCurrentPlaylist: () => {
+        persistedVideoStore.persist.clearStorage();
+      },
     }),
     {
       name: "umusic-playlist",
