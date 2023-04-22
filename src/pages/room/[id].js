@@ -1,4 +1,4 @@
-import { useEffect, Suspense, useState } from "react";
+import { useEffect, Suspense } from "react";
 import Image from "next/image";
 import mongoose from "mongoose";
 import styles from "./styles/RoomScreen.module.css";
@@ -15,7 +15,6 @@ import UseWebSocket from "@/hooks/useWebSocket";
 
 export default function RoomScreen({ data }) {
   const addVideoList = videoStore((state) => state.addVideoList);
-  //const [videos, setVideos] = useState([]);
   const { videos, setVideos } = UseWebSocket();
 
   /* Adding the data to the state. */

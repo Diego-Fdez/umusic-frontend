@@ -1,56 +1,15 @@
-import { useRouter } from "next/router";
-import { toast } from "react-toastify";
 import styles from "./styles/Playlist.module.css";
 import UsePlaying from "@/hooks/usePlaying";
 import videoStore from "@/store/videoStore";
 import { formattedTime } from "@/utils/formattedTime";
 import generateId from "@/utils/generateId";
-import UseFetchFromDB from "@/hooks/useFetchFromDB";
 import { Loader } from "@/components";
+import UsePlaylist from "@/hooks/usePlaylist";
 
 const PlayList = () => {
-  const router = useRouter();
   const videos = videoStore((state) => state.videoList);
-  const addVideos = videoStore((state) => state.addVideoList);
   const { playVideo } = UsePlaying();
-  const { fetchFromDB, loading, error } = UseFetchFromDB();
-
-  //function to delete a video from the playlist
-  const handlerDeleteVideo = async (videoId) => {
-    const result = await fetchFromDB("/api/v1/room", "DELETE", { id: videoId });
-
-    //is checking if there is an error returned from the server
-    if (error) return toast.error(error);
-    if (result?.status === "FAILED") return toast.error(result?.data?.error);
-
-    //filter out the video that is deleted from the list of videos in the store.
-    const filteredVideos = videos.filter(
-      (video) => video.videos.video_id !== videoId
-    );
-    addVideos(filteredVideos);
-
-    toast.success(result?.data);
-
-    //is checking if the playlist is empty.
-    if (filteredVideos.length === 0) router.push("/room");
-  };
-
-  //function to delete all videos from the playlist
-  const handlerDeleteAllVideos = async (id) => {
-    const result = await fetchFromDB(`/api/v1/room/${id}`, "PUT");
-
-    //is checking if there is an error returned from the server
-    if (error) return toast.error(error);
-    if (result?.status === "FAILED") return toast.error(result?.data?.error);
-
-    //set the store to an empty array to clear the playlist.
-    addVideos([]);
-
-    toast.success(result?.data);
-
-    //redirect to the room page.
-    router.push("/room");
-  };
+  const { handlerDeleteVideo, handlerDeleteAllVideos, loading } = UsePlaylist();
 
   return (
     <div className={styles.roomListContainer}>

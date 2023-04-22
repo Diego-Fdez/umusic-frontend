@@ -1,7 +1,6 @@
 import { Suspense, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import io from "socket.io-client";
 import styles from "./styles/Channel.module.css";
 import videoStore from "@/store/videoStore";
 import {
@@ -15,13 +14,10 @@ import {
 import { metaChannelPageContent } from "@/utils/metaContents";
 import UseVideos from "@/hooks/useVideos";
 
-let socket;
-
 const Channel = () => {
   const router = useRouter();
   const { id } = router.query;
   const videos = videoStore((state) => state.videos);
-  const currentPlaylist = videoStore((state) => state.currentPlaylist);
   const {
     saveVideosState,
     isLoading,
@@ -36,12 +32,6 @@ const Channel = () => {
     saveVideosState();
     getChannelInformation(id);
   }, [data, isLoading, id]);
-
-  //enable connection to the socket server
-  useEffect(() => {
-    socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_SERVER);
-    socket.emit("joinRoom", currentPlaylist?._id);
-  }, []);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -70,11 +60,7 @@ const Channel = () => {
           ) : (
             <>
               {videos?.map((video) => (
-                <VideoCard
-                  key={video?.video?.videoId}
-                  video={video.video}
-                  socket={socket}
-                />
+                <VideoCard key={video?.video?.videoId} video={video.video} />
               ))}
             </>
           )}

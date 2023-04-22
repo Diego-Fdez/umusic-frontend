@@ -1,80 +1,17 @@
 import { useEffect } from "react";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import styles from "./styles/ListScreen.module.css";
-import UseFetchFromDB from "@/hooks/useFetchFromDB";
 import videoStore from "@/store/videoStore";
-import userStore from "@/store/userStore";
-import persistedVideoStore from "@/store/persistedVideoStore";
 import { Loader } from "@/components";
+import UsePlaylist from "@/hooks/usePlaylist";
 
 const ListScreen = () => {
-  const { fetchFromDB, loading, error } = UseFetchFromDB();
-  const user = userStore((state) => state.userInfo);
-  const setRooms = videoStore((state) => state.setRooms);
+  const { loading, handlerGetAllPlaylists, deleteOnePlaylist } = UsePlaylist();
   const rooms = videoStore((state) => state.rooms);
-  const setCurrentPlaylist = persistedVideoStore(
-    (state) => state.setCurrentPlaylist
-  );
-
-  //if the user has no playlists, it will create one.
-  const handlerSaveDefaultPlaylist = async (roomId) => {
-    const result = await fetchFromDB(
-      `/api/v1/user-configs/${user?.sub}`,
-      "GET"
-    );
-
-    if (result?.data?.error === "No configs found") {
-      const newUserConfigs = await fetchFromDB("/api/v1/user-configs", "POST", {
-        userId: user?.sub,
-        roomId: roomId,
-      });
-
-      //if the result is an error, return.
-      if (!result?.data?.error || !error)
-        //set the current playlist to the new user configs.
-        setCurrentPlaylist({
-          _id: newUserConfigs?.data?.room_id,
-          room_name: newUserConfigs?.data?.name[0]?.room_name,
-        });
-    }
-  };
-
-  //It fetches the playlists from the database.
-  const handlerGetAllPlaylists = async () => {
-    /* Checking if the user is logged in. If not, it will display a toast message. */
-    if (!user?.sub) return toast.info("Please login to view your playlists");
-
-    const result = await fetchFromDB("/api/v1/my-rooms", "POST", {
-      userId: user?.sub,
-    });
-
-    //if the result is an error, display it.
-    if (result?.data?.error) return toast.error(result?.data?.error);
-    if (error) return toast.error(error);
-
-    setRooms(result?.data);
-    //if the user has no playlists, it will create one.
-    await handlerSaveDefaultPlaylist(result?.data[0]?._id);
-  };
 
   useEffect(() => {
     if (rooms.length === 0) handlerGetAllPlaylists();
   }, [rooms]);
-
-  //function to delete a playlist.
-  const deleteOnePlaylist = async (roomId) => {
-    const result = await fetchFromDB(`/api/v1/room/${roomId}`, "DELETE");
-
-    //if the result is an error, display it.
-    if (result?.data?.error) return toast.error(result?.data?.error);
-    if (error) return toast.error(error);
-
-    //filter the rooms array to remove the deleted playlist.
-    const filteredRooms = rooms.filter((room) => room._id !== roomId);
-    setRooms(filteredRooms);
-    toast.success("Playlist deleted successfully");
-  };
 
   return (
     <ul className={styles.listContainer}>
