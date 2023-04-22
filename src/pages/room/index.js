@@ -1,21 +1,28 @@
 import { Suspense, useState } from "react";
 import { toast } from "react-toastify";
-import { useAuth0 } from "@auth0/auth0-react";
 import styles from "./styles/RoomList.module.css";
 import { Navbar, Loader, GoogleAnalytics, HeadScreen } from "@/components";
 import ListScreen from "./components/ListScreen/ListScreen";
 import UseFetchFromDB from "@/hooks/useFetchFromDB";
 import { WithPrivateRoute } from "@/components/WithPrivateRoute";
 import { metaPlaylistsPageContent } from "@/utils/metaContents";
+import userStore from "@/store/userStore";
 
 export default function RoomList() {
-  const { user } = useAuth0();
+  const user = userStore((state) => state.userInfo);
   const { fetchFromDB, loading, error } = UseFetchFromDB();
   const [roomName, setRoomName] = useState("");
 
   //create a new playlist
   const handlerAddPlaylist = async (e) => {
     e.preventDefault();
+
+    const validRoomName = "^[A-Za-z0-9]+$";
+
+    if (!roomName.match(validRoomName))
+      return toast.error(
+        "Invalid playlist name, only numbers and letters are allowed."
+      );
 
     const setData = {
       userId: user?.sub,
