@@ -24,7 +24,7 @@ const ListScreen = () => {
           ) : (
             <>
               {rooms.map((room) => (
-                <li key={room._i}>
+                <li key={room._id}>
                   <Link href={`/room/${room._id}`}>{room?.room_name}</Link>
                   <div>
                     <button
