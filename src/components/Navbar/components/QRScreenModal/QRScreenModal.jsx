@@ -1,45 +1,13 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useEffect } from "react";
 import styles from "./styles/QRScreenModal.module.css";
-import UseFetchFromDB from "@/hooks/useFetchFromDB";
-import userStore from "@/store/userStore";
-import persistedVideoStore from "@/store/persistedVideoStore";
+import UsePlaylist from "@/hooks/usePlaylist";
 
 const QRScreenModal = ({ modalOpen, setModalOpen }) => {
-  const { fetchFromDB, error } = UseFetchFromDB();
-  const userInfo = userStore((state) => state.userInfo);
-  const token = userStore((state) => state.userToken);
-  const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
-  const [qrImage, setQRImage] = useState("");
-  const [qrDataURL, setQRDataURL] = useState("");
-
-  async function handleGetQRCode() {
-    /* This is setting the data that will be sent to the server. */
-    const setData = {
-      id: userInfo?.sub,
-      room: currentPlaylist?._id,
-      token: token,
-    };
-
-    const result = await fetchFromDB(`/api/v1/qr`, "POST", setData);
-
-    /* This is checking if there is an error. If there is, it will return an error message. */
-    if (result?.status === "FAILED") return toast.error(result?.data?.error);
-    if (error) return toast.error(error);
-
-    setQRDataURL(result?.data?.linkURL);
-    setQRImage(result?.data?.qrImage);
-  }
+  const { handleGetQRCode, qrDataURL, qrImage } = UsePlaylist();
 
   useEffect(() => {
-    if (
-      (userInfo?.sub !== "") &
-      (token !== "") &
-      (currentPlaylist?._id !== "") &
-      (qrImage === "")
-    )
-      handleGetQRCode();
-  }, [userInfo, token, currentPlaylist, qrImage]);
+    handleGetQRCode();
+  }, []);
 
   return (
     <div
