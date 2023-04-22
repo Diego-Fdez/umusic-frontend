@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import UseFetchFromDB from "./useFetchFromDB";
@@ -8,16 +8,20 @@ import videoStore from "@/store/videoStore";
 
 const UsePlaylist = () => {
   const router = useRouter();
-  const user = userStore((state) => state.userInfo);
   const { fetchFromDB, loading, error } = UseFetchFromDB();
-  const [roomName, setRoomName] = useState("");
   const setCurrentPlaylist = persistedVideoStore(
     (state) => state.setCurrentPlaylist
   );
+  const currentPlaylist = persistedVideoStore((state) => state.currentPlaylist);
+  const user = userStore((state) => state.userInfo);
+  const token = userStore((state) => state.userToken);
   const setRooms = videoStore((state) => state.setRooms);
   const rooms = videoStore((state) => state.rooms);
   const videos = videoStore((state) => state.videoList);
   const addVideos = videoStore((state) => state.addVideoList);
+  const [qrImage, setQRImage] = useState("");
+  const [qrDataURL, setQRDataURL] = useState("");
+  const [roomName, setRoomName] = useState("");
 
   //create a new playlist
   const handlerAddPlaylist = async (e) => {
@@ -147,6 +151,34 @@ const UsePlaylist = () => {
     router.push("/room");
   };
 
+  //function to get the QR code.
+  const handleGetQRCode = useMemo(() => {
+    return async () => {
+      /* This is setting the data that will be sent to the server. */
+      const setData = {
+        id: user?.sub,
+        room: currentPlaylist?._id,
+        token: token,
+      };
+
+      if (
+        (user?.sub !== "") &
+        (currentPlaylist?._id !== "") &
+        (qrImage === "")
+      ) {
+        const result = await fetchFromDB(`/api/v1/qr`, "POST", setData);
+
+        /* This is checking if there is an error. If there is, it will return an error message. */
+        if (result?.status === "FAILED")
+          return toast.error(result?.data?.error);
+        if (error) return toast.error(error);
+
+        setQRDataURL(result?.data?.linkURL);
+        setQRImage(result?.data?.qrImage);
+      }
+    };
+  }, [user]);
+
   return {
     handlerAddPlaylist,
     roomName,
@@ -156,6 +188,9 @@ const UsePlaylist = () => {
     deleteOnePlaylist,
     handlerDeleteVideo,
     handlerDeleteAllVideos,
+    handleGetQRCode,
+    qrDataURL,
+    qrImage,
   };
 };
 
