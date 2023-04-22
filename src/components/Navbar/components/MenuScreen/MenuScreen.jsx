@@ -3,10 +3,23 @@ import Image from "next/image";
 import { useAuth0 } from "@auth0/auth0-react";
 import userStore from "@/store/userStore";
 import styles from "./styles/NavModal.module.css";
+import persistedVideoStore from "@/store/persistedVideoStore";
 
 const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
-  const { logout } = useAuth0();
-  const isAuthenticated = userStore((state) => state.isAuthenticated);
+  const { logout, isAuthenticated } = useAuth0();
+  const removeUserInfo = userStore((state) => state.removeUserInfo);
+  const removeCurrentPlaylist = persistedVideoStore(
+    (state) => state.removeCurrentPlaylist
+  );
+
+  //logOut from  auth0 and remove user info from store
+  const handlerLogOut = () => {
+    if (isAuthenticated) {
+      logout({ logoutParams: { returnTo: window.location.origin } });
+    }
+    removeUserInfo();
+    removeCurrentPlaylist();
+  };
 
   return (
     <div
@@ -18,11 +31,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
       <ul className={styles.navbarModalList}>
         <li className={styles.navbarModalListItem}>
           {isAuthenticated ? (
-            <button
-              onClick={() =>
-                logout({ logoutParams: { returnTo: window.location.origin } })
-              }
-            >
+            <button onClick={() => handlerLogOut()}>
               <Image
                 src='/logout-icon.svg'
                 alt='logout-icon'
