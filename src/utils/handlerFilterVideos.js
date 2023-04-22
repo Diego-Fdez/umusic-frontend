@@ -1,9 +1,4 @@
 export function filterEmptyVideos(videos) {
-  const filteredVideos = videos?.filter(
-    (video) =>
-      (video?.type !== "playlist") &
-      (video.type !== "channel") &
-      (video?.video?.videoId !== undefined)
-  );
+  const filteredVideos = videos?.filter((video) => video?.type === "video");
   return filteredVideos;
 }
