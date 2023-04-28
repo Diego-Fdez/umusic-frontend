@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import jwksClient from 'jwks-rsa';
+import jwt from "jsonwebtoken";
+import jwksClient from "jwks-rsa";
 
 /* Getting the public key from the jwks.json file. */
 const client = jwksClient({
@@ -15,10 +15,9 @@ export async function verifyToken(token) {
 
   try {
     /* Verifying the token. */
-    jwt.verify(token, signingKey, { algorithms: ['RS256'] });
+    jwt.verify(token, signingKey, { algorithms: ["RS256"] });
     return true;
   } catch (error) {
-    console.error(error);
-    return false;
+    throw new Error(error);
   }
 }
