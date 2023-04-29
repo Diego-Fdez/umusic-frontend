@@ -1,10 +1,10 @@
-import styles from "./styles/Playlist.module.css";
-import UsePlaying from "@/hooks/usePlaying";
-import videoStore from "@/store/videoStore";
-import { formattedTime } from "@/utils/formattedTime";
-import generateId from "@/utils/generateId";
-import { Loader } from "@/components";
-import UsePlaylist from "@/hooks/usePlaylist";
+import styles from './styles/Playlist.module.css';
+import UsePlaying from '@/hooks/usePlaying';
+import videoStore from '@/store/videoStore';
+import { formattedTime } from '@/utils/formattedTime';
+import generateId from '@/utils/generateId';
+import { Loader } from '@/components';
+import UsePlaylist from '@/hooks/usePlaylist';
 
 const PlayList = () => {
   const videos = videoStore((state) => state.videoList);
@@ -50,7 +50,9 @@ const PlayList = () => {
               </h6>
             </div>
             <button
-              onClick={() => handlerDeleteVideo(video?.videos?.video_id)}
+              onClick={() =>
+                handlerDeleteVideo(video?.videos?.video_id, video?._id)
+              }
               title='Delete'
             >
               <img src='/delete-song-icon.svg' alt='delete-song-icon' />
