@@ -4,6 +4,7 @@
   margin: 0;
   color: #f0ffff;
   width: 100%;
+  min-width: 100%;
 }
 
 .listContainer > h2 {
