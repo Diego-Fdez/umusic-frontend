@@ -19,6 +19,25 @@
   right: 1rem;
 }
 
+.shuffle {
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+  gap: 0.5rem;
+}
+
+.shuffle > label {
+  color: #f0ffff;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.shuffle > input {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
 .playButtons {
   width: 2rem;
   height: 2rem;
