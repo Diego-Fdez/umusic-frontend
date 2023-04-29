@@ -1,20 +1,21 @@
-import Link from "next/link";
-import Image from "next/image";
-import { useAuth0 } from "@auth0/auth0-react";
-import userStore from "@/store/userStore";
-import styles from "./styles/NavModal.module.css";
-import persistedVideoStore from "@/store/persistedVideoStore";
+import Link from 'next/link';
+import Image from 'next/image';
+import { useAuth0 } from '@auth0/auth0-react';
+import userStore from '@/store/userStore';
+import styles from './styles/NavModal.module.css';
+import persistedVideoStore from '@/store/persistedVideoStore';
 
 const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
-  const { logout, isAuthenticated } = useAuth0();
+  const { logout, isAuthenticated: isAuth0 } = useAuth0();
   const removeUserInfo = userStore((state) => state.removeUserInfo);
+  const isAuthenticated = userStore((state) => state.isAuthenticated);
   const removeCurrentPlaylist = persistedVideoStore(
     (state) => state.removeCurrentPlaylist
   );
 
   //logOut from  auth0 and remove user info from store
   const handlerLogOut = () => {
-    if (isAuthenticated) {
+    if (isAuth0) {
       logout({ logoutParams: { returnTo: window.location.origin } });
     }
     removeUserInfo();
@@ -25,7 +26,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
     <div
       className={styles.navbarModalContainer}
       style={{
-        display: isOpen ? "flex" : "none",
+        display: isOpen ? 'flex' : 'none',
       }}
     >
       <ul className={styles.navbarModalList}>
@@ -43,7 +44,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
               <p>Logout</p>
             </button>
           ) : (
-            <Link href={"/login"} onClick={() => setIsOpen(!isOpen)}>
+            <Link href={'/login'} onClick={() => setIsOpen(!isOpen)}>
               <Image
                 src='/login-icon.svg'
                 alt='login-icon'
@@ -57,7 +58,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
           )}
         </li>
         <li className={styles.navbarModalListItem}>
-          <Link href={"/profile"} onClick={() => setIsOpen(!isOpen)}>
+          <Link href={'/profile'} onClick={() => setIsOpen(!isOpen)}>
             <Image
               src='/config-icon.svg'
               alt='configurations-icon'
@@ -90,7 +91,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
               </button>
             </li>
             <li className={styles.navbarModalListItem}>
-              <Link href={"/room"} onClick={() => setIsOpen(!isOpen)}>
+              <Link href={'/room'} onClick={() => setIsOpen(!isOpen)}>
                 <Image
                   src='/music-list-icon.svg'
                   alt='music-list-icon'
