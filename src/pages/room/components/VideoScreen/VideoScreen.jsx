@@ -8,7 +8,8 @@ const VideoScreen = () => {
   const videos = videoStore((state) => state.videoList);
   const currentVideoIndex = videoStore((state) => state.currentVideoIndex);
   const shouldAutoPlay = videoStore((state) => state.shouldAutoPlay);
-  const { handlePrev, handleNext, handleEnded } = UsePlaying();
+  const { handlePrev, handleNext, handleEnded, shuffle, setShuffle } =
+    UsePlaying();
 
   return (
     <div className={styles.playerWrapper}>
@@ -21,6 +22,15 @@ const VideoScreen = () => {
         onEnded={handleEnded}
       />
       <div className={styles.controlsWrapper}>
+        <div className={styles.shuffle}>
+          <label htmlFor='checkbox'>Shuffle</label>
+          <input
+            type='checkbox'
+            id='checkbox'
+            checked={shuffle}
+            onChange={() => setShuffle(!shuffle)}
+          />
+        </div>
         <button onClick={handlePrev} className={styles.playButtons}>
           <Image
             src='/back-icon.svg'
