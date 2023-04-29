@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import videoStore from "@/store/videoStore";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import videoStore from '@/store/videoStore';
 
 const UsePlaying = () => {
   const router = useRouter();
@@ -12,10 +12,19 @@ const UsePlaying = () => {
   );
   const setShouldAutoPlay = videoStore((state) => state.setShouldAutoPlay);
   const [selectedVideo, setSelectedVideo] = useState({});
+  const [shuffle, setShuffle] = useState(false);
 
   //cycle between videos
   const handleEnded = () => {
-    setCurrentVideoIndex((currentVideoIndex + 1) % videos?.length);
+    //get a random index
+    const randomIndex = Math.floor(Math.random() * videos?.length);
+
+    //if shuffle is true, set the current video index to the random index
+    if (shuffle) {
+      setCurrentVideoIndex(randomIndex);
+    } else {
+      setCurrentVideoIndex((currentVideoIndex + 1) % videos?.length);
+    }
     setShouldAutoPlay(true);
   };
 
@@ -50,7 +59,7 @@ const UsePlaying = () => {
    */
   const getSelectedVideo = (id) => {
     if (id) {
-      const video = videosState?.find((video) => video.video?.videoId === id);
+      const video = videosState?.find((video) => video?.video?.videoId === id);
       setSelectedVideo(video);
     }
   };
@@ -63,6 +72,8 @@ const UsePlaying = () => {
     getSelectedVideo,
     handlerNextVideo,
     selectedVideo,
+    shuffle,
+    setShuffle,
   };
 };
 
