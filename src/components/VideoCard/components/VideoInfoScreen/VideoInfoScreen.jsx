@@ -32,7 +32,7 @@ const VideoInfoScreen = ({ video }) => {
             loading='lazy'
           />
           <Link href={`/channel/${video?.author?.channelId}`}>
-            <h6 className={styles.subtitle}>{video?.author?.title}</h6>
+            <h5 className={styles.subtitle}>{video?.author?.title}</h5>
           </Link>
         </div>
       )}
