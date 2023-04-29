@@ -1,13 +1,16 @@
-import Link from "next/link";
-import styles from "./styles/videoCard.module.css";
-import { formattedTime } from "@/utils/formattedTime";
-import VideoInfoScreen from "./components/VideoInfoScreen/VideoInfoScreen";
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from './styles/videoCard.module.css';
+import { formattedTime } from '@/utils/formattedTime';
+import VideoInfoScreen from './components/VideoInfoScreen/VideoInfoScreen';
 
 const VideoCard = ({ video }) => {
   return (
     <div className={styles.videoCardContainer}>
       <Link href={`/watch/${video?.videoId}`}>
-        <img
+        <Image
+          width={200}
+          height={180}
           src={video?.thumbnails[0]?.url}
           alt={video?.videoId}
           loading='lazy'
