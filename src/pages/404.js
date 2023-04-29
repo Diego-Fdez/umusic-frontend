@@ -1,20 +1,20 @@
-import { useState, useEffect, Suspense } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import styles from "@/styles/NotFoundPage.module.css";
-import { GoogleAnalytics, Loader, HeadScreen } from "@/components";
-import { metaErrorPageContent } from "@/utils/metaContents";
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import styles from '@/styles/NotFoundPage.module.css';
+import { Loader, HeadScreen } from '@/components';
+import { metaErrorPageContent } from '@/utils/metaContents';
 
 const NotFoundPage = () => {
-  const [gif, setGif] = useState("");
+  const [gif, setGif] = useState('');
   const router = useRouter();
 
   /* An array of gifs that will be displayed randomly when the page is not found. */
   const gifsErrors = [
-    "d2jjuAZzDSVLZ5kI",
-    "Bp3dFfoqpCKFyXuSzP",
-    "hv5AEBpH3ZyNoRnABG",
-    "hLwSzlKN8Fi6I",
+    'd2jjuAZzDSVLZ5kI',
+    'Bp3dFfoqpCKFyXuSzP',
+    'hv5AEBpH3ZyNoRnABG',
+    'hLwSzlKN8Fi6I',
   ];
 
   //It returns a random image from the array of gifsErrors.
@@ -30,13 +30,12 @@ const NotFoundPage = () => {
 
   //It's a function that takes a click event and pushes the user to the home page.
   const handleClick = () => {
-    router.push("/");
+    router.push('/');
   };
 
   return (
     <Suspense fallback={<Loader />}>
-      <HeadScreen title={"PageNot Found"} content={metaErrorPageContent} />
-      <GoogleAnalytics />
+      <HeadScreen title={'PageNot Found'} content={metaErrorPageContent} />
       <div className={styles.AppWrapper}>
         <div className={styles.pageErrorStyles}>
           <span className={styles.codeErrorStyles}>Error - 404</span>

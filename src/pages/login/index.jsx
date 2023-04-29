@@ -1,19 +1,18 @@
-import { Suspense } from "react";
-import Link from "next/link";
-import { useAuth0 } from "@auth0/auth0-react";
-import styles from "./styles/Login.module.css";
-import { Loader, GoogleAnalytics, HeadScreen } from "@/components";
-import { metaLoginPageContent } from "@/utils/metaContents";
+import { Suspense } from 'react';
+import Link from 'next/link';
+import { useAuth0 } from '@auth0/auth0-react';
+import styles from './styles/Login.module.css';
+import { Loader, HeadScreen } from '@/components';
+import { metaLoginPageContent } from '@/utils/metaContents';
 
 const Login = () => {
   const { loginWithRedirect } = useAuth0();
 
   return (
     <Suspense fallback={<Loader />}>
-      <HeadScreen title={"Login"} content={metaLoginPageContent} />
-      <GoogleAnalytics />
+      <HeadScreen title={'Login'} content={metaLoginPageContent} />
       <div className={styles.loginContainer}>
-        <Link href={"/"}>
+        <Link href={'/'}>
           <h2 className={styles.loginLogo}>UMUSIC</h2>
         </Link>
         <div className={styles.loginWrapper}>
