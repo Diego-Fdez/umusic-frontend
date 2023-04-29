@@ -13,7 +13,7 @@ const VideoHeaders = () => {
 
   useEffect(() => {
     /* Finding the video that matches the currentVideoIndex and setting it to the currentVideo state. */
-    videos.find((video, i) => {
+    videos?.find((video, i) => {
       if (i === currentVideoIndex) {
         setCurrentVideoPlaying(video);
         return;
