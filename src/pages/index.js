@@ -1,20 +1,22 @@
-import { useEffect } from "react";
-import Head from "next/head";
-import Image from "next/image";
-import { useAuth0 } from "@auth0/auth0-react";
-import styles from "@/styles/Home.module.css";
-import {
-  CategoryScreen,
-  Loader,
-  Navbar,
-  VideoCard,
-  GoogleAnalytics,
-} from "@/components";
-import videoStore from "@/store/videoStore";
-import userStore from "@/store/userStore";
-import persistedVideoStore from "@/store/persistedVideoStore";
-import { metaHomeContent } from "@/utils/metaContents";
-import UseVideos from "@/hooks/useVideos";
+import { useEffect, Suspense, lazy } from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useAuth0 } from '@auth0/auth0-react';
+import styles from '@/styles/Home.module.css';
+import { Loader } from '@/components';
+import videoStore from '@/store/videoStore';
+import userStore from '@/store/userStore';
+import persistedVideoStore from '@/store/persistedVideoStore';
+import { metaHomeContent } from '@/utils/metaContents';
+import UseVideos from '@/hooks/useVideos';
+const CategoryScreen = lazy(() =>
+  import('../components/CategoryScreen/CategoryScreen')
+);
+const Navbar = lazy(() => import('../components/Navbar/Navbar'));
+const VideoCard = lazy(() => import('../components/VideoCard/VideoCard'));
+const GoogleAnalytics = lazy(() =>
+  import('../components/GoogleAnalytics/GoogleAnalytics')
+);
 
 export default function Home() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -43,7 +45,7 @@ export default function Home() {
   useEffect(() => {
     /* Checking if the user is authenticated and if the userToken is not null. If it is not null, it
     will add the userToken and the user to the userStore. */
-    if ((userToken === "") & isAuthenticated) {
+    if ((userToken === '') & isAuthenticated) {
       getAuth0Token();
 
       /* Checking if the user is authenticated and if it is, it will add the user to the userStore. */
@@ -59,7 +61,7 @@ export default function Home() {
   }, [userToken, currentPlaylist]);
 
   return (
-    <>
+    <Suspense fallback={<Loader />}>
       <Head>
         <title>Home - UMUSIC</title>
         <meta name='description' content={metaHomeContent} />
@@ -100,6 +102,6 @@ export default function Home() {
           )}
         </main>
       )}
-    </>
+    </Suspense>
   );
 }
