@@ -14,9 +14,6 @@ const CategoryScreen = lazy(() =>
 );
 const Navbar = lazy(() => import('../components/Navbar/Navbar'));
 const VideoCard = lazy(() => import('../components/VideoCard/VideoCard'));
-const GoogleAnalytics = lazy(() =>
-  import('../components/GoogleAnalytics/GoogleAnalytics')
-);
 
 export default function Home() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -75,7 +72,6 @@ export default function Home() {
           content='d8QBV8WsM4wcvC0-yzY7XENEKpjF4NpaAmUQpv_3KF8'
         />
       </Head>
-      <GoogleAnalytics />
       <Navbar />
       <CategoryScreen />
       {isLoading ? (
