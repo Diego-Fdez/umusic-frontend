@@ -1,13 +1,13 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Fredoka_One } from 'next/font/google';
+import { Kalam } from 'next/font/google';
 import styles from './styles/Navbar.module.css';
 import { MenuScreen, QRScreenModal, SearchBar } from './components';
 import userStore from '@/store/userStore';
 
-const fredoka = Fredoka_One({
-  weight: '400',
+const kalam = Kalam({
+  weight: '700',
   subsets: ['latin'],
 });
 
@@ -59,7 +59,7 @@ const Navbar = () => {
             alt='umusic-logo'
             className={styles.logoImg}
           />
-          <h1 className={`${styles.logo} ${fredoka.className}`}>UMUSIC</h1>
+          <h1 className={`${styles.logo} ${kalam.className}`}>UMUSIC</h1>
         </Link>
       </div>
       <SearchBar />
