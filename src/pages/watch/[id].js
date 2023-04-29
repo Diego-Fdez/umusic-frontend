@@ -1,12 +1,15 @@
-import { Suspense, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import ReactPlayer from "react-player";
-import styles from "./styles/PlayerScreen.module.css";
-import Sidebar from "./components/Sidebar/Sidebar";
-import { Navbar, Loader, GoogleAnalytics, HeadScreen } from "@/components";
-import VideoPlayerInfo from "./components/VideoPlayerInfo/VideoPlayerInfo";
-import { metaWatchPageContent } from "@/utils/metaContents";
-import UsePlaying from "@/hooks/usePlaying";
+import { Suspense, useEffect, lazy } from 'react';
+import { useRouter } from 'next/router';
+import ReactPlayer from 'react-player';
+import styles from './styles/PlayerScreen.module.css';
+import { Loader, HeadScreen } from '@/components';
+import { metaWatchPageContent } from '@/utils/metaContents';
+import UsePlaying from '@/hooks/usePlaying';
+const Navbar = lazy(() => import('../../components/Navbar/Navbar'));
+const VideoPlayerInfo = lazy(() =>
+  import('./components/VideoPlayerInfo/VideoPlayerInfo')
+);
+const Sidebar = lazy(() => import('./components/Sidebar/Sidebar'));
 
 const PlayerScreen = () => {
   const router = useRouter();
@@ -23,7 +26,6 @@ const PlayerScreen = () => {
         title={selectedVideo?.video?.title}
         content={metaWatchPageContent}
       />
-      <GoogleAnalytics />
       <Navbar />
       <main className={styles.mainContainer}>
         <div className={styles.playListVideoWrapper}>

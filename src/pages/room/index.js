@@ -1,16 +1,10 @@
-import { Suspense } from 'react';
-import { toast } from 'react-toastify';
+import { Suspense, lazy } from 'react';
 import styles from './styles/RoomList.module.css';
-import {
-  Navbar,
-  Loader,
-  GoogleAnalytics,
-  HeadScreen,
-  WithPrivateRoute,
-} from '@/components';
-import ListScreen from './components/ListScreen/ListScreen';
+import { Loader, HeadScreen, WithPrivateRoute } from '@/components';
 import { metaPlaylistsPageContent } from '@/utils/metaContents';
 import UsePlaylist from '@/hooks/usePlaylist';
+const ListScreen = lazy(() => import('./components/ListScreen/ListScreen'));
+const Navbar = lazy(() => import('../../components/Navbar/Navbar'));
 
 export default function RoomList() {
   const { handlerAddPlaylist, roomName, setRoomName, loading } = UsePlaylist();
@@ -18,7 +12,6 @@ export default function RoomList() {
   return (
     <Suspense fallback={<Loader />}>
       <HeadScreen title={'Playlists'} content={metaPlaylistsPageContent} />
-      <GoogleAnalytics />
       <Navbar />
       {loading ? (
         <Loader />

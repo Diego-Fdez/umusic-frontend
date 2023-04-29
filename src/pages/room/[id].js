@@ -1,22 +1,19 @@
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import Image from 'next/image';
 import mongoose from 'mongoose';
 import styles from './styles/RoomScreen.module.css';
 import videoStore from '@/store/videoStore';
-import {
-  Loader,
-  Navbar,
-  GoogleAnalytics,
-  HeadScreen,
-  WithPrivateRoute,
-} from '@/components';
-import PlayList from './components/PlayList/PlayList';
-import VideoHeaders from './components/VideoHeaders/VideoHeaders';
-import VideoScreen from './components/VideoScreen/VideoScreen';
+import { Loader, HeadScreen, WithPrivateRoute } from '@/components';
 import Room from '@/models/roomModel';
 import db from '@/database/db';
 import { metaPlaylistIDPageContent } from '@/utils/metaContents';
 import UseWebSocket from '@/hooks/useWebSocket';
+const Navbar = lazy(() => import('../../components/Navbar/Navbar'));
+const PlayList = lazy(() => import('./components/PlayList/PlayList'));
+const VideoHeaders = lazy(() =>
+  import('./components/VideoHeaders/VideoHeaders')
+);
+const VideoScreen = lazy(() => import('./components/VideoScreen/VideoScreen'));
 
 export default function RoomScreen({ data }) {
   const addVideoList = videoStore((state) => state.addVideoList);
@@ -35,7 +32,6 @@ export default function RoomScreen({ data }) {
   return (
     <Suspense fallback={<Loader />}>
       <HeadScreen title={'Playlist'} content={metaPlaylistIDPageContent} />
-      <GoogleAnalytics />
       <Navbar />
       <main className={styles.roomContainer}>
         {videos.length <= 0 ? (

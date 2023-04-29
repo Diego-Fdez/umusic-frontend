@@ -1,18 +1,16 @@
-import { Suspense, useEffect } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import styles from "./styles/Channel.module.css";
-import videoStore from "@/store/videoStore";
-import {
-  CategoryScreen,
-  Loader,
-  HeadScreen,
-  Navbar,
-  VideoCard,
-  GoogleAnalytics,
-} from "@/components";
-import { metaChannelPageContent } from "@/utils/metaContents";
-import UseVideos from "@/hooks/useVideos";
+import { Suspense, useEffect, lazy } from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import styles from './styles/Channel.module.css';
+import videoStore from '@/store/videoStore';
+import { Loader, HeadScreen } from '@/components';
+import { metaChannelPageContent } from '@/utils/metaContents';
+import UseVideos from '@/hooks/useVideos';
+const CategoryScreen = lazy(() =>
+  import('../../components/CategoryScreen/CategoryScreen')
+);
+const Navbar = lazy(() => import('../../components/Navbar/Navbar'));
+const VideoCard = lazy(() => import('../../components/VideoCard/VideoCard'));
 
 const Channel = () => {
   const router = useRouter();
@@ -36,10 +34,9 @@ const Channel = () => {
   return (
     <Suspense fallback={<Loader />}>
       <HeadScreen
-        title={channelLoading ? "Loading..." : channelData?.title || "Channel"}
+        title={channelLoading ? 'Loading...' : channelData?.title || 'Channel'}
         content={metaChannelPageContent}
       />
-      <GoogleAnalytics />
       <Navbar />
       <CategoryScreen />
       {isLoading ? (
