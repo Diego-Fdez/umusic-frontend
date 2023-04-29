@@ -16,13 +16,13 @@ function App({ Component, pageProps }) {
 
   return (
     <UseAuth0Provider>
-      <style jsx global>{`
-        html {
-          font-family: ${ubuntu.style.fontFamily};
-        }
-      `}</style>
       <Auth>
         <Component {...pageProps} />
+        <style jsx global>{`
+          html {
+            font-family: ${ubuntu.style.fontFamily};
+          }
+        `}</style>
       </Auth>
       <ToastContainer
         position='top-right'
