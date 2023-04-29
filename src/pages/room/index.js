@@ -1,18 +1,23 @@
-import { Suspense } from "react";
-import { toast } from "react-toastify";
-import styles from "./styles/RoomList.module.css";
-import { Navbar, Loader, GoogleAnalytics, HeadScreen } from "@/components";
-import ListScreen from "./components/ListScreen/ListScreen";
-import { WithPrivateRoute } from "@/components/WithPrivateRoute";
-import { metaPlaylistsPageContent } from "@/utils/metaContents";
-import UsePlaylist from "@/hooks/usePlaylist";
+import { Suspense } from 'react';
+import { toast } from 'react-toastify';
+import styles from './styles/RoomList.module.css';
+import {
+  Navbar,
+  Loader,
+  GoogleAnalytics,
+  HeadScreen,
+  WithPrivateRoute,
+} from '@/components';
+import ListScreen from './components/ListScreen/ListScreen';
+import { metaPlaylistsPageContent } from '@/utils/metaContents';
+import UsePlaylist from '@/hooks/usePlaylist';
 
 export default function RoomList() {
   const { handlerAddPlaylist, roomName, setRoomName, loading } = UsePlaylist();
 
   return (
     <Suspense fallback={<Loader />}>
-      <HeadScreen title={"Playlists"} content={metaPlaylistsPageContent} />
+      <HeadScreen title={'Playlists'} content={metaPlaylistsPageContent} />
       <GoogleAnalytics />
       <Navbar />
       {loading ? (

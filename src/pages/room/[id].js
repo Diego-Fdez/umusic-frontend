@@ -1,17 +1,22 @@
-import { useEffect, Suspense } from "react";
-import Image from "next/image";
-import mongoose from "mongoose";
-import styles from "./styles/RoomScreen.module.css";
-import videoStore from "@/store/videoStore";
-import { Loader, Navbar, GoogleAnalytics, HeadScreen } from "@/components";
-import PlayList from "./components/PlayList/PlayList";
-import VideoHeaders from "./components/VideoHeaders/VideoHeaders";
-import VideoScreen from "./components/VideoScreen/VideoScreen";
-import Room from "@/models/roomModel";
-import db from "@/database/db";
-import { WithPrivateRoute } from "@/components/WithPrivateRoute";
-import { metaPlaylistIDPageContent } from "@/utils/metaContents";
-import UseWebSocket from "@/hooks/useWebSocket";
+import { useEffect, Suspense } from 'react';
+import Image from 'next/image';
+import mongoose from 'mongoose';
+import styles from './styles/RoomScreen.module.css';
+import videoStore from '@/store/videoStore';
+import {
+  Loader,
+  Navbar,
+  GoogleAnalytics,
+  HeadScreen,
+  WithPrivateRoute,
+} from '@/components';
+import PlayList from './components/PlayList/PlayList';
+import VideoHeaders from './components/VideoHeaders/VideoHeaders';
+import VideoScreen from './components/VideoScreen/VideoScreen';
+import Room from '@/models/roomModel';
+import db from '@/database/db';
+import { metaPlaylistIDPageContent } from '@/utils/metaContents';
+import UseWebSocket from '@/hooks/useWebSocket';
 
 export default function RoomScreen({ data }) {
   const addVideoList = videoStore((state) => state.addVideoList);
@@ -29,7 +34,7 @@ export default function RoomScreen({ data }) {
 
   return (
     <Suspense fallback={<Loader />}>
-      <HeadScreen title={"Playlist"} content={metaPlaylistIDPageContent} />
+      <HeadScreen title={'Playlist'} content={metaPlaylistIDPageContent} />
       <GoogleAnalytics />
       <Navbar />
       <main className={styles.roomContainer}>
@@ -77,29 +82,29 @@ export async function getServerSideProps(context) {
       },
     },
     {
-      $unwind: "$video_id",
+      $unwind: '$video_id',
     },
     {
       $lookup: {
-        from: "videos",
-        localField: "video_id",
-        foreignField: "video_id",
-        as: "videos",
+        from: 'videos',
+        localField: 'video_id',
+        foreignField: 'video_id',
+        as: 'videos',
       },
     },
     {
-      $unwind: "$videos",
+      $unwind: '$videos',
     },
     {
       $lookup: {
-        from: "channels",
-        localField: "videos.video_id",
-        foreignField: "video_id",
-        as: "videos.channels",
+        from: 'channels',
+        localField: 'videos.video_id',
+        foreignField: 'video_id',
+        as: 'videos.channels',
       },
     },
     {
-      $unwind: "$videos.channels",
+      $unwind: '$videos.channels',
     },
     {
       $project: {
@@ -107,15 +112,15 @@ export async function getServerSideProps(context) {
         updatedAt: 0,
         video_id: 0,
         __v: 0,
-        "videos._id": 0,
-        "videos.createdAt": 0,
-        "videos.updatedAt": 0,
-        "videos.__v": 0,
-        "videos.channels.createdAt": 0,
-        "videos.channels.updatedAt": 0,
-        "videos.channels.video_id": 0,
-        "videos.channels._id": 0,
-        "videos.channels.__v": 0,
+        'videos._id': 0,
+        'videos.createdAt': 0,
+        'videos.updatedAt': 0,
+        'videos.__v': 0,
+        'videos.channels.createdAt': 0,
+        'videos.channels.updatedAt': 0,
+        'videos.channels.video_id': 0,
+        'videos.channels._id': 0,
+        'videos.channels.__v': 0,
       },
     },
   ]);
