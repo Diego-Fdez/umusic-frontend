@@ -86,6 +86,7 @@ export default function Home() {
                 width={300}
                 height={300}
                 loading='lazy'
+                unoptimized
               />
               <h3>No videos to show you, please search something</h3>
             </div>

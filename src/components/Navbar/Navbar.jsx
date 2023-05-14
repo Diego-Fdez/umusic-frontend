@@ -76,6 +76,7 @@ const Navbar = () => {
             width={35.2}
             height={35.2}
             loading='lazy'
+            unoptimized
           />
         </button>
         <MenuScreen

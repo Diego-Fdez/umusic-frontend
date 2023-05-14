@@ -49,6 +49,7 @@ const NotFoundPage = () => {
             width={350}
             height={350}
             loading='lazy'
+            unoptimized
           />
           <button className={styles.btnErrorPage} onClick={handleClick}>
             Go back to home page!

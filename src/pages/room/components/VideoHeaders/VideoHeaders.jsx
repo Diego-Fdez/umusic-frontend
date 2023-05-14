@@ -33,6 +33,7 @@ const VideoHeaders = () => {
           className={styles.authorPicture}
           width={32}
           height={32}
+          unoptimized
         />
         <h6 className={styles.authorInfoSubtitle}>
           {currentVideoPlaying?.videos?.channels?.channel_title}

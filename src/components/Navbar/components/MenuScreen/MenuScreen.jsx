@@ -40,6 +40,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
                 width={24}
                 height={24}
                 loading='lazy'
+                unoptimized
               />
               <p>Logout</p>
             </button>
@@ -52,6 +53,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
                 width={24}
                 height={24}
                 loading='lazy'
+                unoptimized
               />
               <p>Login</p>
             </Link>
@@ -66,6 +68,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
               width={24}
               height={24}
               loading='lazy'
+              unoptimized
             />
             <p>Configurations</p>
           </Link>
@@ -86,6 +89,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
                   width={24}
                   height={24}
                   loading='lazy'
+                  unoptimized
                 />
                 <p>Generate QR</p>
               </button>
@@ -99,6 +103,7 @@ const NavModal = ({ isOpen, setIsOpen, modalOpen, setModalOpen }) => {
                   width={24}
                   height={24}
                   loading='lazy'
+                  unoptimized
                 />
                 <p>My Playlists</p>
               </Link>

@@ -38,6 +38,7 @@ const VideoScreen = () => {
             width={32}
             height={32}
             className={styles.playIcons}
+            unoptimized
           />
         </button>
         <button onClick={handleNext} className={styles.playButtons}>
@@ -47,6 +48,7 @@ const VideoScreen = () => {
             width={32}
             height={32}
             className={styles.playIcons}
+            unoptimized
           />
         </button>
       </div>

@@ -1,5 +1,5 @@
-import Image from "next/image";
-import styles from "./styles/VideoPlayerInfo.module.css";
+import Image from 'next/image';
+import styles from './styles/VideoPlayerInfo.module.css';
 
 const VideoPlayerInfo = ({ selectedVideo }) => {
   return (
@@ -12,6 +12,7 @@ const VideoPlayerInfo = ({ selectedVideo }) => {
           className={styles.infoAuthorAvatar}
           width={32}
           height={32}
+          unoptimized
         />
         <h6 className={styles.videoInfoSubtitle}>
           {selectedVideo?.video?.author?.title}
@@ -21,14 +22,14 @@ const VideoPlayerInfo = ({ selectedVideo }) => {
         <span>
           {selectedVideo?.video?.stats?.views
             ? `${Number(selectedVideo?.video?.stats?.views).toLocaleString(
-                "es-US"
+                'es-US'
               )} views `
-            : "0 views"}
+            : '0 views'}
         </span>
         <span>
           {selectedVideo?.video?.publishedTimeText
             ? ` - ${selectedVideo?.video?.publishedTimeText}`
-            : ""}
+            : ''}
         </span>
       </div>
     </div>

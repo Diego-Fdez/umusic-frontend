@@ -30,6 +30,7 @@ const VideoInfoScreen = ({ video }) => {
             width={24}
             height={24}
             loading='lazy'
+            unoptimized
           />
           <Link href={`/channel/${video?.author?.channelId}`}>
             <h5 className={styles.subtitle}>{video?.author?.title}</h5>
@@ -57,6 +58,7 @@ const VideoInfoScreen = ({ video }) => {
               height={100}
               className={styles.addIcon}
               loading='lazy'
+              unoptimized
             />
           </button>
         ) : (

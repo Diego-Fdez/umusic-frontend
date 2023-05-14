@@ -1,9 +1,9 @@
-import { useRef } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import styles from "./styles/SearchBar.module.css";
-import videoStore from "@/store/videoStore";
-import { toast } from "react-toastify";
+import { useRef } from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import styles from './styles/SearchBar.module.css';
+import videoStore from '@/store/videoStore';
+import { toast } from 'react-toastify';
 
 const SearchBar = () => {
   const router = useRouter();
@@ -17,18 +17,18 @@ const SearchBar = () => {
 
     const value = inputRef.current.value;
     if (!value) {
-      return toast.error("Please enter a word");
+      return toast.error('Please enter a word');
     }
     addKeyword(value);
-    if (router.pathname !== "/") router.push("/");
-    inputRef.current.value = "";
+    if (router.pathname !== '/') router.push('/');
+    inputRef.current.value = '';
   };
 
   return (
     <form
       onSubmit={handleSubmit}
       onKeyUp={(e) => {
-        if (e.key === "Enter") handleSubmit;
+        if (e.key === 'Enter') handleSubmit;
       }}
       className={styles.searchContainer}
     >
@@ -46,6 +46,7 @@ const SearchBar = () => {
           width={25.6}
           height={25.6}
           loading='lazy'
+          unoptimized
         />
       </button>
     </form>

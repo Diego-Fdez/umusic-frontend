@@ -14,6 +14,7 @@ const VideoCard = ({ video }) => {
           src={video?.thumbnails[0]?.url}
           alt={video?.videoId}
           loading='lazy'
+          unoptimized
           className={styles.videoCardImage}
           onMouseOver={(e) =>
             (e.target.src =

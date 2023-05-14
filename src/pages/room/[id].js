@@ -42,6 +42,7 @@ export default function RoomScreen({ data }) {
               width={300}
               height={300}
               loading='lazy'
+              unoptimized
             />
             <h3>There are no videos in this playlist</h3>
           </div>
